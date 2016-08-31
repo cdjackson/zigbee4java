@@ -47,19 +47,13 @@ public class ZigBeeApi {
      */
     private final static Logger LOGGER = LoggerFactory.getLogger(ZigBeeApi.class);
     /**
-     * The network.
-     */
-    private ZigBeeNetwork network;
-    /**
-     * The network state.
-     */
-    private ZigBeeNetworkState networkState;
-    /**
      * The command listener creation times.
      */
     private Set<CommandExecution> commandExecutions =
             new HashSet<CommandExecution>();
 
+    private ZigBeeNetworkManager networkManager;
+    
     /**
      * Default constructor inheritance.
      */
@@ -70,40 +64,16 @@ public class ZigBeeApi {
      * Constructor for setting the ZCL API.
      * @param network the ZCL API
      */
-    public ZigBeeApi(final ZigBeeNetwork network) {
-        this.network = network;
-    }
-
-    /**
-     * Sets network.
-     * @param network the network
-     */
-    public void setNetwork(final ZigBeeNetwork network) {
-        this.network = network;
+    public ZigBeeApi(final ZigBeeNetworkManager networkManager) {
+        this.networkManager = networkManager;
     }
 
     /**
      * Gets the ZigBee network.
      * @return the ZigBee network
      */
-    public ZigBeeNetwork getNetwork() {
-        return network;
-    }
-
-    /**
-     * Sets network state.
-     * @param networkState the network state
-     */
-    public void setNetworkState(final ZigBeeNetworkState networkState) {
-        this.networkState = networkState;
-    }
-
-    /**
-     * Gets the ZigBee network state.
-     * @return the ZigBee network state
-     */
-    public ZigBeeNetworkState getNetworkState() {
-        return networkState;
+    public ZigBeeNetworkManager getNetwork() {
+        return networkManager;
     }
 
     /**
@@ -113,9 +83,7 @@ public class ZigBeeApi {
      * @param label the label
      */
     public void setDeviceLabel(final int networkAddress, final int endPointId, final String label) {
-        final ZigBeeDevice device = networkState.getDevice(networkAddress, endPointId);
-        device.setLabel(label);
-        networkState.updateDevice(device);
+        networkManager.setDeviceLabel(networkAddress, endPointId, label);
     }
 
     /**
@@ -123,17 +91,7 @@ public class ZigBeeApi {
      * @param networkAddress the network address
      */
     public void removeDevice(final int networkAddress) {
-        final List<ZigBeeDevice> devices = networkState.getDevices();
-        final List<ZigBeeDevice> devicesToRemove = new ArrayList<ZigBeeDevice>();
-        for (final ZigBeeDevice device : devices) {
-            if (device.getNetworkAddress() == networkAddress) {
-                devicesToRemove.add(device);
-            }
-        }
-
-        for (final ZigBeeDevice device : devicesToRemove) {
-            networkState.removeDevice(device.getNetworkAddress(), device.getEndpoint());
-        }
+        networkManager.removeDevice(networkAddress);
     }
 
 
@@ -142,7 +100,7 @@ public class ZigBeeApi {
      * @return list of ZigBee devices
      */
     public List<ZigBeeDevice> getDevices() {
-        return getNetworkState().getDevices();
+        return networkManager.getDevices();
     }
 
     /**
@@ -151,13 +109,7 @@ public class ZigBeeApi {
      * @param label the label
      */
     public void addMembership(final int groupId, final String label) {
-        if (networkState.getGroup(groupId) == null) {
-            networkState.addGroup(new ZigBeeGroup(groupId, label));
-        } else {
-            final ZigBeeGroup group = networkState.getGroup(groupId);
-            group.setLabel(label);
-            networkState.updateGroup(group);
-        }
+        networkManager.addMembership(groupId, label);
     }
 
     /**
@@ -165,7 +117,7 @@ public class ZigBeeApi {
      * @param groupId the group ID
      */
     public void removeMembership(final int groupId) {
-        networkState.removeGroup(groupId);
+        networkManager.removeMembership(groupId);
     }
 
     /**
@@ -174,7 +126,7 @@ public class ZigBeeApi {
      * @return the ZigBee group or null if no exists with given group ID.
      */
     public ZigBeeGroup getGroup(final int groupId) {
-        return networkState.getGroup(groupId);
+        return networkManager.getGroup(groupId);
     }
 
     /**
@@ -182,7 +134,7 @@ public class ZigBeeApi {
      * @return list of groups.
      */
     public List<ZigBeeGroup> getGroups() {
-        return networkState.getGroups();
+        return networkManager.getGroups();
     }
 
     /**
@@ -510,7 +462,7 @@ public class ZigBeeApi {
         command.setTrustCenterSignificance(1);
 
         try {
-            network.sendCommand(command);
+            networkManager.sendCommand(command);
         } catch (final ZigBeeException e) {
             throw new ZigBeeApiException("Error sending permit join command.", e);
         }
@@ -649,7 +601,7 @@ public class ZigBeeApi {
             commandExecution.setCommandListener(commandListener);
             addCommandExecution(commandExecution);
             try {
-                int transactionId = network.sendCommand(command);
+                int transactionId = networkManager.sendCommand(command);
                 if (command instanceof ZclCommand) {
                     ((ZclCommand) command).setTransactionId((byte) transactionId);
                 }
@@ -671,7 +623,7 @@ public class ZigBeeApi {
             final CommandResultFuture future = new CommandResultFuture(this);
 
             try {
-                network.sendCommand(command);
+                networkManager.sendCommand(command);
                 future.set(new CommandResult(new BroadcastResponse()));
             } catch (final ZigBeeException e) {
                 future.set(new CommandResult(e.toString()));
@@ -700,7 +652,7 @@ public class ZigBeeApi {
                 removeCommandExecution(expiredCommandExecution);
             }
             commandExecutions.add(commandExecution);
-            network.addCommandListener(commandExecution.getCommandListener());
+            networkManager.addCommandListener(commandExecution.getCommandListener());
         }
     }
 
@@ -710,7 +662,7 @@ public class ZigBeeApi {
      */
     protected void removeCommandExecution(CommandExecution expiredCommandExecution) {
         commandExecutions.remove(expiredCommandExecution);
-        network.removeCommandListener(expiredCommandExecution.getCommandListener());
+        networkManager.removeCommandListener(expiredCommandExecution.getCommandListener());
         synchronized (expiredCommandExecution.getFuture()) {
             expiredCommandExecution.getFuture().notify();
         }
