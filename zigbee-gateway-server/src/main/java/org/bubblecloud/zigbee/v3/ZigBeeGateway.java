@@ -117,7 +117,7 @@ public final class ZigBeeGateway {
             print("ZigBee API starting up ... [OK]", System.out);
         }
 
-        zigBeeApi.getNetworkState().addNetworkListener(new ZigBeeNetworkStateListener() {
+        zigBeeApi.getNetwork().getNetworkState().addNetworkListener(new ZigBeeNetworkStateListener() {
             @Override
             public void deviceAdded(ZigBeeDevice device) {
                 print("Device added:\n" + getDeviceSummary(device), System.out);
@@ -305,7 +305,7 @@ public final class ZigBeeGateway {
      * @return the device
      */
     private ZigBeeDevice getDevice(ZigBeeApi zigbeeApi, final String deviceIdentifier) {
-        for (final ZigBeeDevice zigBeeDevice : zigbeeApi.getNetworkState().getDevices()) {
+        for (final ZigBeeDevice zigBeeDevice : zigbeeApi.getNetwork().getNetworkState().getDevices()) {
             if (deviceIdentifier.equals(zigBeeDevice.getNetworkAddress() + "/" + zigBeeDevice.getEndpoint())) {
                 return zigBeeDevice;
             }
