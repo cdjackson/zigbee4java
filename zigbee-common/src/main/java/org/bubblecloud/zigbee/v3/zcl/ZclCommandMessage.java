@@ -108,7 +108,7 @@ public class ZclCommandMessage {
         if (destinationAddress instanceof ZigBeeGroupAddress) {
             return ((ZigBeeGroupAddress) destinationAddress).getGroupId();
         }
-        return 0;
+        return null;
     }
 
     /**
