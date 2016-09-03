@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
 import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
 
 /**
@@ -17,7 +18,7 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
  */
 public abstract class ZclCluster {
 
-    private final ZigBeeApi zigbeeApi;
+    private final ZigBeeNetworkManager zigbeeManager;
     private final ZigBeeDevice zigbeeDevice;
     protected final int clusterId;
 
@@ -25,8 +26,8 @@ public abstract class ZclCluster {
 
     protected abstract Map<Integer, ZclAttribute> initializeAttributes();
     
-    public ZclCluster(ZigBeeApi zigbeeApi, ZigBeeDevice zigbeeDevice, int clusterId) {
-        this.zigbeeApi = zigbeeApi;
+    public ZclCluster(ZigBeeNetworkManager zigbeeManager, ZigBeeDevice zigbeeDevice, int clusterId) {
+        this.zigbeeManager = zigbeeManager;
         this.zigbeeDevice = zigbeeDevice;
         this.clusterId = clusterId;
     }
@@ -34,7 +35,7 @@ public abstract class ZclCluster {
     protected Future<CommandResult> send(ZclCommand command) {
         command.setDestinationAddress(zigbeeDevice.getNetworkAddress());
         command.setDestinationEndpoint(zigbeeDevice.getEndpoint());
-        return zigbeeApi.unicast(command);
+        return zigbeeManager.unicast(command);
     }
 
     /**
@@ -44,7 +45,7 @@ public abstract class ZclCluster {
      * @return
      */
     protected Future<CommandResult> read(final int attributeId) {
-        return zigbeeApi.read(zigbeeDevice, clusterId, attributeId);
+        return zigbeeManager.read(zigbeeDevice, clusterId, attributeId);
         /*
          * final ReadAttributesCommand command = new ReadAttributesCommand();
          * 
@@ -69,7 +70,7 @@ public abstract class ZclCluster {
      * @return
      */
     protected Future<CommandResult> write(final int attributeId, ZclDataType dataType, final Object value) {
-        return zigbeeApi.write(zigbeeDevice, clusterId, attributeId, value);
+        return zigbeeManager.write(zigbeeDevice, clusterId, attributeId, value);
         /*
          * final WriteAttributesCommand command = new WriteAttributesCommand();
          * command.setClusterId(clusterId);
@@ -90,7 +91,7 @@ public abstract class ZclCluster {
 
     public Future<CommandResult> report(final int attributeId, final int minInterval, final int maxInterval,
             final Object reportableChange) {
-        return zigbeeApi.report(zigbeeDevice, clusterId, attributeId, minInterval, maxInterval, reportableChange);
+        return zigbeeManager.report(zigbeeDevice, clusterId, attributeId, minInterval, maxInterval, reportableChange);
         /*
          * final ConfigureReportingCommand command = new
          * ConfigureReportingCommand();

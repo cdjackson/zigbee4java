@@ -14,6 +14,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      * The dongle implementation.
      */
     private final ZigBeeDongle dongle;
+    
     /**
      * The ZigBee network networkDiscoverer.
      */
@@ -48,7 +49,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
     }
 
     /**
-     * Starts up ZigBee API components.
+     * Starts up ZigBee manager components.
      * @return TRUE if startup was successful.
      */
     public boolean startup() {
@@ -62,7 +63,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
     }
 
     /**
-     * Shuts down ZigBee API components.
+     * Shuts down ZigBee manager components.
      */
     public void shutdown() {
         networkDiscoverer.shutdown();
