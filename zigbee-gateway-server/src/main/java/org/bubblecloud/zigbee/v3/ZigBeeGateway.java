@@ -272,26 +272,26 @@ public final class ZigBeeGateway {
      * @param destinationIdentifier the device identifier or group ID
      * @return the device
      */
-    private ZigBeeDestination getDestination(final ZigBeeApi zigbeeApi, final String destinationIdentifier
+    private ZigBeeAddress getDestination(final ZigBeeApi zigbeeApi, final String destinationIdentifier
             ,final PrintStream out) {
         final ZigBeeDevice device = getDevice(zigbeeApi, destinationIdentifier);
 
         if (device != null) {
-            return device;
+            return device.getDeviceAddress();
         }
 
         try {
-            for (final ZigBeeGroup group : zigbeeApi.getGroups()) {
+            for (final ZigBeeGroupAddress group : zigbeeApi.getGroups()) {
                 if (destinationIdentifier.equals(group.getLabel())) {
                     return group;
                 }
             }
             final int groupId = Integer.parseInt(destinationIdentifier);
-            ZigBeeGroup group = zigbeeApi.getGroup(groupId);
+            ZigBeeGroupAddress group = (ZigBeeGroupAddress) zigbeeApi.getGroup(groupId);
             if (group == null) {
                 zigBeeApi.addMembership(groupId, Integer.toString(groupId));
             }
-            group = zigbeeApi.getGroup(groupId);
+            group = (ZigBeeGroupAddress) zigbeeApi.getGroup(groupId);
             return group;
         } catch (final NumberFormatException e) {
             return null;
@@ -460,8 +460,8 @@ public final class ZigBeeGateway {
          * {@inheritDoc}
          */
         public boolean process(final ZigBeeApi zigbeeApi, final String[] args, PrintStream out) {
-            final List<ZigBeeGroup> groups = zigbeeApi.getGroups();
-            for (final ZigBeeGroup group : groups) {
+            final List<ZigBeeGroupAddress> groups = zigbeeApi.getGroups();
+            for (final ZigBeeGroupAddress group : groups) {
                 print(StringUtils.leftPad(Integer.toString(group.getGroupId()), 10) + "      " + group.getLabel(), out);
             }
             return true;
@@ -649,7 +649,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
 
             if (destination == null) {
                 return false;
@@ -685,7 +685,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
 
             if (destination == null) {
                 return false;
@@ -720,7 +720,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
             if (destination == null) {
                 return false;
             }
@@ -882,15 +882,15 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
             if (destination == null) {
                 return false;
             }
-            if (!(destination instanceof ZigBeeGroup)) {
+            if (!(destination instanceof ZigBeeGroupAddress)) {
                 return false;
             }
 
-            final ZigBeeGroup group = (ZigBeeGroup) destination;
+            final ZigBeeGroupAddress group = (ZigBeeGroupAddress) destination;
             zigbeeApi.removeMembership(group.getGroupId());
             return true;
         }
@@ -957,7 +957,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
             if (destination == null) {
                 return false;
             }
@@ -998,7 +998,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
             if (destination == null) {
                 return false;
             }
@@ -1034,7 +1034,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
             if (destination == null) {
                 return false;
             }
@@ -1172,7 +1172,7 @@ public final class ZigBeeGateway {
                 reportableChange = parseValue(args[6], attribute.getZigBeeType());
             }
 
-            final CommandResult result = zigbeeApi.report(device, clusterId, attributeId, minInterval, maxInterval, reportableChange).get();
+            final CommandResult result = zigbeeApi.report(device.getDeviceAddress(), clusterId, attributeId, minInterval, maxInterval, reportableChange).get();
             if (result.isSuccess()) {
                 final ConfigureReportingResponse response = result.getResponse();
                 final int statusCode = response.getRecords().get(0).getStatus();
@@ -1236,7 +1236,7 @@ public final class ZigBeeGateway {
                 reportableChange = parseValue(args[4], attribute.getZigBeeType());
             }
 
-            final CommandResult result = zigbeeApi.report(device, clusterId, attributeId, 0, 0xffff, reportableChange).get();
+            final CommandResult result = zigbeeApi.report(device.getDeviceAddress(), clusterId, attributeId, 0, 0xffff, reportableChange).get();
             if (result.isSuccess()) {
                 final ConfigureReportingResponse response = result.getResponse();
                 final int statusCode = response.getRecords().get(0).getStatus();
@@ -1299,7 +1299,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final CommandResult result = zigbeeApi.read(device, clusterId, attributeId).get();
+            final CommandResult result = zigbeeApi.read(device.getDeviceAddress(), clusterId, attributeId).get();
 
             if (result.isSuccess()) {
                 final ReadAttributesResponse response = result.getResponse();
@@ -1370,7 +1370,7 @@ public final class ZigBeeGateway {
 
             final Object value = parseValue(args[4], attribute.getZigBeeType());
 
-            final CommandResult result = zigbeeApi.write(device, clusterId, attributeId, value).get();
+            final CommandResult result = zigbeeApi.write(device.getDeviceAddress(), clusterId, attributeId, value).get();
             if (result.isSuccess()) {
                 final WriteAttributesResponse response = result.getResponse();
                 final int statusCode = response.getRecords().get(0).getStatus();
@@ -1451,7 +1451,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
             if (destination == null) {
                 print("Device not found.", out);
                 return false;
@@ -1515,7 +1515,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            final ZigBeeDestination destination = getDestination(zigbeeApi, args[1], out);
+            final ZigBeeAddress destination = getDestination(zigbeeApi, args[1], out);
             if (destination == null) {
                 print("Device not found.", out);
                 return false;

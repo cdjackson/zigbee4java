@@ -11,9 +11,9 @@ import java.util.concurrent.TimeoutException;
 public class CommandResultFuture implements Future<CommandResult> {
 
     /**
-     * The simple ZigBee API.
+     * The ZigBee Network Manager
      */
-    private ZigBeeApi zigBeeApi;
+    private ZigBeeNetworkManager networkManager;
 
     /**
      * The command execution.
@@ -26,10 +26,10 @@ public class CommandResultFuture implements Future<CommandResult> {
 
     /**
      * Constructor which sets the simple ZigBee API this future belongs to.
-     * @param zigBeeApi the simple ZigBee API
+     * @param zigBeeNetworkManager the simple ZigBee API
      */
-    public CommandResultFuture(ZigBeeApi zigBeeApi) {
-        this.zigBeeApi = zigBeeApi;
+    public CommandResultFuture(ZigBeeNetworkManager zigBeeNetworkManager) {
+        this.networkManager = zigBeeNetworkManager;
     }
 
     /**
@@ -72,7 +72,7 @@ public class CommandResultFuture implements Future<CommandResult> {
             this.wait(10000);
             if (result == null) {
                 set(new CommandResult());
-                zigBeeApi.removeCommandExecution(commandExecution);
+                networkManager.removeCommandExecution(commandExecution);
             }
             return result;
         }
@@ -87,7 +87,7 @@ public class CommandResultFuture implements Future<CommandResult> {
             unit.timedWait(this, timeout);
             if (result == null) {
                 set(new CommandResult());
-                zigBeeApi.removeCommandExecution(commandExecution);
+                networkManager.removeCommandExecution(commandExecution);
             }
             return result;
         }

@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
@@ -35,20 +36,13 @@ public class ZclOccupancySensingCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(7);
 
-        attributeMap.put(ATTR_OCCUPANCY, new ZclAttribute(0, ZclDataType.BITMAP_8_BIT, 
-                true, true, false, true));
-        attributeMap.put(ATTR_OCCUPANCYSENSORTYPE, new ZclAttribute(1, ZclDataType.ENUMERATION_8_BIT, 
-                true, true, false, false));
-        attributeMap.put(ATTR_PIROCCUPIEDTOUNOCCUPIEDDELAY, new ZclAttribute(16, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_PIRUNOCCUPIEDTOOCCUPIEDDELAY, new ZclAttribute(17, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_ULTRASONICOCCUPIEDTOUNOCCUPIEDDELAY, new ZclAttribute(32, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDDELAY, new ZclAttribute(33, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDTHRESHOLD, new ZclAttribute(34, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
+        attributeMap.put(ATTR_OCCUPANCY, new ZclAttribute(0, ZclDataType.BITMAP_8_BIT, true, true, false, true));
+        attributeMap.put(ATTR_OCCUPANCYSENSORTYPE, new ZclAttribute(1, ZclDataType.ENUMERATION_8_BIT, true, true, false, false));
+        attributeMap.put(ATTR_PIROCCUPIEDTOUNOCCUPIEDDELAY, new ZclAttribute(16, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_PIRUNOCCUPIEDTOOCCUPIEDDELAY, new ZclAttribute(17, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_ULTRASONICOCCUPIEDTOUNOCCUPIEDDELAY, new ZclAttribute(32, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDDELAY, new ZclAttribute(33, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDTHRESHOLD, new ZclAttribute(34, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
 
         return attributeMap;
     }
@@ -56,8 +50,8 @@ public class ZclOccupancySensingCluster extends ZclCluster {
     /**
      * Default constructor.
      */
-    public ZclOccupancySensingCluster(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {
-        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);
+    public ZclOccupancySensingCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
     }
 
 

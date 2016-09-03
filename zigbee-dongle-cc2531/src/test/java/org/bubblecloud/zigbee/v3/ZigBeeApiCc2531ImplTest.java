@@ -26,9 +26,10 @@ public class ZigBeeApiCc2531ImplTest {
         final SerialPort port = new SerialPortImpl("COM5");
         final ZigBeeDongle dongle = new ZigBeeDongleTiCc2531Impl(port, 4951, 11, null, false);
 
-        final ZigBeeApiDongleImpl api = new ZigBeeApiDongleImpl(dongle, false);
+//        final ZigBeeApiDongleImpl api = new ZigBeeApiDongleImpl(dongle, false);
+        ZigBeeNetworkManager networkManager = new ZigBeeNetworkManager(dongle, false);
 
-        api.getNetworkState().addNetworkListener(new ZigBeeNetworkStateListener() {
+        networkManager.getNetworkState().addNetworkListener(new ZigBeeNetworkStateListener() {
             @Override
             public void deviceAdded(ZigBeeDevice device) {
                 LOGGER.info("Device added: " + device);
@@ -45,7 +46,7 @@ public class ZigBeeApiCc2531ImplTest {
             }
         });
 
-        api.startup();
+        networkManager.startup();
 
         try {
             Thread.sleep(10000);
@@ -53,12 +54,12 @@ public class ZigBeeApiCc2531ImplTest {
             e.printStackTrace();
         }
 
-        final List<ZigBeeDevice> devices = api.getNetworkState().getDevices();
+        final List<ZigBeeDevice> devices = networkManager.getNetworkState().getDevices();
         for (final ZigBeeDevice device : devices) {
             LOGGER.info(device.toString());
         }
 
-        api.shutdown();
+        networkManager.shutdown();
         port.close();
     }
 

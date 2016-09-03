@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
@@ -29,8 +30,8 @@ public class ZclDeviceTemperatureConfigurationCluster extends ZclCluster {
     /**
      * Default constructor.
      */
-    public ZclDeviceTemperatureConfigurationCluster(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {
-        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);
+    public ZclDeviceTemperatureConfigurationCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
     }
 
 

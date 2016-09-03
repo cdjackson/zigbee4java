@@ -722,8 +722,8 @@ public class ZclProtocolCodeGenerator {
 //                imports.add(packageRoot + packageZcl + ".ZclCommandMessage");
                    
 //                imports.add(packageRoot + ".ZigBeeDestination");
-                imports.add(packageRoot + ".ZigBeeDevice");
-                imports.add(packageRoot + ".ZigBeeApi");
+                imports.add(packageRoot + ".ZigBeeDeviceAddress");
+                imports.add(packageRoot + ".ZigBeeNetworkManager");
                 imports.add(packageRoot + ".CommandResult");
                 imports.add(packageRoot + ".ZigBeeDevice");
                 imports.add(packageRoot + packageZcl + ".ZclAttribute");
@@ -792,8 +792,8 @@ public class ZclProtocolCodeGenerator {
                 out.println("    /**");
                 out.println("     * Default constructor.");
                 out.println("     */");
-                out.println("    public " + className + "(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {");
-                out.println("        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);");
+                out.println("    public " + className + "(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {");
+                out.println("        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);");
                 out.println("    }");
                 out.println();
                 out.println();

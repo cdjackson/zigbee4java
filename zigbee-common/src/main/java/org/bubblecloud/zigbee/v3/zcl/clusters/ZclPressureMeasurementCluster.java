@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
@@ -37,24 +38,15 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(9);
 
-        attributeMap.put(ATTR_MEASUREDVALUE, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                true, true, false, true));
-        attributeMap.put(ATTR_MINMEASUREDVALUE, new ZclAttribute(1, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                true, true, false, false));
-        attributeMap.put(ATTR_MAXMEASUREDVALUE, new ZclAttribute(2, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                true, true, false, true));
-        attributeMap.put(ATTR_TOLERANCE, new ZclAttribute(3, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, false, false));
-        attributeMap.put(ATTR_SCALEDVALUE, new ZclAttribute(16, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, false, true));
-        attributeMap.put(ATTR_MINSCALEDVALUE, new ZclAttribute(17, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, false, false));
-        attributeMap.put(ATTR_MAXSCALEDVALUE, new ZclAttribute(18, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, false, false));
-        attributeMap.put(ATTR_SCALEDTOLERANCE, new ZclAttribute(19, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, false, true));
-        attributeMap.put(ATTR_SCALE, new ZclAttribute(20, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, false, false));
+        attributeMap.put(ATTR_MEASUREDVALUE, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, true));
+        attributeMap.put(ATTR_MINMEASUREDVALUE, new ZclAttribute(1, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_MAXMEASUREDVALUE, new ZclAttribute(2, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, true));
+        attributeMap.put(ATTR_TOLERANCE, new ZclAttribute(3, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_SCALEDVALUE, new ZclAttribute(16, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, true));
+        attributeMap.put(ATTR_MINSCALEDVALUE, new ZclAttribute(17, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_MAXSCALEDVALUE, new ZclAttribute(18, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_SCALEDTOLERANCE, new ZclAttribute(19, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, true));
+        attributeMap.put(ATTR_SCALE, new ZclAttribute(20, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, false));
 
         return attributeMap;
     }
@@ -62,8 +54,8 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
     /**
      * Default constructor.
      */
-    public ZclPressureMeasurementCluster(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {
-        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);
+    public ZclPressureMeasurementCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
     }
 
 

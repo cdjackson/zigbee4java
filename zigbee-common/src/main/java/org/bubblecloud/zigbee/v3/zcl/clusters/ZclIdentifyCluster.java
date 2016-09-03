@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.identify.IdentifyCommand;
@@ -36,8 +37,7 @@ public class ZclIdentifyCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(1);
 
-        attributeMap.put(ATTR_IDENTIFYTIME, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                true, true, true, false));
+        attributeMap.put(ATTR_IDENTIFYTIME, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, true, false));
 
         return attributeMap;
     }
@@ -45,8 +45,8 @@ public class ZclIdentifyCluster extends ZclCluster {
     /**
      * Default constructor.
      */
-    public ZclIdentifyCluster(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {
-        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);
+    public ZclIdentifyCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
     }
 
 

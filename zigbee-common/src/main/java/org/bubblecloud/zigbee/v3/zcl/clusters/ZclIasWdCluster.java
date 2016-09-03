@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iaswd.SquawkCommand;
@@ -36,14 +37,10 @@ public class ZclIasWdCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(4);
 
-        attributeMap.put(ATTR_MAXDURATION, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                true, true, true, false));
-        attributeMap.put(ATTR_ZONETYPE, new ZclAttribute(1, ZclDataType.ENUMERATION_8_BIT, 
-                true, true, false, false));
-        attributeMap.put(ATTR_ZONESTATUS, new ZclAttribute(2, ZclDataType.BITMAP_16_BIT, 
-                true, true, false, false));
-        attributeMap.put(ATTR_IAS_CIE_ADDRESS, new ZclAttribute(16, ZclDataType.IEEE_ADDRESS, 
-                true, true, true, false));
+        attributeMap.put(ATTR_MAXDURATION, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, true, false));
+        attributeMap.put(ATTR_ZONETYPE, new ZclAttribute(1, ZclDataType.ENUMERATION_8_BIT, true, true, false, false));
+        attributeMap.put(ATTR_ZONESTATUS, new ZclAttribute(2, ZclDataType.BITMAP_16_BIT, true, true, false, false));
+        attributeMap.put(ATTR_IAS_CIE_ADDRESS, new ZclAttribute(16, ZclDataType.IEEE_ADDRESS, true, true, true, false));
 
         return attributeMap;
     }
@@ -51,8 +48,8 @@ public class ZclIasWdCluster extends ZclCluster {
     /**
      * Default constructor.
      */
-    public ZclIasWdCluster(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {
-        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);
+    public ZclIasWdCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
     }
 
 

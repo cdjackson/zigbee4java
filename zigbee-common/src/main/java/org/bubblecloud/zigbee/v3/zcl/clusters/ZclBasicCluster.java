@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.basic.ResetToFactoryDefaultsCommand;
@@ -38,32 +39,19 @@ public class ZclBasicCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(13);
 
-        attributeMap.put(ATTR_ZCLVERSION, new ZclAttribute(0, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                true, true, false, false));
-        attributeMap.put(ATTR_APPLICATIONVERSION, new ZclAttribute(1, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                true, true, false, false));
-        attributeMap.put(ATTR_STACKVERSION, new ZclAttribute(2, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                true, true, false, false));
-        attributeMap.put(ATTR_HWVERSION, new ZclAttribute(3, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                true, true, false, false));
-        attributeMap.put(ATTR_MANUFACTURERNAME, new ZclAttribute(4, ZclDataType.CHARACTER_STRING, 
-                true, true, false, false));
-        attributeMap.put(ATTR_MODELIDENTIFIER, new ZclAttribute(5, ZclDataType.CHARACTER_STRING, 
-                true, true, false, false));
-        attributeMap.put(ATTR_DATECODE, new ZclAttribute(6, ZclDataType.CHARACTER_STRING, 
-                true, true, false, false));
-        attributeMap.put(ATTR_POWERSOURCE, new ZclAttribute(7, ZclDataType.ENUMERATION_8_BIT, 
-                true, true, false, false));
-        attributeMap.put(ATTR_LOCATIONDESCRIPTION, new ZclAttribute(16, ZclDataType.CHARACTER_STRING, 
-                true, true, true, false));
-        attributeMap.put(ATTR_PHYSICALENVIRONMENT, new ZclAttribute(17, ZclDataType.ENUMERATION_8_BIT, 
-                true, true, true, false));
-        attributeMap.put(ATTR_DEVICEENABLED, new ZclAttribute(18, ZclDataType.BOOLEAN, 
-                true, true, true, false));
-        attributeMap.put(ATTR_ALARMMASK, new ZclAttribute(19, ZclDataType.BITMAP_8_BIT, 
-                true, true, true, false));
-        attributeMap.put(ATTR_DISABLELOCALCONFIG, new ZclAttribute(20, ZclDataType.BITMAP_8_BIT, 
-                true, true, true, false));
+        attributeMap.put(ATTR_ZCLVERSION, new ZclAttribute(0, ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_APPLICATIONVERSION, new ZclAttribute(1, ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_STACKVERSION, new ZclAttribute(2, ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_HWVERSION, new ZclAttribute(3, ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_MANUFACTURERNAME, new ZclAttribute(4, ZclDataType.CHARACTER_STRING, true, true, false, false));
+        attributeMap.put(ATTR_MODELIDENTIFIER, new ZclAttribute(5, ZclDataType.CHARACTER_STRING, true, true, false, false));
+        attributeMap.put(ATTR_DATECODE, new ZclAttribute(6, ZclDataType.CHARACTER_STRING, true, true, false, false));
+        attributeMap.put(ATTR_POWERSOURCE, new ZclAttribute(7, ZclDataType.ENUMERATION_8_BIT, true, true, false, false));
+        attributeMap.put(ATTR_LOCATIONDESCRIPTION, new ZclAttribute(16, ZclDataType.CHARACTER_STRING, true, true, true, false));
+        attributeMap.put(ATTR_PHYSICALENVIRONMENT, new ZclAttribute(17, ZclDataType.ENUMERATION_8_BIT, true, true, true, false));
+        attributeMap.put(ATTR_DEVICEENABLED, new ZclAttribute(18, ZclDataType.BOOLEAN, true, true, true, false));
+        attributeMap.put(ATTR_ALARMMASK, new ZclAttribute(19, ZclDataType.BITMAP_8_BIT, true, true, true, false));
+        attributeMap.put(ATTR_DISABLELOCALCONFIG, new ZclAttribute(20, ZclDataType.BITMAP_8_BIT, true, true, true, false));
 
         return attributeMap;
     }
@@ -71,8 +59,8 @@ public class ZclBasicCluster extends ZclCluster {
     /**
      * Default constructor.
      */
-    public ZclBasicCluster(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {
-        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);
+    public ZclBasicCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
     }
 
 

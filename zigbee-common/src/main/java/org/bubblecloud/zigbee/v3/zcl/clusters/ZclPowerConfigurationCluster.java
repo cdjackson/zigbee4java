@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
 import org.bubblecloud.zigbee.v3.ZigBeeDevice;
+import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
+import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
@@ -42,34 +43,20 @@ public class ZclPowerConfigurationCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(14);
 
-        attributeMap.put(ATTR_MAINSVOLTAGE, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, false, false));
-        attributeMap.put(ATTR_MAINSFREQUENCY, new ZclAttribute(1, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, false, false));
-        attributeMap.put(ATTR_MAINSALARMMASK, new ZclAttribute(16, ZclDataType.BITMAP_8_BIT, 
-                false, true, true, false));
-        attributeMap.put(ATTR_MAINSVOLTAGEMINTHRESHOLD, new ZclAttribute(17, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_MAINSVOLTAGEMAXTHRESHOLD, new ZclAttribute(18, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_MAINSVOLTAGEDWELLTRIPPOINT, new ZclAttribute(19, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_BATTERYVOLTAGE, new ZclAttribute(32, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, false, false));
-        attributeMap.put(ATTR_BATTERYMANUFACTURER, new ZclAttribute(48, ZclDataType.CHARACTER_STRING, 
-                false, true, true, false));
-        attributeMap.put(ATTR_BATTERYSIZE, new ZclAttribute(49, ZclDataType.ENUMERATION_8_BIT, 
-                false, true, true, false));
-        attributeMap.put(ATTR_BATTERYAHRRATING, new ZclAttribute(50, ZclDataType.UNSIGNED_16_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_BATTERYQUANTITY, new ZclAttribute(51, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_BATTERYRATEDVOLTAGE, new ZclAttribute(52, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
-        attributeMap.put(ATTR_BATTERYALARMMASK, new ZclAttribute(53, ZclDataType.BITMAP_8_BIT, 
-                false, true, true, false));
-        attributeMap.put(ATTR_BATTERYVOLTAGEMINTHRESHOLD, new ZclAttribute(54, ZclDataType.UNSIGNED_8_BIT_INTEGER, 
-                false, true, true, false));
+        attributeMap.put(ATTR_MAINSVOLTAGE, new ZclAttribute(0, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_MAINSFREQUENCY, new ZclAttribute(1, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_MAINSALARMMASK, new ZclAttribute(16, ZclDataType.BITMAP_8_BIT, false, true, true, false));
+        attributeMap.put(ATTR_MAINSVOLTAGEMINTHRESHOLD, new ZclAttribute(17, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_MAINSVOLTAGEMAXTHRESHOLD, new ZclAttribute(18, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_MAINSVOLTAGEDWELLTRIPPOINT, new ZclAttribute(19, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_BATTERYVOLTAGE, new ZclAttribute(32, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_BATTERYMANUFACTURER, new ZclAttribute(48, ZclDataType.CHARACTER_STRING, false, true, true, false));
+        attributeMap.put(ATTR_BATTERYSIZE, new ZclAttribute(49, ZclDataType.ENUMERATION_8_BIT, false, true, true, false));
+        attributeMap.put(ATTR_BATTERYAHRRATING, new ZclAttribute(50, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_BATTERYQUANTITY, new ZclAttribute(51, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_BATTERYRATEDVOLTAGE, new ZclAttribute(52, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_BATTERYALARMMASK, new ZclAttribute(53, ZclDataType.BITMAP_8_BIT, false, true, true, false));
+        attributeMap.put(ATTR_BATTERYVOLTAGEMINTHRESHOLD, new ZclAttribute(54, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
 
         return attributeMap;
     }
@@ -77,8 +64,8 @@ public class ZclPowerConfigurationCluster extends ZclCluster {
     /**
      * Default constructor.
      */
-    public ZclPowerConfigurationCluster(final ZigBeeApi zigbeeApi, final ZigBeeDevice zigbeeDevice) {
-        super(zigbeeApi, zigbeeDevice, CLUSTER_ID);
+    public ZclPowerConfigurationCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
     }
 
 
