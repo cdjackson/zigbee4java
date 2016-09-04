@@ -1,18 +1,20 @@
 package org.bubblecloud.zigbee.v3;
 
 /**
- * ZigBee dongle interface implemented by different dongle hardware drivers.
+ * ZigBee transport interface implemented by different hardware drivers.
+ * This could support for example serial interfaces for dongles, or IP connections
+ * to remote interfaces.
  */
-public interface ZigBeeDongle {
+public interface ZigBeeTransport {
     /**
-     * Starts up dongle.
+     * Starts up a transport interface.
      *
      * @return true if startup was success.
      */
     boolean startup();
 
     /**
-     * Shuts down dongle.
+     * Shuts down a transport interface.
      */
     void shutdown();
     
@@ -24,7 +26,9 @@ public interface ZigBeeDongle {
      */
     int sendCommand(final Command command) throws ZigBeeException;
 
-    
+    /**
+     * Sets the {@link ZigBeeNetwork}
+     * @param zigbeeNetwork
+     */
     void setZigBeeNetwork(ZigBeeNetwork zigbeeNetwork);
-
 }

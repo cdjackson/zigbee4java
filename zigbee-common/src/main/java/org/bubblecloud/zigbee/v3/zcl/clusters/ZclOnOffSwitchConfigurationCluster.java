@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeDevice;
 import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
@@ -20,7 +19,10 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
  */
 public class ZclOnOffSwitchConfigurationCluster extends ZclCluster {
     // Cluster ID
-    private static final int CLUSTER_ID = 0x0007;
+    public static final int CLUSTER_ID = 0x0007;
+
+    // Cluster Name
+    public static final String CLUSTER_NAME = "On/off Switch Configuration";
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -34,7 +36,7 @@ public class ZclOnOffSwitchConfigurationCluster extends ZclCluster {
      * Default constructor.
      */
     public ZclOnOffSwitchConfigurationCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
-        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID, CLUSTER_NAME);
     }
 
 

@@ -725,7 +725,7 @@ public class ZclProtocolCodeGenerator {
                 imports.add(packageRoot + ".ZigBeeDeviceAddress");
                 imports.add(packageRoot + ".ZigBeeNetworkManager");
                 imports.add(packageRoot + ".CommandResult");
-                imports.add(packageRoot + ".ZigBeeDevice");
+//                imports.add(packageRoot + ".ZigBeeDevice");
                 imports.add(packageRoot + packageZcl + ".ZclAttribute");
                 imports.add("java.util.Map");
                 imports.add("java.util.HashMap");
@@ -759,7 +759,10 @@ public class ZclProtocolCodeGenerator {
                 out.println("public class " + className + " extends ZclCluster {");
 
                 out.println("    // Cluster ID");
-                out.println("    private static final int CLUSTER_ID = " + String.format("0x%04X;", cluster.clusterId));
+                out.println("    public static final int CLUSTER_ID = " + String.format("0x%04X;", cluster.clusterId));
+                out.println();
+                out.println("    // Cluster Name");
+                out.println("    public static final String CLUSTER_NAME = \"" + cluster.clusterName + "\";");
                 out.println();
 
                 if(cluster.attributes.size() != 0) {
@@ -776,7 +779,9 @@ public class ZclProtocolCodeGenerator {
                 out.println();
                 if(cluster.attributes.size() != 0) {
                     for (final Attribute attribute : cluster.attributes.values()) {
-                        out.println("        attributeMap.put(" + attribute.enumName + ", new ZclAttribute(" + attribute.attributeId + ", ZclDataType." + attribute.dataType + ", " +
+                        out.println("        attributeMap.put(" + attribute.enumName + ", new ZclAttribute(" + 
+                                attribute.attributeId + ", \"" + attribute.attributeLabel + "\", " + 
+                                "ZclDataType." + attribute.dataType + ", " +
                                 "mandatory".equals(attribute.attributeImplementation.toLowerCase()) + ", " +
                                 attribute.attributeAccess.toLowerCase().contains("read") + ", " +
                                 attribute.attributeAccess.toLowerCase().contains("write") + ", " +
@@ -793,7 +798,7 @@ public class ZclProtocolCodeGenerator {
                 out.println("     * Default constructor.");
                 out.println("     */");
                 out.println("    public " + className + "(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {");
-                out.println("        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);");
+                out.println("        super(zigbeeManager, zigbeeAddress, CLUSTER_ID, CLUSTER_NAME);");
                 out.println("    }");
                 out.println();
                 out.println();

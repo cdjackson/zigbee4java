@@ -33,7 +33,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
     /**
      * The dongle implementation.
      */
-    private final ZigBeeDongle dongle;
+    private final ZigBeeTransport dongle;
     
     /**
      * The ZigBee network networkDiscoverer.
@@ -62,7 +62,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      * @param dongle the dongle
      * @param resetNetwork whether network is to be reset
      */
-    public ZigBeeNetworkManager(final ZigBeeDongle dongle, final boolean resetNetwork) {
+    public ZigBeeNetworkManager(final ZigBeeTransport dongle, final boolean resetNetwork) {
         this.dongle = dongle;
         this.networkState = new ZigBeeNetworkStateImpl(resetNetwork);
         this.networkDiscoverer = new ZigBeeNetworkDiscoverer(networkState, this);
@@ -164,6 +164,15 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      */
     public List<ZigBeeDevice> getDevices() {
         return networkState.getDevices();
+    }
+    
+    /**
+     * Gets a single ZigBee device
+     * @param address {@link ZigBeeDeviceAddress}
+     * @return the {@link ZigBeeDevice}
+     */
+    public ZigBeeDevice getDevice(ZigBeeDeviceAddress address) {
+        return networkState.getDevice(address);
     }
 
     /**

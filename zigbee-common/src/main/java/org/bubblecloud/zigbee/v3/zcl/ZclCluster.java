@@ -1,20 +1,21 @@
 package org.bubblecloud.zigbee.v3.zcl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeAddress;
-import org.bubblecloud.zigbee.v3.ZigBeeApi;
-import org.bubblecloud.zigbee.v3.ZigBeeDevice;
 import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
+import org.bubblecloud.zigbee.v3.zcl.field.AttributeReport;
+import org.bubblecloud.zigbee.v3.zcl.field.ReadAttributeStatusRecord;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
 
 /**
  * Base class for the ZCL Cluster
+ * 
  * @author Chris Jackson
  *
  */
@@ -23,20 +24,26 @@ public abstract class ZclCluster {
     private final ZigBeeNetworkManager zigbeeManager;
     private final ZigBeeDeviceAddress zigbeeAddress;
     protected final int clusterId;
+    protected final String clusterName;
+
+    private boolean isClient = false;
+    private boolean isServer = false;
 
     protected Map<Integer, ZclAttribute> attributes = initializeAttributes();
 
     protected abstract Map<Integer, ZclAttribute> initializeAttributes();
-    
-    public ZclCluster(ZigBeeNetworkManager zigbeeManager, ZigBeeDeviceAddress zigbeeAddress, int clusterId) {
+
+    public ZclCluster(ZigBeeNetworkManager zigbeeManager, ZigBeeDeviceAddress zigbeeAddress, int clusterId,
+            String clusterName) {
         this.zigbeeManager = zigbeeManager;
         this.zigbeeAddress = zigbeeAddress;
         this.clusterId = clusterId;
+        this.clusterName = clusterName;
     }
 
     protected Future<CommandResult> send(ZclCommand command) {
         command.setDestinationAddress(zigbeeAddress);
-//        command.setDestinationEndpoint(zigbeeDevice.getEndpoint());
+        // command.setDestinationEndpoint(zigbeeDevice.getEndpoint());
         return zigbeeManager.unicast(command);
     }
 
@@ -119,23 +126,107 @@ public abstract class ZclCluster {
     }
 
     /**
-     * Gets all the attributes supported by this cluster
-     * This will return all attributes, even if they are not actually supported by the device.
-     * The user should check to see if this is implemented.
-     * @return {@link Set} containing all {@link ZclAttributes} available in this cluster
+     * Gets all the attributes supported by this cluster This will return all
+     * attributes, even if they are not actually supported by the device. The
+     * user should check to see if this is implemented.
+     * 
+     * @return {@link Set} containing all {@link ZclAttributes} available in
+     *         this cluster
      */
     public Set<ZclAttribute> getAttributes() {
-        Set <ZclAttribute> attr = new HashSet<ZclAttribute>();
+        Set<ZclAttribute> attr = new HashSet<ZclAttribute>();
         attr.addAll(attributes.values());
         return attr;
     }
-    
+
     /**
      * Gets an attribute from the attribute ID
-     * @param id the attribute ID
+     * 
+     * @param id
+     *            the attribute ID
      * @return the {@link ZclAttribute}
      */
     public ZclAttribute getAttribute(int id) {
         return attributes.get(id);
+    }
+
+    /**
+     * Gets the cluster ID for this cluster
+     * 
+     * @return the cluster ID as {@link Integer}
+     */
+    public Integer getClusterID() {
+        return clusterId;
+    }
+
+    /**
+     * Gets the cluster name for this cluster
+     * 
+     * @return the cluster name as {@link String}
+     */
+    public String getClusterName() {
+        return clusterName;
+    }
+
+    /**
+     * Sets the server flag for this cluster. This means the cluster is listed
+     * in the devices input cluster list
+     * 
+     * @param isServer
+     *            true if this is a server
+     */
+    public void setServer(boolean isServer) {
+        this.isServer = isServer;
+    }
+
+    /**
+     * Gets the state of the server flag. If the cluster is a server this will
+     * return true
+     * 
+     * @return true if the cluster can act as a server
+     */
+    public boolean isServer() {
+        return isServer;
+    }
+
+    /**
+     * Sets the client flag for this cluster. This means the cluster is listed
+     * in the devices output cluster list
+     * 
+     * @param isServer
+     *            true if this is a client
+     */
+    public void setClient(boolean isClient) {
+        this.isClient = isClient;
+    }
+
+    /**
+     * Gets the state of the client flag. If the cluster is a client this will
+     * return true
+     * 
+     * @return true if the cluster can act as a client
+     */
+    public boolean isClient() {
+        return isClient;
+    }
+
+    /**
+     * Processes a list of attribute reports for this cluster
+     * 
+     * @param reports
+     *            {@List} of {@link AttributeReport}
+     */
+    public void handleAttributeReport(List<AttributeReport> reports) {
+        for (AttributeReport report : reports) {
+            ZclAttribute attribute = attributes.get(report.getAttributeIdentifier());
+            attribute.updateValue(report.getAttributeValue());
+        }
+    }
+
+    public void handleAttributeStatus(List<ReadAttributeStatusRecord> records) {
+        for (ReadAttributeStatusRecord record : records) {
+            ZclAttribute attribute = attributes.get(record.getAttributeIdentifier());
+            attribute.updateValue(record.getAttributeValue());
+        }
     }
 }

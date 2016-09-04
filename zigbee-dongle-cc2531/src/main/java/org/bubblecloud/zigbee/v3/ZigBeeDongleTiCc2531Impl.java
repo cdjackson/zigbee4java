@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 /**
  * ZigBee Dongle TI CC2531 implementation.
  */
-public class ZigBeeDongleTiCc2531Impl implements ZigBeeDongle, CommandListener {
+public class ZigBeeDongleTiCc2531Impl implements ZigBeeTransport, CommandListener {
     /**
      * The {@link Logger}.
      */

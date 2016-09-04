@@ -113,7 +113,7 @@ public class ZigBeeGatewayMain {
 		}
 
 		final SerialPort serialPort = new SerialPortImpl(serialPortName, ZigBeeConstants.DEFAULT_BAUD_RATE);
-        final ZigBeeDongle dongle = new ZigBeeDongleTiCc2531Impl(serialPort, pan, channel, networkKey, resetNetwork);
+        final ZigBeeTransport dongle = new ZigBeeDongleTiCc2531Impl(serialPort, pan, channel, networkKey, resetNetwork);
 		final ZigBeeGateway gateway = new ZigBeeGateway(dongle, resetNetwork);
 
         final AuthorizationProvider authorizationProvider = new AuthorizationProvider() {

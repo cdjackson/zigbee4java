@@ -13,6 +13,11 @@ public class ZclAttribute {
     private final int id;
 
     /**
+     * Stores the name of this attribute;
+     */
+    private final String name;
+
+    /**
      * Defines the ZigBee data type.
      */
     private final ZclDataType dataType;
@@ -27,10 +32,19 @@ public class ZclAttribute {
      */
     private boolean implemented;
 
+    /**
+     * True if this attribute is readable
+     */
     private boolean readable;
 
+    /**
+     * True if this attribute is writeable
+     */
     private boolean writeable;
 
+    /**
+     * True if this attribute is reportable
+     */
     private boolean reportable;
 
     /**
@@ -89,9 +103,10 @@ public class ZclAttribute {
      * @param writeable
      * @param reportable
      */
-    public ZclAttribute(final int id, final ZclDataType dataType, final boolean mandatory, final boolean readable,
-            final boolean writeable, final boolean reportable) {
+    public ZclAttribute(final int id, final String name, final ZclDataType dataType, final boolean mandatory,
+            final boolean readable, final boolean writeable, final boolean reportable) {
         this.id = id;
+        this.name = name;
         this.dataType = dataType;
         this.mandatory = mandatory;
         this.readable = readable;
@@ -223,5 +238,26 @@ public class ZclAttribute {
      */
     public Calendar getLastReportTime() {
         return lastReportTime;
+    }
+
+    /**
+     * Gets the name of this attribute
+     * 
+     * @return the name as {@link String}
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Updates the attribute value This will also record the time of the last
+     * update
+     * 
+     * @param attributeValue
+     *            the attribute value to be updated {@link Object}
+     */
+    public void updateValue(Object attributeValue) {
+        lastValue = attributeValue;
+        lastReportTime = Calendar.getInstance();
     }
 }

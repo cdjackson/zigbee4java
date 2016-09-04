@@ -1,11 +1,32 @@
 package org.bubblecloud.zigbee.v3;
 
-import java.util.Arrays;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
+import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
+import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReadAttributesResponse;
+import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReportAttributesCommand;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclClusterType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Value object for ZigBee device.
  */
-public class ZigBeeDevice {
+public class ZigBeeDevice implements CommandListener {
+    /**
+     * The {@link Logger}.
+     */
+    private final static Logger LOGGER = LoggerFactory.getLogger(ZigBeeDevice.class);
+
+    /**
+     * Link to the network manager
+     */
+    private final ZigBeeNetworkManager networkManager;
     /**
      * The IEEE address.
      */
@@ -13,7 +34,7 @@ public class ZigBeeDevice {
     /**
      * The network address.
      */
-    private final ZigBeeDeviceAddress networkAddress = new ZigBeeDeviceAddress();
+    private ZigBeeDeviceAddress networkAddress = null;
     /**
      * The profile ID.
      */
@@ -35,17 +56,30 @@ public class ZigBeeDevice {
      */
     private int deviceVersion;
     /**
-     * Input clusters.
+     * Clusters
      */
-    private int[] inputClusterIds;
+    private final Map<Integer, ZclCluster> clusters = new HashMap<Integer, ZclCluster>();
     /**
-     * Output clusters.
+     * Input cluster IDs
      */
-    private int[] outputClusterIds;
+    private final List<Integer> inputClusterIds = new ArrayList<Integer>();
+    /**
+     * Output cluster IDs
+     */
+    private final List<Integer> outputClusterIds = new ArrayList<Integer>();
     /**
      * Label.
      */
     private String label;
+
+    ZigBeeDevice(ZigBeeNetworkManager networkManager) {
+        this.networkManager = networkManager;
+        networkManager.addCommandListener(this);
+    }
+
+    protected void finalize() {
+        networkManager.removeCommandListener(this);
+    }
 
     /**
      * Gets the device ID.
@@ -95,16 +129,6 @@ public class ZigBeeDevice {
     }
 
     /**
-     * Sets end point
-     * 
-     * @param endpoint
-     *            the end point
-     */
-    public void setEndpoint(int endpoint) {
-        networkAddress.setEndpoint(endpoint);
-    }
-
-    /**
      * Gets IEEE Address.
      * 
      * @return the IEEE address
@@ -124,12 +148,24 @@ public class ZigBeeDevice {
     }
 
     /**
-     * Gets input cluster IDs.
+     * Gets input cluster IDs. This lists the IDs of all clusters the device
+     * supports as a server.
      * 
      * @return the input cluster IDs
      */
-    public int[] getInputClusterIds() {
+    public List<Integer> getInputClusterIds() {
         return inputClusterIds;
+    }
+
+    /**
+     * Gets an input cluster
+     * 
+     * @param clusterId
+     *            the cluster number
+     * @return the cluster or null if cluster is not found
+     */
+    public ZclCluster getCluster(int clusterId) {
+        return clusters.get(clusterId);
     }
 
     /**
@@ -138,8 +174,17 @@ public class ZigBeeDevice {
      * @param inputClusterIds
      *            the input cluster IDs
      */
-    public void setInputClusterIds(int[] inputClusterIds) {
-        this.inputClusterIds = inputClusterIds;
+    public void setInputClusterIds(List<Integer> inputClusterIds) {
+        this.inputClusterIds.clear();
+        this.inputClusterIds.addAll(inputClusterIds);
+
+        LOGGER.debug("{}: Setting input clusters {}", networkAddress, inputClusterIds);
+
+        updateClusters(inputClusterIds, true);
+    }
+
+    public void setDeviceAddress(ZigBeeDeviceAddress networkAddress) {
+        this.networkAddress = networkAddress;
     }
 
     /**
@@ -161,21 +206,12 @@ public class ZigBeeDevice {
     }
 
     /**
-     * Sets network address.
-     * 
-     * @param networkAddress
-     *            the network address
-     */
-    public void setNetworkAddress(int networkAddress) {
-        this.networkAddress.setAddress(networkAddress);
-    }
-
-    /**
-     * Gets output cluster IDs.
+     * Gets output cluster IDs. This provides the IDs of all clusters the device
+     * supports as a client.
      * 
      * @return the output cluster IDs
      */
-    public int[] getOutputClusterIds() {
+    public List<Integer> getOutputClusterIds() {
         return outputClusterIds;
     }
 
@@ -185,8 +221,76 @@ public class ZigBeeDevice {
      * @param outputClusterIds
      *            the output cluster IDs
      */
-    public void setOutputClusterIds(int[] outputClusterIds) {
-        this.outputClusterIds = outputClusterIds;
+    public void setOutputClusterIds(List<Integer> outputClusterIds) {
+        this.outputClusterIds.clear();
+        this.outputClusterIds.addAll(outputClusterIds);
+
+        LOGGER.debug("{}: Setting output clusters {}", networkAddress, outputClusterIds);
+
+        updateClusters(outputClusterIds, false);
+    }
+
+    private void updateClusters(List<Integer> newList, boolean isInput) {
+        // Get a list any clusters that are no longer in the list
+        List<Integer> removeIds = new ArrayList<Integer>();
+        for (ZclCluster cluster : clusters.values()) {
+            if (newList.contains(cluster.getClusterID())) {
+                // The existing cluster is in the new list, so no need to remove
+                // it
+                continue;
+            }
+            if (isInput == true && cluster.isServer() == false) {
+                cluster.setServer(false);
+            }
+            if (isInput == false && cluster.isClient() == false) {
+                cluster.setClient(false);
+            }
+
+            // If the cluster is not a server or client, then remove it
+            if (!cluster.isClient() && !cluster.isServer()) {
+                removeIds.add(cluster.getClusterID());
+            }
+        }
+
+        // Remove clusters no longer in use
+        for (int id : removeIds) {
+            LOGGER.debug("{}: Removing cluster {}", networkAddress, id);
+            clusters.remove(id);
+        }
+
+        // Add any missing clusters into the list
+        for (int id : newList) {
+            if (!clusters.containsKey(id)) {
+                // Get the cluster type
+                ZclClusterType clusterType = ZclClusterType.getValueById(id);
+                ZclCluster clusterClass = null;
+                if (clusterType == null) {
+                    // Unsupported cluster
+                    LOGGER.debug("{}: Unsupported cluster {}", networkAddress, id);
+                    continue;
+                }
+
+                // Create a cluster class
+                Constructor<? extends ZclCluster> constructor;
+                try {
+                    constructor = clusterType.getClusterClass().getConstructor(ZigBeeNetworkManager.class,
+                            ZigBeeDeviceAddress.class);
+                    clusterClass = constructor.newInstance(networkManager, networkAddress);
+                } catch (Exception e) {
+                    LOGGER.debug("{}: Error instantiating cluster {}", networkAddress, clusterType);
+                }
+                if (isInput) {
+                    LOGGER.debug("{}: Setting cluster {} as server", networkAddress, clusterType);
+                    clusterClass.setServer(true);
+                } else {
+                    LOGGER.debug("{}: Setting cluster {} as client", networkAddress, clusterType);
+                    clusterClass.setClient(true);
+                }
+
+                // Add to our list of clusters
+                clusters.put(id, clusterClass);
+            }
+        }
     }
 
     /**
@@ -266,13 +370,43 @@ public class ZigBeeDevice {
     }
 
     @Override
+    public void commandReceived(Command command) {
+        if (command instanceof ReportAttributesCommand
+                && ((ReportAttributesCommand) command).getSourceAddress().equals(networkAddress)) {
+            ReportAttributesCommand attributeCommand = (ReportAttributesCommand) command;
+            
+            // Get the cluster
+            ZclCluster cluster = getCluster(attributeCommand.getClusterId());
+            if(cluster == null) {
+                LOGGER.debug("{}: Cluster {} not found for attribute report", networkAddress, attributeCommand.getClusterId());
+                return;
+            }
+
+            // Pass the reports to the cluster
+            cluster.handleAttributeReport(attributeCommand.getReports());
+        }
+        if (command instanceof ReadAttributesResponse
+                && ((ReadAttributesResponse) command).getSourceAddress().equals(networkAddress)) {
+            ReadAttributesResponse attributeCommand = (ReadAttributesResponse) command;
+            
+            // Get the cluster
+            ZclCluster cluster = getCluster(attributeCommand.getClusterId());
+            if(cluster == null) {
+                LOGGER.debug("{}: Cluster {} not found for attribute report", networkAddress, attributeCommand.getClusterId());
+                return;
+            }
+
+            attributeCommand.getRecords();
+            // Pass the reports to the cluster
+            cluster.handleAttributeStatus(attributeCommand.getRecords());
+        }
+    }
+
+    @Override
     public String toString() {
-        return "ZigBeeDevice " + "label=" + label + ", networkAddress="
-                + networkAddress.toString() + ", ieeeAddress=" + ieeeAddress
-                + ", profileId=" + profileId + ", deviceType=" + deviceType
-                + ", deviceId=" + deviceId + ", manufacturerCode="
-                + manufacturerCode + ", deviceVersion=" + deviceVersion
-                + ", inputClusterIds=" + Arrays.toString(inputClusterIds)
-                + ", outputClusterIds=" + Arrays.toString(outputClusterIds);
+        return "ZigBeeDevice " + "label=" + label + ", networkAddress=" + networkAddress.toString() + ", ieeeAddress="
+                + ieeeAddress + ", profileId=" + profileId + ", deviceType=" + deviceType + ", deviceId=" + deviceId
+                + ", manufacturerCode=" + manufacturerCode + ", deviceVersion=" + deviceVersion + ", inputClusterIds="
+                + getInputClusterIds().toString() + ", outputClusterIds=" + getOutputClusterIds().toString();
     }
 }

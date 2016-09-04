@@ -8,6 +8,8 @@ import org.bubblecloud.zigbee.util.IEEEAddress;
 import org.bubblecloud.zigbee.v3.model.Status;
 import org.bubblecloud.zigbee.v3.model.ZigBeeType;
 import org.bubblecloud.zigbee.v3.model.ZToolAddress64;
+import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
+import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.general.ConfigureReportingResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReadAttributesResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReportAttributesCommand;
@@ -60,7 +62,7 @@ public final class ZigBeeGateway {
      * @param dongle the dongle
      * @param resetNetwork whether network is to be reset
      */
-    public ZigBeeGateway(final ZigBeeDongle dongle, final boolean resetNetwork) {
+    public ZigBeeGateway(final ZigBeeTransport dongle, final boolean resetNetwork) {
 
         commands.put("devicelist", new DeviceListCommand());
         commands.put("devicelabel", new DeviceLabelCommand());
@@ -516,25 +518,27 @@ public final class ZigBeeGateway {
         /**
          * Prints out clusters.
          * @param device the device
-         * @param clusterIds the cluster IDs
+         * @param list the cluster IDs
          * @param out the output print stream
          */
-        private void printClusters(final ZigBeeDevice device, final int[] clusterIds, PrintStream out) {
-            for (int clusterId : clusterIds) {
-                Cluster cluster = ZigBeeApiConstants.getCluster(device.getProfileId(), clusterId);
-                print("                 : " + clusterId + " " + ZigBeeApiConstants.getClusterName(clusterId), out);
+        private void printClusters(final ZigBeeDevice device, final List<Integer> list, PrintStream out) {
+            for (int clusterId : list) {
+                ZclCluster cluster = device.getCluster(clusterId);
                 if (cluster != null) {
-                    for (int a = 0; a < cluster.getAttributes().length; a++) {
-                        final Attribute attribute = cluster.getAttributes()[a];
+                    print("                 : " + clusterId + " " + cluster.getClusterName(), out);
+                    for (ZclAttribute attribute : cluster.getAttributes()) {
                         print("                 :    " + attribute.getId()
                                 + " "
-                                + "r"
+                                + (attribute.isReadable() ? "r" : "-")
                                 + (attribute.isWritable() ? "w" : "-")
                                 + (attribute.isReportable() ? "s" : "-")
                                 + " "
                                 + attribute.getName()
                                 + " "
-                                + "  [" + attribute.getZigBeeType() + "]", out);
+                                + "  [" + attribute.getDataType() + "]"
+                                + " "
+                                + (attribute.getLastValue() == null ? "" : attribute.getLastValue() + " @ " + attribute.getLastReportTime().getTime())
+                                , out);
                     }
                 }
             }

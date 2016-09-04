@@ -190,7 +190,8 @@ public class ZigBeeApi {
      * @return the command result future.
      */
     public Future<CommandResult> on(final ZigBeeAddress destination) {
-        ZclOnOffCluster cluster = (ZclOnOffCluster)getCluster(ZclClusterType.ON_OFF, (ZigBeeDeviceAddress)destination);
+        ZigBeeDevice device = networkManager.getDevice((ZigBeeDeviceAddress) destination);
+        ZclOnOffCluster cluster = (ZclOnOffCluster) device.getCluster(ZclOnOffCluster.CLUSTER_ID);
         return cluster.onCommand();
 
 //        final OnCommand command = new OnCommand();
@@ -436,16 +437,4 @@ public class ZigBeeApi {
 
         return networkManager.unicast(command, new ZclCustomResponseMatcher());
     }
-
-    ZclCluster getCluster(final ZclClusterType clusterType, final ZigBeeDeviceAddress zigbeeDevice) {
-        Constructor<? extends ZclCluster> constructor;
-        try {
-            constructor = clusterType.getClusterClass().getConstructor(ZigBeeNetworkManager.class, ZigBeeDeviceAddress.class);
-            return constructor.newInstance(networkManager, zigbeeDevice);
-        } catch (Exception e) {
-        	LOGGER.error("Command processor error");
-        	return null;
-        }
-    }
-
 }

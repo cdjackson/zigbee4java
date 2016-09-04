@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeDevice;
 import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
@@ -32,7 +31,10 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
  */
 public class ZclRssiLocationCluster extends ZclCluster {
     // Cluster ID
-    private static final int CLUSTER_ID = 0x000B;
+    public static final int CLUSTER_ID = 0x000B;
+
+    // Cluster Name
+    public static final String CLUSTER_NAME = "RSSI Location";
 
     // Attribute constants
     private final int ATTR_LOCATIONTYPE = 0x0000;
@@ -53,19 +55,19 @@ public class ZclRssiLocationCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(13);
 
-        attributeMap.put(ATTR_LOCATIONTYPE, new ZclAttribute(0, ZclDataType.DATA_8_BIT, true, true, false, false));
-        attributeMap.put(ATTR_LOCATIONMETHOD, new ZclAttribute(1, ZclDataType.ENUMERATION_8_BIT, true, true, false, false));
-        attributeMap.put(ATTR_LOCATIONAGE, new ZclAttribute(2, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
-        attributeMap.put(ATTR_QUALITYMEASURE, new ZclAttribute(3, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, false));
-        attributeMap.put(ATTR_NUMBEROFDEVICES, new ZclAttribute(4, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, false));
-        attributeMap.put(ATTR_COORDINATE1, new ZclAttribute(16, ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
-        attributeMap.put(ATTR_COORDINATE2, new ZclAttribute(17, ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
-        attributeMap.put(ATTR_COORDINATE3, new ZclAttribute(18, ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
-        attributeMap.put(ATTR_POWER, new ZclAttribute(19, ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
-        attributeMap.put(ATTR_PATHLOSSEXPONENT, new ZclAttribute(20, ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
-        attributeMap.put(ATTR_REPORTINGPERIOD, new ZclAttribute(21, ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
-        attributeMap.put(ATTR_CALCULATIONPERIOD, new ZclAttribute(22, ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
-        attributeMap.put(ATTR_NUMBERRSSIMEASUREMENTS, new ZclAttribute(23, ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_LOCATIONTYPE, new ZclAttribute(0, "LocationType", ZclDataType.DATA_8_BIT, true, true, false, false));
+        attributeMap.put(ATTR_LOCATIONMETHOD, new ZclAttribute(1, "LocationMethod", ZclDataType.ENUMERATION_8_BIT, true, true, false, false));
+        attributeMap.put(ATTR_LOCATIONAGE, new ZclAttribute(2, "LocationAge", ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_QUALITYMEASURE, new ZclAttribute(3, "QualityMeasure", ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_NUMBEROFDEVICES, new ZclAttribute(4, "NumberOfDevices", ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_COORDINATE1, new ZclAttribute(16, "Coordinate1", ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
+        attributeMap.put(ATTR_COORDINATE2, new ZclAttribute(17, "Coordinate2", ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
+        attributeMap.put(ATTR_COORDINATE3, new ZclAttribute(18, "Coordinate3", ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_POWER, new ZclAttribute(19, "Power", ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
+        attributeMap.put(ATTR_PATHLOSSEXPONENT, new ZclAttribute(20, "PathLossExponent", ZclDataType.SIGNED_16_BIT_INTEGER, true, true, true, false));
+        attributeMap.put(ATTR_REPORTINGPERIOD, new ZclAttribute(21, "ReportingPeriod", ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_CALCULATIONPERIOD, new ZclAttribute(22, "CalculationPeriod", ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_NUMBERRSSIMEASUREMENTS, new ZclAttribute(23, "NumberRSSIMeasurements", ZclDataType.SIGNED_16_BIT_INTEGER, false, true, true, false));
 
         return attributeMap;
     }
@@ -74,7 +76,7 @@ public class ZclRssiLocationCluster extends ZclCluster {
      * Default constructor.
      */
     public ZclRssiLocationCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
-        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID, CLUSTER_NAME);
     }
 
 

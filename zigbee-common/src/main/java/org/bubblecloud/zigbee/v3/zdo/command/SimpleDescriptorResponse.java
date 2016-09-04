@@ -4,6 +4,7 @@ import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoResponse;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * SimpleDescriptorResponse.
@@ -41,16 +42,16 @@ public class SimpleDescriptorResponse extends ZdoCommand implements ZdoResponse 
     /**
      * The input clusters.
      */
-    private int[] inputClusters;
+    private List<Integer> inputClusters;
     /**
      * The output clusters.
      */
-    private int[] outputClusters;
+    private List<Integer> outputClusters;
 
     public SimpleDescriptorResponse() {
     }
 
-    public SimpleDescriptorResponse(int sourceAddress, int status, int profileId, int deviceId, int deviceVersion, int networkAddress, int endpoint, int[] inputClusters, int[] outputClusters) {
+    public SimpleDescriptorResponse(int sourceAddress, int status, int profileId, int deviceId, int deviceVersion, int networkAddress, int endpoint, List<Integer> inputClusters, List<Integer> outputClusters) {
         this.sourceAddress = sourceAddress;
         this.status = status;
         this.profileId = profileId;
@@ -86,11 +87,11 @@ public class SimpleDescriptorResponse extends ZdoCommand implements ZdoResponse 
         this.endpoint = endpoint;
     }
 
-    public int[] getInputClusters() {
+    public List<Integer> getInputClusters() {
         return inputClusters;
     }
 
-    public void setInputClusters(int[] inputClusters) {
+    public void setInputClusters(List<Integer> inputClusters) {
         this.inputClusters = inputClusters;
     }
 
@@ -102,11 +103,11 @@ public class SimpleDescriptorResponse extends ZdoCommand implements ZdoResponse 
         this.networkAddress = networkAddress;
     }
 
-    public int[] getOutputClusters() {
+    public List<Integer> getOutputClusters() {
         return outputClusters;
     }
 
-    public void setOutputClusters(int[] outputClusters) {
+    public void setOutputClusters(List<Integer> outputClusters) {
         this.outputClusters = outputClusters;
     }
 
@@ -144,7 +145,7 @@ public class SimpleDescriptorResponse extends ZdoCommand implements ZdoResponse 
                 ", deviceVersion=" + deviceVersion +
                 ", networkAddress=" + networkAddress +
                 ", endpoint=" + endpoint +
-                ", inputClusters=" + Arrays.toString(inputClusters) +
-                ", outputClusters=" + Arrays.toString(outputClusters);
+                ", inputClusters=" + inputClusters.toString() +
+                ", outputClusters=" + outputClusters.toString();
     }
 }

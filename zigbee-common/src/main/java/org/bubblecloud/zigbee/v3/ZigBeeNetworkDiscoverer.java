@@ -29,7 +29,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
     /**
      * The ZigBee command interface.
      */
-    private ZigBeeNetworkManager commandInterface;
+    private ZigBeeNetworkManager networkManager;
     /**
      * The received IEEE addresses.
      */
@@ -69,14 +69,14 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
     public ZigBeeNetworkDiscoverer(final ZigBeeNetworkState networkState,
                                    final ZigBeeNetworkManager networkManager) {
         this.networkState = networkState;
-        this.commandInterface = networkManager;
+        this.networkManager = networkManager;
     }
 
     /**
      * Starts up ZigBee network discoverer.
      */
     public void startup() {
-        commandInterface.addCommandListener(this);
+        networkManager.addCommandListener(this);
         // Start discovery from root node.
         requestNodeIeeeAddressAndAssociatedNodes(0);
     }
@@ -85,7 +85,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
      * Shuts down ZigBee network discoverer.
      */
     public void shutdown() {
-        commandInterface.removeCommandListener(this);
+        networkManager.removeCommandListener(this);
     }
 
     @Override
@@ -205,7 +205,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
         try {
             final IeeeAddressRequest ieeeAddressRequest = new IeeeAddressRequest(
                     networkAddress, 1, 0);
-            commandInterface.sendCommand(ieeeAddressRequest);
+            networkManager.sendCommand(ieeeAddressRequest);
         } catch (ZigBeeException e) {
             LOGGER.error("Error sending discovery command.", e);
         }
@@ -229,7 +229,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
         try {
             final NodeDescriptorRequest nodeDescriptorRequest = new NodeDescriptorRequest(
                     networkAddress, networkAddress);
-            commandInterface.sendCommand(nodeDescriptorRequest);
+            networkManager.sendCommand(nodeDescriptorRequest);
         } catch (ZigBeeException e) {
             LOGGER.error("Error sending discovery command.", e);
         }
@@ -254,7 +254,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
             final ActiveEndpointsRequest activeEndpointsRequest = new ActiveEndpointsRequest();
             activeEndpointsRequest.setDestinationAddress(networkAddress);
             activeEndpointsRequest.setNetworkAddressOfInterest(networkAddress);
-            commandInterface.sendCommand(activeEndpointsRequest);
+            networkManager.sendCommand(activeEndpointsRequest);
         } catch (ZigBeeException e) {
             LOGGER.error("Error sending discovery command.", e);
         }
@@ -281,7 +281,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
             final SimpleDescriptorRequest request = new SimpleDescriptorRequest();
             request.setDestinationAddress(networkAddress);
             request.setEndpoint(endpoint);
-            commandInterface.sendCommand(request);
+            networkManager.sendCommand(request);
         } catch (ZigBeeException e) {
             LOGGER.error("Error sending discovery command.", e);
         }
@@ -308,16 +308,15 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
                         .getEndpoint())) == null;
 
         if (newDevice) {
-            device = new ZigBeeDevice();
+            device = new ZigBeeDevice(networkManager);
         } else {
             device = networkState.getDevice(new ZigBeeDeviceAddress(
                     ieeeAddressResponse.getNetworkAddress(),
                     simpleDescriptorResponse.getEndpoint()));
         }
 
-        device.setNetworkAddress(ieeeAddressResponse.getNetworkAddress());
         device.setIeeeAddress(ieeeAddressResponse.getIeeeAddress());
-        device.setEndpoint(simpleDescriptorResponse.getEndpoint());
+        device.setDeviceAddress(new ZigBeeDeviceAddress(ieeeAddressResponse.getNetworkAddress(), simpleDescriptorResponse.getEndpoint()));
         device.setProfileId(simpleDescriptorResponse.getProfileId());
         device.setDeviceId(simpleDescriptorResponse.getDeviceId());
         device.setManufacturerCode(nodeDescriptorResponse.getManufacturerCode());

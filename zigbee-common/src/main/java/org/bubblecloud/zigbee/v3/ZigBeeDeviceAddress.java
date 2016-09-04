@@ -6,26 +6,30 @@ package org.bubblecloud.zigbee.v3;
  * @author Chris Jackson
  */
 public class ZigBeeDeviceAddress extends ZigBeeAddress {
-    private int networkAddress;
+    final private int address;
     private int endpoint;
 
     /**
      * Constructor
      * 
-     * @param networkAddress
+     * @param address
      *            the network address
      * @param endpoint
      *            the endpoint number
      */
-    public ZigBeeDeviceAddress(int networkAddress, int endpoint) {
-        this.networkAddress = networkAddress;
+    public ZigBeeDeviceAddress(int address, int endpoint) {
+        this.address = address;
         this.endpoint = endpoint;
     }
 
-    /**
-     * Default constructor
-     */
-    public ZigBeeDeviceAddress() {
+    public ZigBeeDeviceAddress(String address) {
+        String[] splits = address.split("/");
+        if(splits.length == 2) {
+            this.address = Integer.parseInt(splits[0]);
+            this.endpoint = Integer.parseInt(splits[1]);
+        }
+        
+        throw new IllegalArgumentException();
     }
 
     @Override
@@ -39,9 +43,9 @@ public class ZigBeeDeviceAddress extends ZigBeeAddress {
      * @param endpoint
      *            number
      */
-    public void setEndpoint(int endpoint) {
-        this.endpoint = endpoint;
-    }
+//    public void setEndpoint(int endpoint) {
+  //      this.endpoint = endpoint;
+    //}
 
     /**
      * Returns the endpoint number
@@ -58,21 +62,36 @@ public class ZigBeeDeviceAddress extends ZigBeeAddress {
      * @return the network address
      */
     public int getAddress() {
-        return networkAddress;
+        return address;
     }
 
     /**
      * Sets the network address
      * 
-     * @param networkAddress
+     * @param address
      *            the network address
      */
-    public void setAddress(int networkAddress) {
-        this.networkAddress = networkAddress;
+//    public void setAddress(int address) {
+  //      this.address = address;
+    //}
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!ZigBeeDeviceAddress.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        final ZigBeeDeviceAddress other = (ZigBeeDeviceAddress) obj;
+        if(other.getAddress() == address && other.getEndpoint() == endpoint) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     public String toString() {
-        return networkAddress + "/" + endpoint;
+        return address + "/" + endpoint;
     }
 }

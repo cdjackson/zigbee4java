@@ -17,7 +17,6 @@ package org.bubblecloud.zigbee.v3.zdo;
 
 import org.bubblecloud.zigbee.network.AsynchronousCommandListener;
 import org.bubblecloud.zigbee.network.impl.*;
-
 import org.bubblecloud.zigbee.v3.model.ZToolAddress16;
 import org.bubblecloud.zigbee.v3.model.ZToolAddress64;
 import org.bubblecloud.zigbee.network.packet.ZToolCMD;
@@ -41,6 +40,7 @@ import java.util.List;
  * ZDO command transmitter.
  *
  * @author Tommi S.E. Laukkanen
+ * @author Chris Jackson
  */
 public class ZdoCommandTransmitter implements AsynchronousCommandListener {
     /**
@@ -209,15 +209,15 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
             command.setNetworkAddress(message.nwkAddr.get16BitValue());
             command.setEndpoint(message.getEndPoint());
             final short[] inputClusterShorts = message.getInputClustersList();
-            final int[] inputClusters = new int[message.getInputClustersCount()];
-            for (int i = 0; i < inputClusters.length; i++) {
-                inputClusters[i] = inputClusterShorts[i];
+            final List<Integer> inputClusters = new ArrayList<Integer>(message.getInputClustersCount());
+            for (int i = 0; i < message.getInputClustersCount(); i++) {
+                inputClusters.add((int) inputClusterShorts[i]);
             }
             command.setInputClusters(inputClusters);
             final short[] outputClusterShorts = message.getOutputClustersList();
-            final int[] outputClusters = new int[message.getOutputClustersCount()];
-            for (int i = 0; i < outputClusters.length; i++) {
-                outputClusters[i] = outputClusterShorts[i];
+            final List<Integer> outputClusters = new ArrayList<Integer>(message.getOutputClustersCount());
+            for (int i = 0; i < message.getOutputClustersCount(); i++) {
+                outputClusters.add((int) outputClusterShorts[i]);
             }
             command.setOutputClusters(outputClusters);
 

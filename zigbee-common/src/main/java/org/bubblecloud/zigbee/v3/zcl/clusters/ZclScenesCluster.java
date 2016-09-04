@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeDevice;
 import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
@@ -41,7 +40,10 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
  */
 public class ZclScenesCluster extends ZclCluster {
     // Cluster ID
-    private static final int CLUSTER_ID = 0x0005;
+    public static final int CLUSTER_ID = 0x0005;
+
+    // Cluster Name
+    public static final String CLUSTER_NAME = "Scenes";
 
     // Attribute constants
     private final int ATTR_SCENECOUNT = 0x0000;
@@ -55,12 +57,12 @@ public class ZclScenesCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(6);
 
-        attributeMap.put(ATTR_SCENECOUNT, new ZclAttribute(0, ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
-        attributeMap.put(ATTR_CURRENTSCENE, new ZclAttribute(1, ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
-        attributeMap.put(ATTR_CURRENTGROUP, new ZclAttribute(2, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, false));
-        attributeMap.put(ATTR_SCENEVALID, new ZclAttribute(3, ZclDataType.BOOLEAN, true, true, false, false));
-        attributeMap.put(ATTR_NAMESUPPORT, new ZclAttribute(4, ZclDataType.BITMAP_8_BIT, true, true, false, false));
-        attributeMap.put(ATTR_LASTCONFIGUREDBY, new ZclAttribute(5, ZclDataType.IEEE_ADDRESS, false, true, false, false));
+        attributeMap.put(ATTR_SCENECOUNT, new ZclAttribute(0, "SceneCount", ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_CURRENTSCENE, new ZclAttribute(1, "CurrentScene", ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_CURRENTGROUP, new ZclAttribute(2, "CurrentGroup", ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, false));
+        attributeMap.put(ATTR_SCENEVALID, new ZclAttribute(3, "SceneValid", ZclDataType.BOOLEAN, true, true, false, false));
+        attributeMap.put(ATTR_NAMESUPPORT, new ZclAttribute(4, "NameSupport", ZclDataType.BITMAP_8_BIT, true, true, false, false));
+        attributeMap.put(ATTR_LASTCONFIGUREDBY, new ZclAttribute(5, "LastConfiguredBy", ZclDataType.IEEE_ADDRESS, false, true, false, false));
 
         return attributeMap;
     }
@@ -69,7 +71,7 @@ public class ZclScenesCluster extends ZclCluster {
      * Default constructor.
      */
     public ZclScenesCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
-        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID, CLUSTER_NAME);
     }
 
 

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
-import org.bubblecloud.zigbee.v3.ZigBeeDevice;
 import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
 import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
@@ -34,7 +33,10 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
  */
 public class ZclColorControlCluster extends ZclCluster {
     // Cluster ID
-    private static final int CLUSTER_ID = 0x0300;
+    public static final int CLUSTER_ID = 0x0300;
+
+    // Cluster Name
+    public static final String CLUSTER_NAME = "Color control";
 
     // Attribute constants
     private final int ATTR_CURRENTHUE = 0x0000;
@@ -51,15 +53,15 @@ public class ZclColorControlCluster extends ZclCluster {
     protected Map<Integer, ZclAttribute> initializeAttributes() {
         Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(9);
 
-        attributeMap.put(ATTR_CURRENTHUE, new ZclAttribute(0, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, true));
-        attributeMap.put(ATTR_CURRENTSATURATION, new ZclAttribute(1, ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, true));
-        attributeMap.put(ATTR_REMAININGTIME, new ZclAttribute(2, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
-        attributeMap.put(ATTR_CURRENTX, new ZclAttribute(3, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, true));
-        attributeMap.put(ATTR_CURRENTY, new ZclAttribute(4, ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, true));
-        attributeMap.put(ATTR_DRIFTCOMPENSATION, new ZclAttribute(5, ZclDataType.ENUMERATION_8_BIT, false, true, false, false));
-        attributeMap.put(ATTR_COMPENSATIONTEXT, new ZclAttribute(6, ZclDataType.CHARACTER_STRING, false, true, false, false));
-        attributeMap.put(ATTR_COLORTEMPERATURE, new ZclAttribute(7, ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, true));
-        attributeMap.put(ATTR_COLORMODE, new ZclAttribute(8, ZclDataType.ENUMERATION_8_BIT, false, true, false, false));
+        attributeMap.put(ATTR_CURRENTHUE, new ZclAttribute(0, "CurrentHue", ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, true));
+        attributeMap.put(ATTR_CURRENTSATURATION, new ZclAttribute(1, "CurrentSaturation", ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, false, true));
+        attributeMap.put(ATTR_REMAININGTIME, new ZclAttribute(2, "RemainingTime", ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_CURRENTX, new ZclAttribute(3, "CurrentX", ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, true));
+        attributeMap.put(ATTR_CURRENTY, new ZclAttribute(4, "CurrentY", ZclDataType.UNSIGNED_16_BIT_INTEGER, true, true, false, true));
+        attributeMap.put(ATTR_DRIFTCOMPENSATION, new ZclAttribute(5, "DriftCompensation", ZclDataType.ENUMERATION_8_BIT, false, true, false, false));
+        attributeMap.put(ATTR_COMPENSATIONTEXT, new ZclAttribute(6, "CompensationText", ZclDataType.CHARACTER_STRING, false, true, false, false));
+        attributeMap.put(ATTR_COLORTEMPERATURE, new ZclAttribute(7, "ColorTemperature", ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, true));
+        attributeMap.put(ATTR_COLORMODE, new ZclAttribute(8, "ColorMode", ZclDataType.ENUMERATION_8_BIT, false, true, false, false));
 
         return attributeMap;
     }
@@ -68,7 +70,7 @@ public class ZclColorControlCluster extends ZclCluster {
      * Default constructor.
      */
     public ZclColorControlCluster(final ZigBeeNetworkManager zigbeeManager, final ZigBeeDeviceAddress zigbeeAddress) {
-        super(zigbeeManager, zigbeeAddress, CLUSTER_ID);
+        super(zigbeeManager, zigbeeAddress, CLUSTER_ID, CLUSTER_NAME);
     }
 
 
