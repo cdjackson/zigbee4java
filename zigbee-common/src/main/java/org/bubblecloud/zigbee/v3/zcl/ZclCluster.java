@@ -1,5 +1,6 @@
 package org.bubblecloud.zigbee.v3.zcl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,8 @@ public abstract class ZclCluster {
     private boolean isClient = false;
     private boolean isServer = false;
 
+    private final List<ZclAttributeListener> attributeListeners = new ArrayList<ZclAttributeListener>();
+    
     protected Map<Integer, ZclAttribute> attributes = initializeAttributes();
 
     protected abstract Map<Integer, ZclAttribute> initializeAttributes();
@@ -209,6 +212,24 @@ public abstract class ZclCluster {
     public boolean isClient() {
         return isClient;
     }
+    
+    public void addAttributeListener(ZclAttributeListener listener) {
+        // Don't add more than once.
+        if(attributeListeners.contains(listener)) {
+            return;
+        }
+        attributeListeners.add(listener);
+    }
+    
+    public void removeAttributeListener(ZclAttributeListener listener) {
+        attributeListeners.remove(listener);
+    }
+
+    private void notifyAttributeListener(ZclAttribute attribute) {
+        for(ZclAttributeListener listener : attributeListeners) {
+            listener.AttributeUpdated(attribute);
+        }
+    }
 
     /**
      * Processes a list of attribute reports for this cluster
@@ -220,6 +241,7 @@ public abstract class ZclCluster {
         for (AttributeReport report : reports) {
             ZclAttribute attribute = attributes.get(report.getAttributeIdentifier());
             attribute.updateValue(report.getAttributeValue());
+            notifyAttributeListener(attribute);
         }
     }
 
@@ -227,6 +249,7 @@ public abstract class ZclCluster {
         for (ReadAttributeStatusRecord record : records) {
             ZclAttribute attribute = attributes.get(record.getAttributeIdentifier());
             attribute.updateValue(record.getAttributeValue());
+            notifyAttributeListener(attribute);
         }
     }
 }

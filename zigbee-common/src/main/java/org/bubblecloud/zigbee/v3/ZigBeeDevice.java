@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReadAttributesResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReportAttributesCommand;
