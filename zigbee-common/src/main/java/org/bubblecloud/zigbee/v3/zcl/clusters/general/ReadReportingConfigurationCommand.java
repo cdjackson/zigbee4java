@@ -11,6 +11,8 @@ import java.util.List;
 /**
  * Read Reporting Configuration Command value object class.
  * 
+ * The Read Reporting Configuration command is used to read the configuration
+ * details of the reporting mechanism for one or more of the attributes of a cluster.
  * 
  * Cluster: General
  * 

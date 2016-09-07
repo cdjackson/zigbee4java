@@ -11,6 +11,12 @@ import java.util.List;
 /**
  *  Read Attributes Response value object class.
  * 
+ * The read attributes response command is generated in response to a read attributes
+ * or read attributes structured command. The command frame shall contain a read
+ * attribute status record for each attribute identifier specified in the original read
+ * attributes or read attributes structured command. For each read attribute status
+ * record, the attribute identifier field shall contain the identifier specified in the
+ * original read attributes or read attributes structured command.
  * 
  * Cluster: General
  * 

@@ -11,6 +11,10 @@ import java.util.List;
 /**
  * Report Attributes Command value object class.
  * 
+ * The report attributes command is used by a device to report the values of one or
+ * more of its attributes to another device, bound a priori. Individual clusters, defined
+ * elsewhere in the ZCL, define which attributes are to be reported and at what
+ * interval.
  * 
  * Cluster: General
  * 

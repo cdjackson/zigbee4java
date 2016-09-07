@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>org.bubblecloud.zigbee4java</groupId>
-            <artifactId>zigbee-common</artifactId>
+            <artifactId>zigbee-dongle-cc2531</artifactId>
             <version>3.0.3-SNAPSHOT</version>
         </dependency>
 

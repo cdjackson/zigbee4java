@@ -11,6 +11,8 @@ import java.util.List;
 /**
  *  Discover Attributes Response value object class.
  * 
+ * The discover attributes response command is generated in response to a discover
+ * attributes command.
  * 
  * Cluster: General
  * 

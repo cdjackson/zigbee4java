@@ -22,6 +22,7 @@ import org.bubblecloud.zigbee.v3.model.ZToolAddress64;
 import org.bubblecloud.zigbee.network.packet.ZToolCMD;
 import org.bubblecloud.zigbee.network.packet.ZToolPacket;
 import org.bubblecloud.zigbee.network.packet.zdo.*;
+import org.bubblecloud.zigbee.v3.IeeeAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeException;
 import org.bubblecloud.zigbee.v3.zdo.command.*;
 import org.bubblecloud.zigbee.v3.CommandListener;
@@ -266,7 +267,7 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
             final IeeeAddressResponse command = new IeeeAddressResponse(
                     message.Status,
                     message.SrcAddrMode,
-                    message.getIeeeAddress().getLong(),
+                    new IeeeAddress(message.getIeeeAddress().getLong()),
                     message.nwkAddr.get16BitValue(),
                     message.getStartIndex(),
                     message.getAssociatedNodeCount(),

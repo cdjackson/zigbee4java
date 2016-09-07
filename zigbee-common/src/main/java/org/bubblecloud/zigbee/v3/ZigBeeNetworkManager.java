@@ -26,7 +26,7 @@ import org.bubblecloud.zigbee.v3.zdo.command.UnbindRequest;
 
 /**
  * Implements functions for managing the ZigBee interface
- *  
+ * 
  * @author Chris Jackson
  */
 public class ZigBeeNetworkManager implements ZigBeeNetwork {
@@ -34,7 +34,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      * The dongle implementation.
      */
     private final ZigBeeTransport dongle;
-    
+
     /**
      * The ZigBee network networkDiscoverer.
      */
@@ -44,14 +44,14 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      * The network state.
      */
     private ZigBeeNetworkStateImpl networkState;
-    
+
     ZigBeeNetwork zigbeeNetwork;
-    
+
     /**
      * The command listener creation times.
      */
     private final Set<CommandExecution> commandExecutions = new HashSet<CommandExecution>();
-    
+
     /**
      * The command listeners.
      */
@@ -59,22 +59,26 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Constructor which configures serial port and ZigBee network.
-     * @param dongle the dongle
-     * @param resetNetwork whether network is to be reset
+     * 
+     * @param dongle
+     *            the dongle
+     * @param resetNetwork
+     *            whether network is to be reset
      */
     public ZigBeeNetworkManager(final ZigBeeTransport dongle, final boolean resetNetwork) {
         this.dongle = dongle;
         this.networkState = new ZigBeeNetworkStateImpl(resetNetwork);
         this.networkDiscoverer = new ZigBeeNetworkDiscoverer(networkState, this);
 
-//        setNetwork(dongle);
-        
+        // setNetwork(dongle);
+
         dongle.setZigBeeNetwork(this);
-//        setNetworkState(networkState);
+        // setNetworkState(networkState);
     }
 
     /**
      * Starts up ZigBee manager components.
+     * 
      * @return TRUE if startup was successful.
      */
     public boolean startup() {
@@ -98,7 +102,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     @Override
     public int sendCommand(Command command) throws ZigBeeException {
-       return dongle.sendCommand(command);
+        return dongle.sendCommand(command);
     }
 
     @Override
@@ -113,7 +117,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
         final List<CommandListener> modifiedCommandListeners = new ArrayList<CommandListener>(commandListeners);
         modifiedCommandListeners.remove(commandListener);
         commandListeners = Collections.unmodifiableList(modifiedCommandListeners);
-    }    
+    }
 
     @Override
     public void receiveCommand(Command command) {
@@ -129,9 +133,13 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Sets device label.
-     * @param networkAddress the network address
-     * @param endPointId the end point ID
-     * @param label the label
+     * 
+     * @param networkAddress
+     *            the network address
+     * @param endPointId
+     *            the end point ID
+     * @param label
+     *            the label
      */
     public void setDeviceLabel(final int networkAddress, final int endPointId, final String label) {
         final ZigBeeDevice device = networkState.getDevice(new ZigBeeDeviceAddress(networkAddress, endPointId));
@@ -141,7 +149,9 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Removes device(s) by network address.
-     * @param networkAddress the network address
+     * 
+     * @param networkAddress
+     *            the network address
      */
     public void removeDevice(final int networkAddress) {
         final List<ZigBeeDevice> devices = networkState.getDevices();
@@ -157,18 +167,20 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
         }
     }
 
-
     /**
      * Gets ZigBee devices.
+     * 
      * @return list of ZigBee devices
      */
     public List<ZigBeeDevice> getDevices() {
         return networkState.getDevices();
     }
-    
+
     /**
      * Gets a single ZigBee device
-     * @param address {@link ZigBeeDeviceAddress}
+     * 
+     * @param address
+     *            {@link ZigBeeDeviceAddress}
      * @return the {@link ZigBeeDevice}
      */
     public ZigBeeDevice getDevice(ZigBeeDeviceAddress address) {
@@ -177,8 +189,11 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Sets group label.
-     * @param groupId the group ID
-     * @param label the label
+     * 
+     * @param groupId
+     *            the group ID
+     * @param label
+     *            the label
      */
     public void addMembership(final int groupId, final String label) {
         if (networkState.getGroup(groupId) == null) {
@@ -192,7 +207,9 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Removes group label.
-     * @param groupId the group ID
+     * 
+     * @param groupId
+     *            the group ID
      */
     public void removeMembership(final int groupId) {
         networkState.removeGroup(groupId);
@@ -200,7 +217,9 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Gets group by network address.
-     * @param groupId the group ID
+     * 
+     * @param groupId
+     *            the group ID
      * @return the ZigBee group or null if no exists with given group ID.
      */
     public ZigBeeGroupAddress getGroup(final int groupId) {
@@ -209,6 +228,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Gets all groups.
+     * 
      * @return list of groups.
      */
     public List<ZigBeeGroupAddress> getGroups() {
@@ -221,8 +241,11 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Sends command to {@link ZigBeeAddress}.
-     * @param destination the destination
-     * @param command the command
+     * 
+     * @param destination
+     *            the destination
+     * @param command
+     *            the command
      * @return the command result future
      */
     Future<CommandResult> send(ZigBeeAddress destination, ZclCommand command) {
@@ -236,7 +259,9 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Sends command.
-     * @param command the command
+     * 
+     * @param command
+     *            the command
      * @return the command result future.
      */
     public Future<CommandResult> unicast(final Command command) {
@@ -253,20 +278,23 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Sends ZCL command.
-     * @param command the command
-     * @param responseMatcher the response matcher.
+     * 
+     * @param command
+     *            the command
+     * @param responseMatcher
+     *            the response matcher.
      * @return the command result future.
      */
     Future<CommandResult> unicast(final Command command, final CommandResponseMatcher responseMatcher) {
         synchronized (command) {
             final CommandResultFuture future = new CommandResultFuture(this);
-            final CommandExecution commandExecution = new CommandExecution(
-                    System.currentTimeMillis(), command, future);
+            final CommandExecution commandExecution = new CommandExecution(System.currentTimeMillis(), command, future);
             future.setCommandExecution(commandExecution);
             final CommandListener commandListener = new CommandListener() {
                 @Override
                 public void commandReceived(Command receivedCommand) {
-                    // Ensure that received command is not processed before command is sent and
+                    // Ensure that received command is not processed before
+                    // command is sent and
                     // hence transaction ID for the command set.
                     synchronized (command) {
                         if (responseMatcher.isMatch(command, receivedCommand)) {
@@ -298,7 +326,9 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Broadcasts command i.e. does not wait for response.
-     * @param command the command
+     * 
+     * @param command
+     *            the command
      * @return the command result future.
      */
     private Future<CommandResult> broadcast(final Command command) {
@@ -319,12 +349,12 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
     /**
      * Adds command listener and removes expired command listeners.
      *
-     * @param commandExecution the command execution
+     * @param commandExecution
+     *            the command execution
      */
     private void addCommandExecution(final CommandExecution commandExecution) {
         synchronized (commandExecutions) {
-            final List<CommandExecution> expiredCommandExecutions =
-                    new ArrayList<CommandExecution>();
+            final List<CommandExecution> expiredCommandExecutions = new ArrayList<CommandExecution>();
             for (final CommandExecution existingCommandExecution : commandExecutions) {
                 if (System.currentTimeMillis() - existingCommandExecution.getStartTime() > 8000) {
                     expiredCommandExecutions.add(existingCommandExecution);
@@ -341,7 +371,9 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
     /**
      * Removes command execution.
-     * @param expiredCommandExecution the command execution
+     * 
+     * @param expiredCommandExecution
+     *            the command execution
      */
     protected void removeCommandExecution(CommandExecution expiredCommandExecution) {
         commandExecutions.remove(expiredCommandExecution);
@@ -371,72 +403,72 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
             throw new ZigBeeApiException("Error sending permit join command.", e);
         }
     }
-    
+
     /**
      * Binds two devices.
-     * @param source the source device
-     * @param destination the destination device
-     * @param clusterId the cluster ID
+     * 
+     * @param source
+     *            the source device
+     * @param destination
+     *            the destination device
+     * @param clusterId
+     *            the cluster ID
      * @return TRUE if no errors occurred in sending.
      */
     public Future<CommandResult> bind(final ZigBeeDevice source, final ZigBeeDevice destination, final int clusterId) {
         final int destinationAddress = source.getNetworkAddress();
-        final long bindSourceAddress = source.getIeeeAddress();
+        final IeeeAddress bindSourceAddress = source.getIeeeAddress();
         final int bindSourceEndpoint = source.getEndpoint();
         final int bindCluster = clusterId;
         final int bindDestinationAddressingMode = 3; // 64 bit addressing
-        final long bindDestinationAddress = destination.getIeeeAddress();
+        final IeeeAddress bindDestinationAddress = destination.getIeeeAddress();
         final int bindDestinationEndpoint = destination.getEndpoint();
-        final BindRequest command = new BindRequest(
-                destinationAddress,
-                bindSourceAddress,
-                bindSourceEndpoint,
-                bindCluster,
-                bindDestinationAddressingMode,
-                bindDestinationAddress,
-                bindDestinationEndpoint
-        );
+        final BindRequest command = new BindRequest(destinationAddress, bindSourceAddress.getLong(),
+                bindSourceEndpoint, bindCluster, bindDestinationAddressingMode, bindDestinationAddress.getLong(),
+                bindDestinationEndpoint);
         return unicast(command);
     }
 
     /**
      * Unbinds two devices.
-     * @param source the source device
-     * @param destination the destination device
-     * @param clusterId the cluster ID
+     * 
+     * @param source
+     *            the source device
+     * @param destination
+     *            the destination device
+     * @param clusterId
+     *            the cluster ID
      * @return TRUE if no errors occurred in sending.
      */
-    public Future<CommandResult> unbind(final ZigBeeDevice source, final ZigBeeDevice destination,
-                                        final int clusterId) {
+    public Future<CommandResult> unbind(final ZigBeeDevice source, final ZigBeeDevice destination, final int clusterId) {
         final int destinationAddress = source.getNetworkAddress();
-        final long bindSourceAddress = source.getIeeeAddress();
+        final IeeeAddress bindSourceAddress = source.getIeeeAddress();
         final int bindSourceEndpoint = source.getEndpoint();
         final int bindCluster = clusterId;
         final int bindDestinationAddressingMode = 3; // 64 bit addressing
-        final long bindDestinationAddress = destination.getIeeeAddress();
+        final IeeeAddress bindDestinationAddress = destination.getIeeeAddress();
         final int bindDestinationEndpoint = destination.getEndpoint();
-        final UnbindRequest command = new UnbindRequest(
-                destinationAddress,
-                bindSourceAddress,
-                bindSourceEndpoint,
-                bindCluster,
-                bindDestinationAddressingMode,
-                bindDestinationAddress,
-                bindDestinationEndpoint
-        );
+        final UnbindRequest command = new UnbindRequest(destinationAddress, bindSourceAddress.getLong(),
+                bindSourceEndpoint, bindCluster, bindDestinationAddressingMode, bindDestinationAddress.getLong(),
+                bindDestinationEndpoint);
         return unicast(command);
     }
 
     /**
      * Writes attribute to device.
-     * @param zigbeeAddress the device
-     * @param clusterId the cluster ID
-     * @param attributeId the attribute ID
-     * @param value the value
+     * 
+     * @param zigbeeAddress
+     *            the device
+     * @param clusterId
+     *            the cluster ID
+     * @param attributeId
+     *            the attribute ID
+     * @param value
+     *            the value
      * @return the command result future
      */
-    public Future<CommandResult> write(final ZigBeeDeviceAddress zigbeeAddress, final int clusterId, final int attributeId,
-                                       final Object value) {
+    public Future<CommandResult> write(final ZigBeeDeviceAddress zigbeeAddress, final int clusterId,
+            final int attributeId, final Object value) {
 
         final WriteAttributesCommand command = new WriteAttributesCommand();
         command.setClusterId(clusterId);
@@ -448,20 +480,25 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
         command.setRecords(Collections.singletonList(record));
 
         command.setDestinationAddress(zigbeeAddress);
-//        command.setDestinationAddress(device.getNetworkAddress());
-  //      command.setDestinationEndpoint(device.getEndpoint());
+        // command.setDestinationAddress(device.getNetworkAddress());
+        // command.setDestinationEndpoint(device.getEndpoint());
 
         return unicast(command, new ZclCustomResponseMatcher());
     }
-    
+
     /**
      * Reads attribute from device.
-     * @param zigbeeAddress the device
-     * @param clusterId the cluster ID
-     * @param attributeId the attribute ID
+     * 
+     * @param zigbeeAddress
+     *            the device
+     * @param clusterId
+     *            the cluster ID
+     * @param attributeId
+     *            the attribute ID
      * @return the command result future
      */
-    public Future<CommandResult> read(final ZigBeeDeviceAddress zigbeeAddress, final int clusterId, final int attributeId) {
+    public Future<CommandResult> read(final ZigBeeDeviceAddress zigbeeAddress, final int clusterId,
+            final int attributeId) {
         final ReadAttributesCommand command = new ReadAttributesCommand();
 
         command.setClusterId(clusterId);
@@ -473,19 +510,26 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
         return unicast(command, new ZclCustomResponseMatcher());
     }
-    
+
     /**
      * Configures attribute reporting.
-     * @param zigbeeAddress the device
-     * @param clusterId the cluster ID
-     * @param attributeId the attribute ID
-     * @param minInterval the minimum interval
-     * @param maxInterval the maximum interval
-     * @param reportableChange the reportable change
+     * 
+     * @param zigbeeAddress
+     *            the device
+     * @param clusterId
+     *            the cluster ID
+     * @param attributeId
+     *            the attribute ID
+     * @param minInterval
+     *            the minimum interval
+     * @param maxInterval
+     *            the maximum interval
+     * @param reportableChange
+     *            the reportable change
      * @return the command result future
      */
-    public Future<CommandResult> report(final ZigBeeDeviceAddress zigbeeAddress, final int clusterId, final int attributeId,
-                                        final int minInterval, final int maxInterval, final Object reportableChange) {
+    public Future<CommandResult> report(final ZigBeeDeviceAddress zigbeeAddress, final int clusterId,
+            final int attributeId, final int minInterval, final int maxInterval, final Object reportableChange) {
         final ConfigureReportingCommand command = new ConfigureReportingCommand();
 
         command.setClusterId(clusterId);

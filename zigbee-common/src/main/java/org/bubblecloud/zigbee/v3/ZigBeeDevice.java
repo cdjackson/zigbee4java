@@ -29,7 +29,7 @@ public class ZigBeeDevice implements CommandListener {
     /**
      * The IEEE address.
      */
-    private long ieeeAddress;
+    private IeeeAddress ieeeAddress;
     /**
      * The network address.
      */
@@ -132,7 +132,7 @@ public class ZigBeeDevice implements CommandListener {
      * 
      * @return the IEEE address
      */
-    public long getIeeeAddress() {
+    public IeeeAddress getIeeeAddress() {
         return ieeeAddress;
     }
 
@@ -142,7 +142,7 @@ public class ZigBeeDevice implements CommandListener {
      * @param ieeeAddress
      *            the IEEE address
      */
-    public void setIeeeAddress(long ieeeAddress) {
+    public void setIeeeAddress(IeeeAddress ieeeAddress) {
         this.ieeeAddress = ieeeAddress;
     }
 
@@ -404,7 +404,7 @@ public class ZigBeeDevice implements CommandListener {
     @Override
     public String toString() {
         return "ZigBeeDevice " + "label=" + label + ", networkAddress=" + networkAddress.toString() + ", ieeeAddress="
-                + ieeeAddress + ", profileId=" + profileId + ", deviceType=" + deviceType + ", deviceId=" + deviceId
+                + String.format("%08X", ieeeAddress) + ", profileId=" + profileId + ", deviceType=" + deviceType + ", deviceId=" + deviceId
                 + ", manufacturerCode=" + manufacturerCode + ", deviceVersion=" + deviceVersion + ", inputClusterIds="
                 + getInputClusterIds().toString() + ", outputClusterIds=" + getOutputClusterIds().toString();
     }

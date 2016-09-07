@@ -9,6 +9,10 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 /**
  * Write Attributes Structured Command value object class.
  * 
+ * The write attributes structured command is generated when a device wishes to
+ * change the values of one or more attributes located on another device. Each write
+ * attribute record shall contain the identifier and the actual value of the attribute, or
+ * element thereof, to be written.
  * 
  * Cluster: General
  * 

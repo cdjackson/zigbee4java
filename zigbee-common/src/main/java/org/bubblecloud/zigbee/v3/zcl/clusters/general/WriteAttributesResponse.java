@@ -11,6 +11,8 @@ import java.util.List;
 /**
  *  Write Attributes Response value object class.
  * 
+ * The write attributes response command is generated in response to a write
+ * attributes command.
  * 
  * Cluster: General
  * 

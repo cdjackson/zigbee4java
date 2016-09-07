@@ -9,6 +9,10 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 /**
  *  Default Response value object class.
  * 
+ * The default response command is generated when a device receives a unicast
+ * command, there is no other relevant response specified for the command, and
+ * either an error results or the Disable default response bit of its Frame control field
+ * is set to 0.
  * 
  * Cluster: General
  * 

@@ -1,8 +1,6 @@
 package org.bubblecloud.zigbee.tools;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.bubblecloud.zigbee.tools.zcl.*;
@@ -18,6 +16,7 @@ public class ZclProtocolDefinitionParser {
             if (line.startsWith("# ") && line.contains("[")) {
                 context.profile = new Profile();
                 context.profile.profileName = getHeaderTitle(line);
+                context.profile.profileAbbreviation = getHeaderAbbreviation(line);
                 context.profile.profileType = CodeGeneratorUtil.labelToEnumerationValue(context.profile.profileName);
                 context.profile.profileId = getHeaderId(line);
                 context.profiles.put(context.profile.profileId, context.profile);
@@ -240,6 +239,10 @@ public class ZclProtocolDefinitionParser {
         return CodeGeneratorUtil.fromHex(headerIdString);
     }
     
+    private static String getHeaderAbbreviation(String line) {
+        return StringUtils.substringAfter(line, "]").trim().toLowerCase();
+    }
+    
     private static void parseAttributes(Context context) {
     	Attribute attribute = null;
     	boolean addBreak = false;
@@ -307,6 +310,8 @@ public class ZclProtocolDefinitionParser {
         }
         attribute.dataTypeClass = dataType.dataTypeClass;
 
+        System.out.println(" Type::::: " + dataType.dataTypeType);
+                
         context.dataTypes.put(attribute.dataType, dataType);
         context.cluster.attributes.put(attribute.attributeId, attribute);
     }

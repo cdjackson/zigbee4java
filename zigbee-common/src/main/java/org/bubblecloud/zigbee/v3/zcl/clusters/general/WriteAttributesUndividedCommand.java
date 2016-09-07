@@ -11,6 +11,16 @@ import java.util.List;
 /**
  * Write Attributes Undivided Command value object class.
  * 
+ * The write attributes undivided command is generated when a device wishes to
+ * change the values of one or more attributes located on another device, in such a
+ * way that if any attribute cannot be written (e.g. if an attribute is not implemented
+ * on the device, or a value to be written is outside its valid range), no attribute
+ * values are changed.
+ * <br>
+ * In all other respects, including generation of a write attributes response command,
+ * the format and operation of the command is the same as that of the write attributes
+ * command, except that the command identifier field shall be set to indicate the
+ * write attributes undivided command.
  * 
  * Cluster: General
  * 

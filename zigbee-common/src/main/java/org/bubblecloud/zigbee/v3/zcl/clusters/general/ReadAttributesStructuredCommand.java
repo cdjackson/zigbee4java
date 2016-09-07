@@ -9,6 +9,10 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 /**
  * Read Attributes Structured Command value object class.
  * 
+ * The read attributes command is generated when a device wishes to determine the
+ * values of one or more attributes, or elements of attributes, located on another
+ * device. Each attribute identifier field shall contain the identifier of the attribute to
+ * be read.
  * 
  * Cluster: General
  * 

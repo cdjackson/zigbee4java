@@ -9,6 +9,9 @@ import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 /**
  * Discover Attributes Command value object class.
  * 
+ * The discover attributes command is generated when a remote device wishes to
+ * discover the identifiers and types of the attributes on a device which are supported
+ * within the cluster to which this command is directed.
  * 
  * Cluster: General
  * 

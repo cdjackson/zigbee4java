@@ -8,6 +8,7 @@ import java.util.TreeMap;
 public class Profile {
     public int profileId;
     public String profileName;
+    public String profileAbbreviation;
     public String profileType;
     public TreeMap<Integer, Cluster> clusters = new TreeMap<Integer, Cluster>();
 }

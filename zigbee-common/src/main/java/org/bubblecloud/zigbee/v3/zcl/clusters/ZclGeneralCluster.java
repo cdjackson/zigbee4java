@@ -57,6 +57,11 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Read Attributes Command
+     * <p>
+     * The read attributes command is generated when a device wishes to determine the
+     * values of one or more attributes located on another device. Each attribute
+     * identifier field shall contain the identifier of the attribute to be read.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -67,6 +72,14 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Read Attributes Response
+     * <p>
+     * The read attributes response command is generated in response to a read attributes
+     * or read attributes structured command. The command frame shall contain a read
+     * attribute status record for each attribute identifier specified in the original read
+     * attributes or read attributes structured command. For each read attribute status
+     * record, the attribute identifier field shall contain the identifier specified in the
+     * original read attributes or read attributes structured command.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -77,6 +90,12 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Write Attributes Command
+     * <p>
+     * The write attributes command is generated when a device wishes to change the
+     * values of one or more attributes located on another device. Each write attribute
+     * record shall contain the identifier and the actual value of the attribute to be
+     * written.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -87,6 +106,18 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Write Attributes Undivided Command
+     * <p>
+     * The write attributes undivided command is generated when a device wishes to
+     * change the values of one or more attributes located on another device, in such a
+     * way that if any attribute cannot be written (e.g. if an attribute is not implemented
+     * on the device, or a value to be written is outside its valid range), no attribute
+     * values are changed.
+     * <br>
+     * In all other respects, including generation of a write attributes response command,
+     * the format and operation of the command is the same as that of the write attributes
+     * command, except that the command identifier field shall be set to indicate the
+     * write attributes undivided command.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -97,6 +128,10 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Write Attributes Response
+     * <p>
+     * The write attributes response command is generated in response to a write
+     * attributes command.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -107,6 +142,12 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Write Attributes No Response
+     * <p>
+     * The write attributes no response command is generated when a device wishes to
+     * change the value of one or more attributes located on another device but does not
+     * require a response. Each write attribute record shall contain the identifier and the
+     * actual value of the attribute to be written.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -117,6 +158,14 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Configure Reporting Command
+     * <p>
+     * The Configure Reporting command is used to configure the reporting mechanism
+     * for one or more of the attributes of a cluster.
+     * <br>
+     * The individual cluster definitions specify which attributes shall be available to this
+     * reporting mechanism, however specific implementations of a cluster may make
+     * additional attributes available.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -127,6 +176,10 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Configure Reporting Response
+     * <p>
+     * The Configure Reporting Response command is generated in response to a
+     * Configure Reporting command.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -137,6 +190,10 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Read Reporting Configuration Command
+     * <p>
+     * The Read Reporting Configuration command is used to read the configuration
+     * details of the reporting mechanism for one or more of the attributes of a cluster.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -147,6 +204,10 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Read Reporting Configuration Response
+     * <p>
+     * The Read Reporting Configuration Response command is used to respond to a
+     * Read Reporting Configuration command.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -157,6 +218,12 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Report Attributes Command
+     * <p>
+     * The report attributes command is used by a device to report the values of one or
+     * more of its attributes to another device, bound a priori. Individual clusters, defined
+     * elsewhere in the ZCL, define which attributes are to be reported and at what
+     * interval.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -167,6 +234,12 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Default Response
+     * <p>
+     * The default response command is generated when a device receives a unicast
+     * command, there is no other relevant response specified for the command, and
+     * either an error results or the Disable default response bit of its Frame control field
+     * is set to 0.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -177,6 +250,11 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Discover Attributes Command
+     * <p>
+     * The discover attributes command is generated when a remote device wishes to
+     * discover the identifiers and types of the attributes on a device which are supported
+     * within the cluster to which this command is directed.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -187,6 +265,10 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Discover Attributes Response
+     * <p>
+     * The discover attributes response command is generated in response to a discover
+     * attributes command.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -197,6 +279,12 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Read Attributes Structured Command
+     * <p>
+     * The read attributes command is generated when a device wishes to determine the
+     * values of one or more attributes, or elements of attributes, located on another
+     * device. Each attribute identifier field shall contain the identifier of the attribute to
+     * be read.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -207,6 +295,12 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The Write Attributes Structured Command
+     * <p>
+     * The write attributes structured command is generated when a device wishes to
+     * change the values of one or more attributes located on another device. Each write
+     * attribute record shall contain the identifier and the actual value of the attribute, or
+     * element thereof, to be written.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */
@@ -217,6 +311,10 @@ public class ZclGeneralCluster extends ZclCluster {
 
     /**
      * The  Write Attributes Structured Response
+     * <p>
+     * The write attributes structured response command is generated in response to a
+     * write attributes structured command.
+     * </p>
      *
      * @return the {@link Future<CommandResult>} command result future
      */

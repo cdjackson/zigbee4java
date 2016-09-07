@@ -9,89 +9,187 @@ Home Automation ZigBee cluster library protocol description is used to code gene
 ### Received
 
 #### Read Attributes Command [0x00]
+
+The read attributes command is generated when a device wishes to determine the
+values of one or more attributes located on another device. Each attribute
+identifier field shall contain the identifier of the attribute to be read. 
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Identifiers                |N X Attribute identifier   |
 
 #### Read Attributes Response Command [0x01]
+
+The read attributes response command is generated in response to a read attributes
+or read attributes structured command. The command frame shall contain a read
+attribute status record for each attribute identifier specified in the original read
+attributes or read attributes structured command. For each read attribute status
+record, the attribute identifier field shall contain the identifier specified in the
+original read attributes or read attributes structured command.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Read attribute status record |
 
 #### Write Attributes Command [0x02]
+
+The write attributes command is generated when a device wishes to change the
+values of one or more attributes located on another device. Each write attribute
+record shall contain the identifier and the actual value of the attribute to be
+written.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Write attribute record |
 
 #### Write Attributes Undivided Command [0x03]
+
+The write attributes undivided command is generated when a device wishes to
+change the values of one or more attributes located on another device, in such a
+way that if any attribute cannot be written (e.g. if an attribute is not implemented
+on the device, or a value to be written is outside its valid range), no attribute
+values are changed.
+
+In all other respects, including generation of a write attributes response command,
+the format and operation of the command is the same as that of the write attributes
+command, except that the command identifier field shall be set to indicate the
+write attributes undivided command.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Write attribute record |
 
 #### Write Attributes Response Command [0x04]
+
+The write attributes response command is generated in response to a write
+attributes command.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Write attribute status record |
 
 #### Write Attributes No Response Command [0x05]
+
+The write attributes no response command is generated when a device wishes to
+change the value of one or more attributes located on another device but does not
+require a response. Each write attribute record shall contain the identifier and the
+actual value of the attribute to be written. 
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Write attribute record |
 
 #### Configure Reporting Command [0x06]
+
+The Configure Reporting command is used to configure the reporting mechanism
+for one or more of the attributes of a cluster.
+
+The individual cluster definitions specify which attributes shall be available to this
+reporting mechanism, however specific implementations of a cluster may make
+additional attributes available.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Attribute reporting configuration record|
 
 #### Configure Reporting Response Command [0x07]
+
+The Configure Reporting Response command is generated in response to a
+Configure Reporting command. 
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Attribute status record|
 
 #### Read Reporting Configuration Command [0x08]
+
+The Read Reporting Configuration command is used to read the configuration
+details of the reporting mechanism for one or more of the attributes of a cluster. 
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Attribute record       |
 
 #### Read Reporting Configuration Response Command [0x09]
+
+The Read Reporting Configuration Response command is used to respond to a
+Read Reporting Configuration command.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Attribute reporting configuration record|
 
 #### Report Attributes Command [0x0a]
+
+The report attributes command is used by a device to report the values of one or
+more of its attributes to another device, bound a priori. Individual clusters, defined
+elsewhere in the ZCL, define which attributes are to be reported and at what
+interval.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Reports                    |N X Attribute report       |
 
 #### Default Response Command [0x0b]
+
+The default response command is generated when a device receives a unicast
+command, there is no other relevant response specified for the command, and
+either an error results or the Disable default response bit of its Frame control field
+is set to 0.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Command identifier         |Unsigned 8-bit integer     |
 |Status code                |8-bit enumeration          |
 
 #### Discover Attributes Command [0x0c]
+
+The discover attributes command is generated when a remote device wishes to
+discover the identifiers and types of the attributes on a device which are supported
+within the cluster to which this command is directed. 
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Start attribute identifier |Unsigned 16-bit integer    |
 |Maximum attribute identifiers |Unsigned 8-bit integer  |
 
 #### Discover Attributes Response Command [0x0d]
+
+The discover attributes response command is generated in response to a discover
+attributes command. 
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Command identifier         |Boolean                    |
 |Information                |N X Attribute information  |
 
-#### Read Attributes Structured Command [0x0e]
+#### Read Attributes Structured Command [0x0e]boolean
+
+The read attributes command is generated when a device wishes to determine the
+values of one or more attributes, or elements of attributes, located on another
+device. Each attribute identifier field shall contain the identifier of the attribute to
+be read.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Attribute selectors        |N X Attribute selector     |
 
 #### Write Attributes Structured Command [0x0f]
+
+The write attributes structured command is generated when a device wishes to
+change the values of one or more attributes located on another device. Each write
+attribute record shall contain the identifier and the actual value of the attribute, or
+element thereof, to be written.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Attribute selectors        |N X Attribute selector     |
 
 #### Write Attributes Structured Response Command [0x10]
+
+The write attributes structured response command is generated in response to a
+write attributes structured command.
+
 |Field Name                 |Data Type                  |
 |---------------------------|---------------------------|
 |Records                    |N X Write attribute status record |
@@ -2154,3 +2252,4 @@ command that is still current.
 ## Multistate Value (BACnet Extended) [0x0613] 
 ### Received 
 ### Generated
+

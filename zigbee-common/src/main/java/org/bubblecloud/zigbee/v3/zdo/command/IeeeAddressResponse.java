@@ -1,5 +1,6 @@
 package org.bubblecloud.zigbee.v3.zdo.command;
 
+import org.bubblecloud.zigbee.v3.IeeeAddress;
 import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoResponse;
 
@@ -20,7 +21,7 @@ public class IeeeAddressResponse extends ZdoCommand implements ZdoResponse {
     /**
      * IEEE address.
      */
-    private long ieeeAddress;
+    private IeeeAddress ieeeAddress;
     /**
      * Network address.
      */
@@ -41,7 +42,7 @@ public class IeeeAddressResponse extends ZdoCommand implements ZdoResponse {
     public IeeeAddressResponse() {
     }
 
-    public IeeeAddressResponse(int status, int sourceAddressMode, long ieeeAddress, int networkAddress, int startIndex, int numberOfAssociatedDevices, int[] associatedDeviceList) {
+    public IeeeAddressResponse(int status, int sourceAddressMode, IeeeAddress ieeeAddress, int networkAddress, int startIndex, int numberOfAssociatedDevices, int[] associatedDeviceList) {
         this.status = status;
         this.sourceAddressMode = sourceAddressMode;
         this.ieeeAddress = ieeeAddress;
@@ -72,11 +73,11 @@ public class IeeeAddressResponse extends ZdoCommand implements ZdoResponse {
         this.sourceAddressMode = sourceAddressMode;
     }
 
-    public long getIeeeAddress() {
+    public IeeeAddress getIeeeAddress() {
         return ieeeAddress;
     }
 
-    public void setIeeeAddress(long ieeeAddress) {
+    public void setIeeeAddress(IeeeAddress ieeeAddress) {
         this.ieeeAddress = ieeeAddress;
     }
 

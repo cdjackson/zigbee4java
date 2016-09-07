@@ -11,6 +11,8 @@ import java.util.List;
 /**
  *  Write Attributes Structured Response value object class.
  * 
+ * The write attributes structured response command is generated in response to a
+ * write attributes structured command.
  * 
  * Cluster: General
  * 

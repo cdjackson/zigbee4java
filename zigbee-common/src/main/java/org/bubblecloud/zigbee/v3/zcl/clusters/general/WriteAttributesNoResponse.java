@@ -11,6 +11,10 @@ import java.util.List;
 /**
  *  Write Attributes No Response value object class.
  * 
+ * The write attributes no response command is generated when a device wishes to
+ * change the value of one or more attributes located on another device but does not
+ * require a response. Each write attribute record shall contain the identifier and the
+ * actual value of the attribute to be written.
  * 
  * Cluster: General
  * 

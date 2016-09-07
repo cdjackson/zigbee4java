@@ -11,6 +11,9 @@ import java.util.List;
 /**
  * Read Attributes Command value object class.
  * 
+ * The read attributes command is generated when a device wishes to determine the
+ * values of one or more attributes located on another device. Each attribute
+ * identifier field shall contain the identifier of the attribute to be read.
  * 
  * Cluster: General
  * 

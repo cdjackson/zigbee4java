@@ -11,6 +11,12 @@ import java.util.List;
 /**
  * Configure Reporting Command value object class.
  * 
+ * The Configure Reporting command is used to configure the reporting mechanism
+ * for one or more of the attributes of a cluster.
+ * <br>
+ * The individual cluster definitions specify which attributes shall be available to this
+ * reporting mechanism, however specific implementations of a cluster may make
+ * additional attributes available.
  * 
  * Cluster: General
  * 

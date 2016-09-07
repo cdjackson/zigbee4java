@@ -1,6 +1,5 @@
 package org.bubblecloud.zigbee.v3;
 
-import org.bubblecloud.zigbee.network.port.SerialPortImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ public class ZigBeeApiCc2531ImplTest {
     @Test
     @Ignore
     public void testZigBeeApiLocal() {
-        final SerialPort port = new SerialPortImpl("COM5");
+        final SerialPort port = null;// = new SerialPortImpl("COM5");
         final ZigBeeTransport dongle = new ZigBeeDongleTiCc2531Impl(port, 4951, 11, null, false);
 
 //        final ZigBeeApiDongleImpl api = new ZigBeeApiDongleImpl(dongle, false);

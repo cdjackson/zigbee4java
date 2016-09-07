@@ -11,6 +11,8 @@ import java.util.List;
 /**
  *  Read Reporting Configuration Response value object class.
  * 
+ * The Read Reporting Configuration Response command is used to respond to a
+ * Read Reporting Configuration command.
  * 
  * Cluster: General
  * 

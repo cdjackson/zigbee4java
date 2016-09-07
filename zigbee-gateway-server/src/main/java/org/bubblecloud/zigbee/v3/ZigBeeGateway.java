@@ -500,7 +500,7 @@ public final class ZigBeeGateway {
                 return false;
             }
 
-            print("IEEE Address     : " + IEEEAddress.toHex(device.getIeeeAddress()), out);
+            print("IEEE Address     : " + device.getIeeeAddress(), out);
             print("Network Address  : " + device.getNetworkAddress(), out);
             print("Endpoint         : " + device.getEndpoint(), out);
             print("Device Profile   : " + ZigBeeApiConstants.getProfileName(device.getProfileId())+ String.format("  (0x%04X)", device.getProfileId()), out);

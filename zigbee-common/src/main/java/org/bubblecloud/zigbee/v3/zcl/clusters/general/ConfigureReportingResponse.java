@@ -11,6 +11,8 @@ import java.util.List;
 /**
  *  Configure Reporting Response value object class.
  * 
+ * The Configure Reporting Response command is generated in response to a
+ * Configure Reporting command.
  * 
  * Cluster: General
  * 
