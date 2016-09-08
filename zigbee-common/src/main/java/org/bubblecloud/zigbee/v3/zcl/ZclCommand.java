@@ -37,7 +37,6 @@ public class ZclCommand extends Command {
      * Default constructor.
      */
     public ZclCommand() {
-
     }
 
     /**

@@ -108,16 +108,13 @@ public class RestartDeviceCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("option");
-        builder.append('=');
+        builder.append("option = ");
         builder.append(option);
         builder.append(", ");
-        builder.append("delay");
-        builder.append('=');
+        builder.append("delay = ");
         builder.append(delay);
         builder.append(", ");
-        builder.append("jitter");
-        builder.append('=');
+        builder.append("jitter = ");
         builder.append(jitter);
         return builder.toString();
     }

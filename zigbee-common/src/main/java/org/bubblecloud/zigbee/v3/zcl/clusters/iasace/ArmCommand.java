@@ -68,8 +68,7 @@ public class ArmCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("armMode");
-        builder.append('=');
+        builder.append("armMode = ");
         builder.append(armMode);
         return builder.toString();
     }

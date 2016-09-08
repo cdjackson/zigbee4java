@@ -72,8 +72,7 @@ public class IdentifyQueryResponse extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("identifyTime");
-        builder.append('=');
+        builder.append("identifyTime = ");
         builder.append(identifyTime);
         return builder.toString();
     }

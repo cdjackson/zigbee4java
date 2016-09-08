@@ -90,12 +90,10 @@ public class MoveToColorTemperatureCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("colorTemperature");
-        builder.append('=');
+        builder.append("colorTemperature = ");
         builder.append(colorTemperature);
         builder.append(", ");
-        builder.append("transitionTime");
-        builder.append('=');
+        builder.append("transitionTime = ");
         builder.append(transitionTime);
         return builder.toString();
     }

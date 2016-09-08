@@ -103,12 +103,10 @@ public class AddGroupIfIdentifyingCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("groupId");
-        builder.append('=');
+        builder.append("groupId = ");
         builder.append(groupId);
         builder.append(", ");
-        builder.append("groupName");
-        builder.append('=');
+        builder.append("groupName = ");
         builder.append(groupName);
         return builder.toString();
     }

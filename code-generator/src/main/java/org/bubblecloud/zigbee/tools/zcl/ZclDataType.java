@@ -30,6 +30,16 @@ public class ZclDataType {
 
         dataTypeMapping.put("CHARACTER_STRING", new DataTypeMap("String", 0x42, -1));
         dataTypeMapping.put("IEEE_ADDRESS", new DataTypeMap("Long", 0xf0, 8, 0xffffffff));
+        dataTypeMapping.put("NODE_DESCRIPTOR", new DataTypeMap("NodeDescriptor", 0, 0));
+        dataTypeMapping.put("SIMPLE_DESCRIPTOR", new DataTypeMap("SimpleDescriptor", 0, 0));
+        dataTypeMapping.put("COMPLEX_DESCRIPTOR", new DataTypeMap("ComplexDescriptor", 0, 0));
+        dataTypeMapping.put("POWER_DESCRIPTOR", new DataTypeMap("PowerDescriptor", 0, 0));
+        dataTypeMapping.put("USER_DESCRIPTOR", new DataTypeMap("UserDescriptor", 0, 0));
+        dataTypeMapping.put("NWK_ADDRESS", new DataTypeMap("Integer", 0, 0, 0xffff));
+        dataTypeMapping.put("N_X_IEEE_ADDRESS", new DataTypeMap("List<Long>", 0, 0));
+        dataTypeMapping.put("N_X_NWK_ADDRESS", new DataTypeMap("List<Long>", 0, 0));
+        dataTypeMapping.put("N_X_CLUSTERID", new DataTypeMap("List<Integer>", 0, 0));
+        dataTypeMapping.put("N_X_ENDPOINT", new DataTypeMap("List<Integer>", 0, 0));
         dataTypeMapping.put("N_X_EXTENSION_FIELD_SET", new DataTypeMap("List<ExtensionFieldSet>", 0, 0));
         dataTypeMapping.put("N_X_NEIGHBORS_INFORMATION", new DataTypeMap("List<NeighborInformation>", 0, 0));
         dataTypeMapping.put("N_X_UNSIGNED_16_BIT_INTEGER", new DataTypeMap("List<Unsigned16BitInteger>", 0, 0));
@@ -54,6 +64,8 @@ public class ZclDataType {
         dataTypeMapping.put("UNSIGNED_16_BIT_INTEGER", new DataTypeMap("Integer", 0x21, 2, 0xffff));
         dataTypeMapping.put("UNSIGNED_32_BIT_INTEGER", new DataTypeMap("Integer", 0x23, 4, 0xffffffff));
         dataTypeMapping.put("UNSIGNED_8_BIT_INTEGER", new DataTypeMap("Integer", 0x20, 1, 0xff));
+        dataTypeMapping.put("BITMAP_32_BIT", new DataTypeMap("Integer", 0x1b, 4));
+        dataTypeMapping.put("BITMAP_24_BIT", new DataTypeMap("Integer", 0x1a, 3));
         dataTypeMapping.put("BITMAP_16_BIT", new DataTypeMap("Integer", 0x19, 2));
         dataTypeMapping.put("BITMAP_8_BIT", new DataTypeMap("Integer", 0x18, 1));
         dataTypeMapping.put("ENUMERATION_16_BIT", new DataTypeMap("Integer", 0x31, 2, 0xffff));

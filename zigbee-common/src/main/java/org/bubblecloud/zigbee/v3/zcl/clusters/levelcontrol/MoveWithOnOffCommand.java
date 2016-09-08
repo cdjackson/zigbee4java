@@ -89,12 +89,10 @@ public class MoveWithOnOffCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("moveMode");
-        builder.append('=');
+        builder.append("moveMode = ");
         builder.append(moveMode);
         builder.append(", ");
-        builder.append("rate");
-        builder.append('=');
+        builder.append("rate = ");
         builder.append(rate);
         return builder.toString();
     }

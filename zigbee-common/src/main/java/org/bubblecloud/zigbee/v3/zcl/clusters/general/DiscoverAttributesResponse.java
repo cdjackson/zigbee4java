@@ -90,12 +90,10 @@ public class DiscoverAttributesResponse extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("commandIdentifier");
-        builder.append('=');
+        builder.append("commandIdentifier = ");
         builder.append(commandIdentifier);
         builder.append(", ");
-        builder.append("information");
-        builder.append('=');
+        builder.append("information = ");
         builder.append(information);
         return builder.toString();
     }

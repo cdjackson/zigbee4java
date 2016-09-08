@@ -112,16 +112,13 @@ public class StepHueCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("stepMode");
-        builder.append('=');
+        builder.append("stepMode = ");
         builder.append(stepMode);
         builder.append(", ");
-        builder.append("stepSize");
-        builder.append('=');
+        builder.append("stepSize = ");
         builder.append(stepSize);
         builder.append(", ");
-        builder.append("transitionTime");
-        builder.append('=');
+        builder.append("transitionTime = ");
         builder.append(transitionTime);
         return builder.toString();
     }

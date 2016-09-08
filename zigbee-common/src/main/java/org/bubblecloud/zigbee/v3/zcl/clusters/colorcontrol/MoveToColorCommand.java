@@ -112,16 +112,13 @@ public class MoveToColorCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("colorX");
-        builder.append('=');
+        builder.append("colorX = ");
         builder.append(colorX);
         builder.append(", ");
-        builder.append("colorY");
-        builder.append('=');
+        builder.append("colorY = ");
         builder.append(colorY);
         builder.append(", ");
-        builder.append("transitionTime");
-        builder.append('=');
+        builder.append("transitionTime = ");
         builder.append(transitionTime);
         return builder.toString();
     }

@@ -64,8 +64,7 @@ public class RequestOwnLocationCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("requestingAddress");
-        builder.append('=');
+        builder.append("requestingAddress = ");
         builder.append(requestingAddress);
         return builder.toString();
     }

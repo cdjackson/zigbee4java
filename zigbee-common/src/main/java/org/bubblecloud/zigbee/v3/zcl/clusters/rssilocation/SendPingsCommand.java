@@ -108,16 +108,13 @@ public class SendPingsCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("targetAddress");
-        builder.append('=');
+        builder.append("targetAddress = ");
         builder.append(targetAddress);
         builder.append(", ");
-        builder.append("numberRssiMeasurements");
-        builder.append('=');
+        builder.append("numberRssiMeasurements = ");
         builder.append(numberRssiMeasurements);
         builder.append(", ");
-        builder.append("calculationPeriod");
-        builder.append('=');
+        builder.append("calculationPeriod = ");
         builder.append(calculationPeriod);
         return builder.toString();
     }

@@ -64,8 +64,7 @@ public class RssiPingCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("locationType");
-        builder.append('=');
+        builder.append("locationType = ");
         builder.append(locationType);
         return builder.toString();
     }

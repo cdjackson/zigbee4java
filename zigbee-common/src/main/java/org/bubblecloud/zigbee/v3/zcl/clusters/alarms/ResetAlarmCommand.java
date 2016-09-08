@@ -98,12 +98,10 @@ public class ResetAlarmCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("alarmCode");
-        builder.append('=');
+        builder.append("alarmCode = ");
         builder.append(alarmCode);
         builder.append(", ");
-        builder.append("clusterIdentifier");
-        builder.append('=');
+        builder.append("clusterIdentifier = ");
         builder.append(clusterIdentifier);
         return builder.toString();
     }

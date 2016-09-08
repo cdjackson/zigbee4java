@@ -68,8 +68,7 @@ public class SquawkCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("header");
-        builder.append('=');
+        builder.append("header = ");
         builder.append(header);
         return builder.toString();
     }

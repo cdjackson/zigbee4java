@@ -64,8 +64,7 @@ public class LockDoorCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("pinCode");
-        builder.append('=');
+        builder.append("pinCode = ");
         builder.append(pinCode);
         return builder.toString();
     }

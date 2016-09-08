@@ -130,20 +130,16 @@ public class AnchorNodeAnnounceCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("anchorNodeAddress");
-        builder.append('=');
+        builder.append("anchorNodeAddress = ");
         builder.append(anchorNodeAddress);
         builder.append(", ");
-        builder.append("coordinate1");
-        builder.append('=');
+        builder.append("coordinate1 = ");
         builder.append(coordinate1);
         builder.append(", ");
-        builder.append("coordinate2");
-        builder.append('=');
+        builder.append("coordinate2 = ");
         builder.append(coordinate2);
         builder.append(", ");
-        builder.append("coordinate3");
-        builder.append('=');
+        builder.append("coordinate3 = ");
         builder.append(coordinate3);
         return builder.toString();
     }

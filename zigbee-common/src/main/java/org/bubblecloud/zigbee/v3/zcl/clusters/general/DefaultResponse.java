@@ -90,12 +90,10 @@ public class DefaultResponse extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("commandIdentifier");
-        builder.append('=');
+        builder.append("commandIdentifier = ");
         builder.append(commandIdentifier);
         builder.append(", ");
-        builder.append("statusCode");
-        builder.append('=');
+        builder.append("statusCode = ");
         builder.append(statusCode);
         return builder.toString();
     }

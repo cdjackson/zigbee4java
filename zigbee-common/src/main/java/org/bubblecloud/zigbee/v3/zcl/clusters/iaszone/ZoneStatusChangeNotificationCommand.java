@@ -89,12 +89,10 @@ public class ZoneStatusChangeNotificationCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("zoneStatus");
-        builder.append('=');
+        builder.append("zoneStatus = ");
         builder.append(zoneStatus);
         builder.append(", ");
-        builder.append("extendedStatus");
-        builder.append('=');
+        builder.append("extendedStatus = ");
         builder.append(extendedStatus);
         return builder.toString();
     }

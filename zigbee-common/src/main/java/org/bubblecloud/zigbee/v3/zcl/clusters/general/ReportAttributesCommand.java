@@ -70,8 +70,7 @@ public class ReportAttributesCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("reports");
-        builder.append('=');
+        builder.append("reports = ");
         builder.append(reports);
         return builder.toString();
     }

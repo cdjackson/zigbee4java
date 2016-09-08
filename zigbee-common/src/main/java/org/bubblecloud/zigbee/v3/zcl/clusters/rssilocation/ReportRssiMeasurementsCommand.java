@@ -110,16 +110,13 @@ public class ReportRssiMeasurementsCommand extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("reportingAddress");
-        builder.append('=');
+        builder.append("reportingAddress = ");
         builder.append(reportingAddress);
         builder.append(", ");
-        builder.append("numberOfNeighbors");
-        builder.append('=');
+        builder.append("numberOfNeighbors = ");
         builder.append(numberOfNeighbors);
         builder.append(", ");
-        builder.append("neighborsInformation");
-        builder.append('=');
+        builder.append("neighborsInformation = ");
         builder.append(neighborsInformation);
         return builder.toString();
     }

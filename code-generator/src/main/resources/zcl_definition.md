@@ -148,10 +148,10 @@ The discover attributes command is generated when a remote device wishes to
 discover the identifiers and types of the attributes on a device which are supported
 within the cluster to which this command is directed. 
 
-|Field Name                 |Data Type                  |
-|---------------------------|---------------------------|
-|Start attribute identifier |Unsigned 16-bit integer    |
-|Maximum attribute identifiers |Unsigned 8-bit integer  |
+|Field Name                    |Data Type                  |
+|------------------------------|---------------------------|
+|Start attribute identifier    |Unsigned 16-bit integer    |
+|Maximum attribute identifiers |Unsigned 8-bit integer     |
 
 #### Discover Attributes Response Command [0x0d]
 
@@ -2252,4 +2252,3 @@ command that is still current.
 ## Multistate Value (BACnet Extended) [0x0613] 
 ### Received 
 ### Generated
-

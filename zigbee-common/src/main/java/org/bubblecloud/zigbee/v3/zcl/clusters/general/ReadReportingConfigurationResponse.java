@@ -68,8 +68,7 @@ public class ReadReportingConfigurationResponse extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("records");
-        builder.append('=');
+        builder.append("records = ");
         builder.append(records);
         return builder.toString();
     }

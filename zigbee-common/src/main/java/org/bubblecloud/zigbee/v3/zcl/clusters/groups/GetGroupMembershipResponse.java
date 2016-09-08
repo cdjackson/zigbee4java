@@ -127,16 +127,13 @@ public class GetGroupMembershipResponse extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("capacity");
-        builder.append('=');
+        builder.append("capacity = ");
         builder.append(capacity);
         builder.append(", ");
-        builder.append("groupCount");
-        builder.append('=');
+        builder.append("groupCount = ");
         builder.append(groupCount);
         builder.append(", ");
-        builder.append("groupList");
-        builder.append('=');
+        builder.append("groupList = ");
         builder.append(groupList);
         return builder.toString();
     }

@@ -1,7 +1,5 @@
 package org.bubblecloud.zigbee.tools;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 

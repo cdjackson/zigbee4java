@@ -142,20 +142,16 @@ public class GetAlarmResponse extends ZclCommand {
         final StringBuilder builder = new StringBuilder();
         builder.append(super.toString());
         builder.append(", ");
-        builder.append("status");
-        builder.append('=');
+        builder.append("status = ");
         builder.append(status);
         builder.append(", ");
-        builder.append("alarmCode");
-        builder.append('=');
+        builder.append("alarmCode = ");
         builder.append(alarmCode);
         builder.append(", ");
-        builder.append("clusterIdentifier");
-        builder.append('=');
+        builder.append("clusterIdentifier = ");
         builder.append(clusterIdentifier);
         builder.append(", ");
-        builder.append("timestamp");
-        builder.append('=');
+        builder.append("timestamp = ");
         builder.append(timestamp);
         return builder.toString();
     }
