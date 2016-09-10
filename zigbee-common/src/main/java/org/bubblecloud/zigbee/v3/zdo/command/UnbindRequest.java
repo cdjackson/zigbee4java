@@ -1,16 +1,11 @@
 package org.bubblecloud.zigbee.v3.zdo.command;
 
-import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoRequest;
 
 /**
  * UnbindRequest.
  */
-public class UnbindRequest extends ZdoCommand implements ZdoRequest {
-    /**
-     * Destination address;
-     */
-    int destinationAddress;
+public class UnbindRequest extends ZdoRequest {
     /**
      * Bind source address.
      */
@@ -47,14 +42,6 @@ public class UnbindRequest extends ZdoCommand implements ZdoRequest {
         this.bindDestinationAddressingMode = bindDestinationAddressingMode;
         this.bindDestinationAddress = bindDestinationAddress;
         this.bindDestinationEndpoint = bindDestinationEndpoint;
-    }
-
-    public int getDestinationAddress() {
-        return destinationAddress;
-    }
-
-    public void setDestinationAddress(int destinationAddress) {
-        this.destinationAddress = destinationAddress;
     }
 
     public long getBindSourceAddress() {

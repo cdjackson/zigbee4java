@@ -1,16 +1,11 @@
 package org.bubblecloud.zigbee.v3.zdo.command;
 
-import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoRequest;
 
 /**
  * UserDescriptorSet.
  */
-public class UserDescriptorSet extends ZdoCommand implements ZdoRequest {
-    /**
-     * The destination address.
-     */
-    public int destinationAddress;
+public class UserDescriptorSet extends ZdoRequest {
     /**
      * The network address.
      */
@@ -27,14 +22,6 @@ public class UserDescriptorSet extends ZdoCommand implements ZdoRequest {
         this.destinationAddress = destinationAddress;
         this.networkAddress = networkAddress;
         this.descriptor = descriptor;
-    }
-
-    public int getDestinationAddress() {
-        return destinationAddress;
-    }
-
-    public void setDestinationAddress(int destinationAddress) {
-        this.destinationAddress = destinationAddress;
     }
 
     public int getNetworkAddress() {

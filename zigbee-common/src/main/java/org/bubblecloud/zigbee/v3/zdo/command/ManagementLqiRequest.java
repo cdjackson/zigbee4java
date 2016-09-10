@@ -1,16 +1,11 @@
 package org.bubblecloud.zigbee.v3.zdo.command;
 
-import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoRequest;
 
 /**
  * ManagementLqiRequest.
  */
-public class ManagementLqiRequest extends ZdoCommand implements ZdoRequest {
-    /**
-     * The network address.
-     */
-    private int networkAddress;
+public class ManagementLqiRequest extends ZdoRequest {
     /**
      * The started index.
      */
@@ -20,16 +15,16 @@ public class ManagementLqiRequest extends ZdoCommand implements ZdoRequest {
     }
 
     public ManagementLqiRequest(int networkAddress, int type, int startIndex) {
-        this.networkAddress = networkAddress;
+        this.destinationAddress = networkAddress;
         this.startIndex = startIndex;
     }
 
     public int getNetworkAddress() {
-        return networkAddress;
+        return destinationAddress;
     }
 
     public void setNetworkAddress(int networkAddress) {
-        this.networkAddress = networkAddress;
+        this.destinationAddress = networkAddress;
     }
 
     public int getStartIndex() {
@@ -43,12 +38,8 @@ public class ManagementLqiRequest extends ZdoCommand implements ZdoRequest {
     @Override
     public String toString() {
         return "Management LQI Request " +
-                "networkAddress=" + networkAddress +
+                "networkAddress=" + destinationAddress +
                 ", startIndex=" + startIndex;
     }
 
-    @Override
-    public int getDestinationAddress() {
-        return networkAddress;
-    }
 }

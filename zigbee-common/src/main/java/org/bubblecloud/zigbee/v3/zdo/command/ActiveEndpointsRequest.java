@@ -1,16 +1,11 @@
 package org.bubblecloud.zigbee.v3.zdo.command;
 
-import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoRequest;
 
 /**
  * Created by tlaukkan on 6/9/2016.
  */
-public class ActiveEndpointsRequest extends ZdoCommand implements ZdoRequest {
-    /**
-     * Destination address.
-     */
-    private int destinationAddress;
+public class ActiveEndpointsRequest extends ZdoRequest {
     /**
      * Network address of interest.
      */
@@ -22,14 +17,6 @@ public class ActiveEndpointsRequest extends ZdoCommand implements ZdoRequest {
     public ActiveEndpointsRequest(int destinationAddress, int networkAddressOfInterest) {
         this.destinationAddress = destinationAddress;
         this.networkAddressOfInterest = networkAddressOfInterest;
-    }
-
-    public int getDestinationAddress() {
-        return destinationAddress;
-    }
-
-    public void setDestinationAddress(int destinationAddress) {
-        this.destinationAddress = destinationAddress;
     }
 
     public int getNetworkAddressOfInterest() {

@@ -1,16 +1,11 @@
 package org.bubblecloud.zigbee.v3.zdo.command;
 
-import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoRequest;
 
 /**
  * SimpleDescriptorRequest
  */
-public class SimpleDescriptorRequest extends ZdoCommand implements ZdoRequest {
-    /**
-     * Destination address.
-     */
-    private int destinationAddress;
+public class SimpleDescriptorRequest extends ZdoRequest {
     /**
      * Endpoint.
      */
@@ -22,14 +17,6 @@ public class SimpleDescriptorRequest extends ZdoCommand implements ZdoRequest {
     public SimpleDescriptorRequest(int destinationAddress, int endpoint) {
         this.destinationAddress = destinationAddress;
         this.endpoint = endpoint;
-    }
-
-    public int getDestinationAddress() {
-        return destinationAddress;
-    }
-
-    public void setDestinationAddress(int destinationAddress) {
-        this.destinationAddress = destinationAddress;
     }
 
     public int getEndpoint() {

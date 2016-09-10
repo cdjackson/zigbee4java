@@ -3,12 +3,20 @@ package org.bubblecloud.zigbee.v3.zdo;
 /**
  * Common interface for response commands..
  */
-public interface ZdoRequest {
-
+public abstract class ZdoRequest extends ZdoCommand {
+    /**
+     * Destination address;
+     */
+    protected int destinationAddress;
     /**
      * Gets destination address.
      * @return the destination address
      */
-    int getDestinationAddress();
+    public int getDestinationAddress() {
+        return destinationAddress;
+    }
 
+    public void setDestinationAddress(int destinationAddress) {
+        this.destinationAddress = destinationAddress;
+    }
 }

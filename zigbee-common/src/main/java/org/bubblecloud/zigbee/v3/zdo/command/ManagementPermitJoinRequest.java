@@ -1,20 +1,15 @@
 package org.bubblecloud.zigbee.v3.zdo.command;
 
-import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoRequest;
 
 /**
  * ManagementPermitJoinRequest.
  */
-public class ManagementPermitJoinRequest extends ZdoCommand implements ZdoRequest {
+public class ManagementPermitJoinRequest extends ZdoRequest {
     /**
      * Destination address type: 0x02 - Address 16 bit, 0x0F - Broadcast.
      */
     private int addressingMode;
-    /**
-     * Destination network address.
-     */
-    private int destinationAddress;
     /**
      * Duration to permit joining.  0 = join disabled.  0xff = join enabled. 0x01-0xfe = number of seconds to permit joining.
      */
@@ -40,14 +35,6 @@ public class ManagementPermitJoinRequest extends ZdoCommand implements ZdoReques
 
     public void setAddressingMode(int addressingMode) {
         this.addressingMode = addressingMode;
-    }
-
-    public int getDestinationAddress() {
-        return destinationAddress;
-    }
-
-    public void setDestinationAddress(int destinationAddress) {
-        this.destinationAddress = destinationAddress;
     }
 
     public int getDuration() {

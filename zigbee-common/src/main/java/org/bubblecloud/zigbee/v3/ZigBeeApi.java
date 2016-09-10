@@ -1,18 +1,10 @@
 package org.bubblecloud.zigbee.v3;
 
-import org.bubblecloud.zigbee.util.ZigBeeConstants;
-import org.bubblecloud.zigbee.v3.model.ZToolAddress16;
-import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
-import org.bubblecloud.zigbee.v3.zcl.ZclCommand;
 import org.bubblecloud.zigbee.v3.zcl.ZclCustomResponseMatcher;
-import org.bubblecloud.zigbee.v3.zcl.ZclResponseMatcher;
 import org.bubblecloud.zigbee.v3.zcl.clusters.ZclOnOffCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.colorcontrol.MoveToColorCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.doorlock.LockDoorCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.doorlock.UnlockDoorCommand;
-import org.bubblecloud.zigbee.v3.zcl.clusters.general.ConfigureReportingCommand;
-import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReadAttributesCommand;
-import org.bubblecloud.zigbee.v3.zcl.clusters.general.WriteAttributesCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.groups.AddGroupCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.groups.GetGroupMembershipCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.groups.RemoveGroupCommand;
@@ -21,19 +13,12 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.iaswd.SquawkCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iaswd.StartWarningCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.levelcontrol.MoveToLevelCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.onoff.OffCommand;
-import org.bubblecloud.zigbee.v3.zcl.field.AttributeIdentifier;
-import org.bubblecloud.zigbee.v3.zcl.field.AttributeReportingConfigurationRecord;
 import org.bubblecloud.zigbee.v3.zcl.field.Unsigned16BitInteger;
-import org.bubblecloud.zigbee.v3.zcl.field.WriteAttributeRecord;
-import org.bubblecloud.zigbee.v3.zcl.protocol.ZclAttributeType;
-import org.bubblecloud.zigbee.v3.zcl.protocol.ZclClusterType;
-import org.bubblecloud.zigbee.v3.zdo.ZdoResponseMatcher;
 import org.bubblecloud.zigbee.v3.zdo.command.*;
 import org.bubblecloud.zigbee.util.Cie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.concurrent.*;
 
