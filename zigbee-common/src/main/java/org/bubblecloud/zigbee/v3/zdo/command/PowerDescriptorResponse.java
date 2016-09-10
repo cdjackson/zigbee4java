@@ -19,6 +19,9 @@ public class PowerDescriptorResponse extends ZdoCommand implements ZdoResponse {
      */
     public int sourceAddress;
     
+    /**
+     * The {@link PowerDescriptor}
+     */
     private PowerDescriptor powerDescriptor;
 
     public PowerDescriptorResponse() {
@@ -27,6 +30,7 @@ public class PowerDescriptorResponse extends ZdoCommand implements ZdoResponse {
     public PowerDescriptorResponse(int status, int sourceAddress, PowerDescriptor powerDescriptor) {
         this.status = status;
         this.sourceAddress = sourceAddress;
+        this.powerDescriptor = powerDescriptor;
     }
 
     public int getStatus() {

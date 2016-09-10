@@ -174,10 +174,10 @@ public class ZigBeeApiConstants extends ZigBeeConstants {
     private ZigBeeApiConstants() {}
 
 
-    public static String getDeviceName(int profileID, int deviceType, int deviceID) {
-        if (deviceType == 0) {
-            return "Coordinator";
-        }
+    public static String getDeviceName(int profileID, int deviceID) {
+//        if (deviceType == 0) {
+  //          return "Coordinator";
+    //    }
 		switch (profileID) {
 		case PROFILE_ID_HOME_AUTOMATION:
 			if (deviceID == DEVICE_ID_HA_ON_OFF_SWITCH)

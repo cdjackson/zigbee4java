@@ -41,7 +41,7 @@ public class NodeDescriptor {
         AlternativePAN, FullFunctionDevice, ReducedFunctionDevice, MainsPower, ReceiverOnWhenIdle, SecurityCapable, AddressAllocation
     }
 
-    NodeDescriptor(int apsFlags, int bufferSize, int macCapabilities, boolean complexDescriptorAvailable,
+    public NodeDescriptor(int apsFlags, int bufferSize, int macCapabilities, boolean complexDescriptorAvailable,
             int manufacturerCode, int logicalType, int serverMask, int transferSize, boolean userDescriptorAvailable,
             int frequencyBand) {
 
@@ -160,5 +160,10 @@ public class NodeDescriptor {
 
     public Set<FrequencyBandType> getFrequencyBands() {
         return frequencyBands;
+    }
+    
+    @Override
+    public String toString() {
+        return "Type=" + getLogicalType() + ", Bands=" + getFrequencyBands();
     }
 }

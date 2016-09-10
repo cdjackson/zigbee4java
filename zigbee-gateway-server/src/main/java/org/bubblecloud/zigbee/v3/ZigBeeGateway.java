@@ -63,6 +63,8 @@ public final class ZigBeeGateway {
      */
     public ZigBeeGateway(final ZigBeeTransport dongle, final boolean resetNetwork) {
 
+        commands.put("node", new NodeCommand());
+
         commands.put("devicelist", new DeviceListCommand());
         commands.put("devicelabel", new DeviceLabelCommand());
         commands.put("deviceremove", new DeviceRemoveCommand());
@@ -136,20 +138,17 @@ public final class ZigBeeGateway {
 
             @Override
             public void nodeAdded(ZigBeeNode node) {
-                // TODO Auto-generated method stub
-                
+                print("Node Added " + node, System.out);
             }
 
             @Override
             public void nodeUpdated(ZigBeeNode node) {
-                // TODO Auto-generated method stub
-                
+                print("Node Updated " + node, System.out);
             }
 
             @Override
             public void nodeRemoved(ZigBeeNode node) {
-                // TODO Auto-generated method stub
-                
+                print("Node Removed " + node, System.out);
             }
         });
 
@@ -282,7 +281,7 @@ public final class ZigBeeGateway {
                 + StringUtils.rightPad(Integer.toString(device.getEndpoint()), 3)
                 + " " + StringUtils.rightPad(device.getLabel()!= null ? device.getLabel() : "<label>", 20)
                 + " " + ZigBeeApiConstants.getDeviceName(device.getProfileId(),
-                device.getDeviceType(), device.getDeviceId());
+                device.getDeviceId());
     }
 
     /**
@@ -522,7 +521,7 @@ public final class ZigBeeGateway {
             print("Endpoint         : " + device.getEndpoint(), out);
             print("Device Profile   : " + ZigBeeApiConstants.getProfileName(device.getProfileId())+ String.format("  (0x%04X)", device.getProfileId()), out);
             print("Device Category  : " + ZigBeeApiConstants.getCategoryDeviceName(device.getProfileId(), device.getDeviceId()) + String.format("  (0x%04X)", device.getDeviceId()), out);
-            print("Device Type      : " + ZigBeeApiConstants.getDeviceName(device.getProfileId(), device.getDeviceType(), device.getDeviceId()) + String.format("  (0x%04X)", device.getDeviceType()), out);
+            print("Device Type      : " + ZigBeeApiConstants.getDeviceName(device.getProfileId(), device.getDeviceId()), out);
             print("Device Version   : " + device.getDeviceVersion(), out);
             print("Input Clusters   : ", out);
             printClusters(device, device.getInputClusterIds(), out);
@@ -561,7 +560,51 @@ public final class ZigBeeGateway {
             }
         }
     }
+    
+    /**
+     * Prints node information to console.
+     */
+    private class NodeCommand implements ConsoleCommand {
+        /**
+         * {@inheritDoc}
+         */
+        public String getDescription() {
+            return "Describes a node.";
+        }
+        /**
+         * {@inheritDoc}
+         */
+        public String getSyntax() {
+            return "node NODEID";
+        }
+        /**
+         * {@inheritDoc}
+         */
+        public boolean process(final ZigBeeApi zigbeeApi, final String[] args, PrintStream out) {
+            if (args.length != 2) {
+                return false;
+            }
+            
+            final int address = Integer.parseInt(args[1]);
+            final ZigBeeNode node = zigbeeApi.getNetwork().getNetworkState().getNode(address);
 
+            if (node == null) {
+                return false;
+            }
+
+            print("IEEE Address     : " + node.getIeeeAddress(), out);
+            print("Network Address  : " + node.getNetworkAddress(), out);
+            print("Node Descriptor  : " + node.getNodeDescriptor().toString(), out);
+            print("Power Descriptor : " + node.getPowerDescriptor().toString(), out);
+            print("Devices:", out);
+            for(ZigBeeDevice device : zigbeeApi.getNetwork().getNodeDevices(address)) {
+                print(device.toString(), out);
+            }
+
+            return true;
+        }
+    }
+    
     /**
      * Binds client device to server device with given cluster ID.
      */

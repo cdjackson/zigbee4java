@@ -2,6 +2,7 @@ package org.bubblecloud.zigbee.v3.zdo.command;
 
 import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
 import org.bubblecloud.zigbee.v3.zdo.ZdoResponse;
+import org.bubblecloud.zigbee.v3.zdo.descriptors.NodeDescriptor;
 
 /**
  * NodeDescriptorResponse.
@@ -19,64 +20,19 @@ public class NodeDescriptorResponse extends ZdoCommand implements ZdoResponse {
      * Device's short address of this Node descriptor.
      */
     public int networkAddress;
-    /**
-     * Node Flags assigned for APS. For V1.0 all bits are reserved
-     */
-    public int apsFlags;
-    /**
-     * Indicates size of maximum NPDU. This field is used as a high level indication for api
-     */
-    public int bufferSize;
-    /**
-     * Capability flags stored for the MAC
-     */
-    public int capabilities;
-    /**
-     * Indicates if complex descriptor is available for the node
-     */
-    public boolean complexDescriptorAvailable;
-    /**
-     * Specifies a manufacturer code that is allocated by ZigBee Alliance, relating to the manufacturer to the device
-     */
-    public int manufacturerCode;
-    /**
-     * Logical type
-     */
-    public int logicalType;
-    /**
-     * Specifies the system server capability
-     */
-    public int serverMask;
-    /**
-     * Indicates maximum size of Transfer up to 0x7fff (This field is reserved in version 1.0 and shall be set to zero ).
-     */
-    public int maximumInTransferSize;
-    /**
-     * Indicates if user descriptor is available for the node
-     */
-    public boolean userDescriptorAvailable;
-    /**
-     * Frequency band.
-     */
-    public int frequencyBand;
+    
+    private NodeDescriptor nodeDescriptor;
+
 
     public NodeDescriptorResponse() {
     }
 
-    public NodeDescriptorResponse(int status, int sourceAddress, int networkAddress, int apsFlags, int bufferSize, int capabilities, boolean complexDescriptorAvailable, int manufacturerCode, int logicalType, int serverMask, int transferSize, boolean userDescriptorAvailable, int frequencyBand) {
+    public NodeDescriptorResponse(int status, int sourceAddress, int networkAddress,
+            NodeDescriptor nodeDescriptor) {
         this.status = status;
         this.sourceAddress = sourceAddress;
         this.networkAddress = networkAddress;
-        this.apsFlags = apsFlags;
-        this.bufferSize = bufferSize;
-        this.capabilities = capabilities;
-        this.complexDescriptorAvailable = complexDescriptorAvailable;
-        this.manufacturerCode = manufacturerCode;
-        this.logicalType = logicalType;
-        this.serverMask = serverMask;
-        this.maximumInTransferSize = transferSize;
-        this.userDescriptorAvailable = userDescriptorAvailable;
-        this.frequencyBand = frequencyBand;
+        this.nodeDescriptor = nodeDescriptor;
     }
 
     public int getStatus() {
@@ -102,85 +58,9 @@ public class NodeDescriptorResponse extends ZdoCommand implements ZdoResponse {
     public void setNetworkAddress(int networkAddress) {
         this.networkAddress = networkAddress;
     }
-
-    public int getApsFlags() {
-        return apsFlags;
-    }
-
-    public void setApsFlags(int apsFlags) {
-        this.apsFlags = apsFlags;
-    }
-
-    public int getBufferSize() {
-        return bufferSize;
-    }
-
-    public void setBufferSize(int bufferSize) {
-        this.bufferSize = bufferSize;
-    }
-
-    public int getCapabilities() {
-        return capabilities;
-    }
-
-    public void setCapabilities(int capabilities) {
-        this.capabilities = capabilities;
-    }
-
-    public boolean isComplexDescriptorAvailable() {
-        return complexDescriptorAvailable;
-    }
-
-    public void setComplexDescriptorAvailable(boolean complexDescriptorAvailable) {
-        this.complexDescriptorAvailable = complexDescriptorAvailable;
-    }
-
-    public int getManufacturerCode() {
-        return manufacturerCode;
-    }
-
-    public void setManufacturerCode(int manufacturerCode) {
-        this.manufacturerCode = manufacturerCode;
-    }
-
-    public int getLogicalType() {
-        return logicalType;
-    }
-
-    public void setLogicalType(int logicalType) {
-        this.logicalType = logicalType;
-    }
-
-    public int getServerMask() {
-        return serverMask;
-    }
-
-    public void setServerMask(int serverMask) {
-        this.serverMask = serverMask;
-    }
-
-    public int getMaximumInTransferSize() {
-        return maximumInTransferSize;
-    }
-
-    public void setMaximumInTransferSize(int maximumInTransferSize) {
-        this.maximumInTransferSize = maximumInTransferSize;
-    }
-
-    public boolean isUserDescriptorAvailable() {
-        return userDescriptorAvailable;
-    }
-
-    public void setUserDescriptorAvailable(boolean userDescriptorAvailable) {
-        this.userDescriptorAvailable = userDescriptorAvailable;
-    }
-
-    public int getFrequencyBand() {
-        return frequencyBand;
-    }
-
-    public void setFrequencyBand(int frequencyBand) {
-        this.frequencyBand = frequencyBand;
+    
+    public NodeDescriptor getNodeDescriptor() {
+        return nodeDescriptor;
     }
 
     @Override
@@ -189,15 +69,6 @@ public class NodeDescriptorResponse extends ZdoCommand implements ZdoResponse {
                 "status=" + status +
                 ", sourceAddress=" + sourceAddress +
                 ", networkAddress=" + networkAddress +
-                ", apsFlags=" + apsFlags +
-                ", bufferSize=" + bufferSize +
-                ", capabilities=" + capabilities +
-                ", complexDescriptorAvailable=" + complexDescriptorAvailable +
-                ", manufacturerCode=" + manufacturerCode +
-                ", logicalType=" + logicalType +
-                ", serverMask=" + serverMask +
-                ", maximumInTransferSize=" + maximumInTransferSize +
-                ", userDescriptorAvailable=" + userDescriptorAvailable +
-                ", frequencyBand=" + frequencyBand;
+                ", nodeDescriptor=" + nodeDescriptor;
     }
 }

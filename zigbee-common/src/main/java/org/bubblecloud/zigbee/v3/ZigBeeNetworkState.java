@@ -95,9 +95,15 @@ public interface ZigBeeNetworkState {
     ZigBeeNode getNode(Integer networkAddress);
 
     /**
+     * Update a node
+     * @param node
+     */
+    void updateNode(ZigBeeNode node);
+    
+    /**
      * Removes a node from the network
      * @param networkAddress
      */
     void removeNode(Integer networkAddress);
-    
+
 }

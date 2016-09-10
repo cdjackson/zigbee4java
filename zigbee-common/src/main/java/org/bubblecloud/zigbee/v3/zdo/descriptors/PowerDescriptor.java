@@ -17,6 +17,9 @@ public class PowerDescriptor {
         Critical, Low, Medium, Full
     }
 
+    public enum CurrentPowerModeType {
+    }
+
     private final int currentPowerMode;
     private final Set<PowerSourceType> availablePowerSources;;
     private final PowerSourceType currentPowerSource;
@@ -96,7 +99,7 @@ public class PowerDescriptor {
 
     @Override
     public String toString() {
-        return "PowerDescriptor: " + currentPowerMode + ", " + availablePowerSources + ", " + currentPowerSource + ", "
+        return currentPowerMode + ", " + availablePowerSources + ", " + currentPowerSource + ", "
                 + powerLevel;
     }
 }

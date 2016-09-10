@@ -324,9 +324,15 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
         }
 
         node.setNetworkAddress(ieeeAddressResponse.getNetworkAddress());
+        node.setNodeDescriptor(nodeDescriptorResponse.getNodeDescriptor());
         node.setIeeeAddress(ieeeAddressResponse.getIeeeAddress());
         node.setPowerDescriptor(powerDescriptorResponse.getPowerDescriptor());
 
+        if (newDevice) {
+            networkState.addNode(node);
+        } else {
+            networkState.updateNode(node);
+        }
     }
 
     /**
@@ -357,9 +363,9 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
                 simpleDescriptorResponse.getEndpoint()));
         device.setProfileId(simpleDescriptorResponse.getProfileId());
         device.setDeviceId(simpleDescriptorResponse.getDeviceId());
-        device.setManufacturerCode(nodeDescriptorResponse.getManufacturerCode());
+//        device.setManufacturerCode(nodeDescriptorResponse.getNodeDescriptor().getManufacturerCode());
         device.setDeviceVersion(simpleDescriptorResponse.getDeviceVersion());
-        device.setDeviceType(nodeDescriptorResponse.getLogicalType());
+//        device.setDeviceType(nodeDescriptorResponse.getNodeDescriptor().getLogicalType());
         device.setInputClusterIds(simpleDescriptorResponse.getInputClusters());
         device.setOutputClusterIds(simpleDescriptorResponse.getOutputClusters());
 

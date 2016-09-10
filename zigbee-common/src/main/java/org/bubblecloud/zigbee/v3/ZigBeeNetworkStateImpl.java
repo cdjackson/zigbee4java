@@ -20,7 +20,7 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
     /**
      * The nodes in the ZigBee network
      */
-    private Map<String, ZigBeeNode> nodes = new TreeMap<String, ZigBeeNode>();
+    private Map<Integer, ZigBeeNode> nodes = new TreeMap<Integer, ZigBeeNode>();
     
     /**
      * The devices in the ZigBee network.
@@ -216,20 +216,19 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
 
     @Override
     public ZigBeeNode getNode(Integer networkAddress) {
-        // TODO Auto-generated method stub
-        return null;
+        return nodes.get(networkAddress);
     }
     
     @Override
     public void removeNode(Integer networkAddress) {
         final ZigBeeNode node;
         synchronized (nodes) {
-            node = nodes.remove(networkAddress.toString());
+            node = nodes.remove(networkAddress);
         }
         synchronized (this) {
             if (node != null) {
                 for (final ZigBeeNetworkStateListener listener : listeners) {
-//                    listener.nodeRemoved(node);
+                    listener.nodeRemoved(node);
                 }
             }
         }
@@ -239,13 +238,19 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
     public void addNode(final ZigBeeNode node) {
         synchronized (nodes) {
             nodes.put(
-                    node.getNetworkAddress().toString(),
+                    node.getNetworkAddress(),
                     node);
         }
         synchronized (this) {
             for (final ZigBeeNetworkStateListener listener : listeners) {
-//                listener.deviceAdded(node);
+                listener.nodeAdded(node);
             }
         }
+    }
+
+    @Override
+    public void updateNode(ZigBeeNode node) {
+        // TODO Auto-generated method stub
+        
     }
 }

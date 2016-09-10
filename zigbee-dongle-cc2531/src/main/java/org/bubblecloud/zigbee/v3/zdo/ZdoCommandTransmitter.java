@@ -25,6 +25,7 @@ import org.bubblecloud.zigbee.network.packet.zdo.*;
 import org.bubblecloud.zigbee.v3.IeeeAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeException;
 import org.bubblecloud.zigbee.v3.zdo.command.*;
+import org.bubblecloud.zigbee.v3.zdo.descriptors.NodeDescriptor;
 import org.bubblecloud.zigbee.v3.zdo.descriptors.PowerDescriptor;
 import org.bubblecloud.zigbee.v3.CommandListener;
 import org.bubblecloud.zigbee.util.DoubleByte;
@@ -60,7 +61,9 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
 
     /**
      * Constructor for setting network manager.
-     * @param networkManager the network manager
+     * 
+     * @param networkManager
+     *            the network manager
      */
     public ZdoCommandTransmitter(final ZigBeeNetworkManagerImpl networkManager) {
         this.networkManager = networkManager;
@@ -68,7 +71,9 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
 
     /**
      * Adds command listener.
-     * @param listener the command listener
+     * 
+     * @param listener
+     *            the command listener
      */
     public void addCommandListener(final CommandListener listener) {
         final List<CommandListener> modifiedCommandListeners = new ArrayList<CommandListener>(commandListeners);
@@ -78,7 +83,9 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
 
     /**
      * Removes command listener.
-     * @param listener the command listener
+     * 
+     * @param listener
+     *            the command listener
      */
     public void removeCommandListener(final CommandListener listener) {
         final List<CommandListener> modifiedCommandListeners = new ArrayList<CommandListener>(commandListeners);
@@ -88,73 +95,62 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
 
     /**
      * Sends command message.
-     * @param command the command
+     * 
+     * @param command
+     *            the command
      * @throws ZigBeeNetworkManagerException
      */
     public void sendCommand(final ZdoCommand command) throws ZigBeeException {
         synchronized (networkManager) {
             if (command instanceof ActiveEndpointsRequest) {
                 final ActiveEndpointsRequest activeEndpointsRequest = (ActiveEndpointsRequest) command;
-                networkManager.sendCommand(new ZDO_ACTIVE_EP_REQ(
-                        getZToolAddress16(activeEndpointsRequest.getDestinationAddress()),
-                        getZToolAddress16(activeEndpointsRequest.getNetworkAddressOfInterest())));
+                networkManager.sendCommand(new ZDO_ACTIVE_EP_REQ(getZToolAddress16(activeEndpointsRequest
+                        .getDestinationAddress()), getZToolAddress16(activeEndpointsRequest
+                        .getNetworkAddressOfInterest())));
             }
             if (command instanceof IeeeAddressRequest) {
                 final IeeeAddressRequest ieeeAddressRequest = (IeeeAddressRequest) command;
-                networkManager.sendCommand(new ZDO_IEEE_ADDR_REQ(
-                        getZToolAddress16(ieeeAddressRequest.getNetworkAddress()),
-                        ieeeAddressRequest.getType(),
-                        ieeeAddressRequest.getStartIndex()
-                        ));
+                networkManager.sendCommand(new ZDO_IEEE_ADDR_REQ(getZToolAddress16(ieeeAddressRequest
+                        .getNetworkAddress()), ieeeAddressRequest.getType(), ieeeAddressRequest.getStartIndex()));
             }
             if (command instanceof SimpleDescriptorRequest) {
                 final SimpleDescriptorRequest simpleDescriptorRequest = (SimpleDescriptorRequest) command;
-                networkManager.sendCommand(new ZDO_SIMPLE_DESC_REQ(
-                        (short) simpleDescriptorRequest.getDestinationAddress(),
-                        (short) simpleDescriptorRequest.getEndpoint()));
+                networkManager.sendCommand(new ZDO_SIMPLE_DESC_REQ((short) simpleDescriptorRequest
+                        .getDestinationAddress(), (short) simpleDescriptorRequest.getEndpoint()));
             }
             if (command instanceof NodeDescriptorRequest) {
                 final NodeDescriptorRequest nodeDescriptorRequest = (NodeDescriptorRequest) command;
-                networkManager.sendCommand(new ZDO_NODE_DESC_REQ(
-                        getZToolAddress16(nodeDescriptorRequest.getDestinationAddress()),
-                        getZToolAddress16(nodeDescriptorRequest.getNetworkAddressOfInterest())));
+                networkManager.sendCommand(new ZDO_NODE_DESC_REQ(getZToolAddress16(nodeDescriptorRequest
+                        .getDestinationAddress()), getZToolAddress16(nodeDescriptorRequest
+                        .getNetworkAddressOfInterest())));
             }
             if (command instanceof PowerDescriptorRequest) {
                 final PowerDescriptorRequest powerDescriptorRequest = (PowerDescriptorRequest) command;
-                networkManager.sendCommand(new ZDO_POWER_DESC_REQ(
-                        (short) powerDescriptorRequest.getDestinationAddress()));
+                networkManager.sendCommand(new ZDO_POWER_DESC_REQ((short) powerDescriptorRequest
+                        .getDestinationAddress()));
             }
             if (command instanceof ManagementPermitJoinRequest) {
                 final ManagementPermitJoinRequest managementPermitJoinRequest = (ManagementPermitJoinRequest) command;
-                networkManager.sendCommand(new ZDO_MGMT_PERMIT_JOIN_REQ(
-                        (byte) managementPermitJoinRequest.getAddressingMode(),
-                        getZToolAddress16(managementPermitJoinRequest.getDestinationAddress()),
-                        managementPermitJoinRequest.getDuration(),
-                        managementPermitJoinRequest.getTrustCenterSignificance()));
+                networkManager.sendCommand(new ZDO_MGMT_PERMIT_JOIN_REQ((byte) managementPermitJoinRequest
+                        .getAddressingMode(), getZToolAddress16(managementPermitJoinRequest.getDestinationAddress()),
+                        managementPermitJoinRequest.getDuration(), managementPermitJoinRequest
+                                .getTrustCenterSignificance()));
             }
             if (command instanceof BindRequest) {
                 final BindRequest bindRequest = (BindRequest) command;
-                networkManager.sendCommand(new ZDO_BIND_REQ(
-                        getZToolAddress16(bindRequest.getDestinationAddress()),
-                        getZToolAddress64(bindRequest.getBindSourceAddress()),
-                        bindRequest.getBindSourceEndpoint(),
-                        new DoubleByte(bindRequest.getBindCluster()),
-                        bindRequest.getBindDestinationAddressingMode(),
-                        getZToolAddress64(bindRequest.getBindDestinationAddress()),
-                        bindRequest.getBindDestinationEndpoint()
-                        ));
+                networkManager.sendCommand(new ZDO_BIND_REQ(getZToolAddress16(bindRequest.getDestinationAddress()),
+                        getZToolAddress64(bindRequest.getBindSourceAddress()), bindRequest.getBindSourceEndpoint(),
+                        new DoubleByte(bindRequest.getBindCluster()), bindRequest.getBindDestinationAddressingMode(),
+                        getZToolAddress64(bindRequest.getBindDestinationAddress()), bindRequest
+                                .getBindDestinationEndpoint()));
             }
             if (command instanceof UnbindRequest) {
                 final UnbindRequest unbindRequest = (UnbindRequest) command;
-                networkManager.sendCommand(new ZDO_UNBIND_REQ(
-                        getZToolAddress16(unbindRequest.getDestinationAddress()),
-                        getZToolAddress64(unbindRequest.getBindSourceAddress()),
-                        unbindRequest.getBindSourceEndpoint(),
-                        new DoubleByte(unbindRequest.getBindCluster()),
-                        unbindRequest.getBindDestinationAddressingMode(),
-                        getZToolAddress64(unbindRequest.getBindDestinationAddress()),
-                        unbindRequest.getBindDestinationEndpoint()
-                ));
+                networkManager.sendCommand(new ZDO_UNBIND_REQ(getZToolAddress16(unbindRequest.getDestinationAddress()),
+                        getZToolAddress64(unbindRequest.getBindSourceAddress()), unbindRequest.getBindSourceEndpoint(),
+                        new DoubleByte(unbindRequest.getBindCluster()), unbindRequest
+                                .getBindDestinationAddressingMode(), getZToolAddress64(unbindRequest
+                                .getBindDestinationAddress()), unbindRequest.getBindDestinationEndpoint()));
             }
             if (command instanceof UserDescriptorSet) {
                 final UserDescriptorSet userDescriptorSet = (UserDescriptorSet) command;
@@ -167,46 +163,41 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
                 for (int i = 0; i < characters.length; i++) {
                     characters[i] = bytes[i];
                 }
-                networkManager.sendCommand(new ZDO_USER_DESC_SET(
-                        getZToolAddress16(userDescriptorSet.getDestinationAddress()),
-                        getZToolAddress16(userDescriptorSet.getNetworkAddress()),
-                        length,
-                        characters
-                ));
+                networkManager.sendCommand(new ZDO_USER_DESC_SET(getZToolAddress16(userDescriptorSet
+                        .getDestinationAddress()), getZToolAddress16(userDescriptorSet.getNetworkAddress()), length,
+                        characters));
             }
             if (command instanceof UserDescriptorRequest) {
                 final UserDescriptorRequest userDescriptorRequest = (UserDescriptorRequest) command;
-                networkManager.sendCommand(new ZDO_USER_DESC_REQ(
-                        getZToolAddress16(userDescriptorRequest.getDestinationAddress()),
-                        getZToolAddress16(userDescriptorRequest.getNetworkAddressOfInterest())));
+                networkManager.sendCommand(new ZDO_USER_DESC_REQ(getZToolAddress16(userDescriptorRequest
+                        .getDestinationAddress()), getZToolAddress16(userDescriptorRequest
+                        .getNetworkAddressOfInterest())));
             }
             if (command instanceof ManagementLqiRequest) {
                 final ManagementLqiRequest managementLqiRequest = (ManagementLqiRequest) command;
-                networkManager.sendCommand(new ZDO_MGMT_LQI_REQ(
-                        getZToolAddress16(managementLqiRequest.getNetworkAddress()),
-                        managementLqiRequest.getStartIndex()
-                ));
+                networkManager.sendCommand(new ZDO_MGMT_LQI_REQ(getZToolAddress16(managementLqiRequest
+                        .getNetworkAddress()), managementLqiRequest.getStartIndex()));
             }
         }
     }
 
     private ZToolAddress16 getZToolAddress16(int networkAddress) {
-        return new ZToolAddress16(
-                            Integers.getByteAsInteger(networkAddress, 1),
-                            Integers.getByteAsInteger(networkAddress, 0)
-                    );
+        return new ZToolAddress16(Integers.getByteAsInteger(networkAddress, 1), Integers.getByteAsInteger(
+                networkAddress, 0));
     }
+
     private ZToolAddress64 getZToolAddress64(long networkAddress) {
         return new ZToolAddress64(networkAddress);
     }
 
     @Override
     public void receivedAsynchronousCommand(ZToolPacket packet) {
-        if (packet.isError()) return;
+        if (packet.isError())
+            return;
 
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_SIMPLE_DESC_RSP) {
             final ZDO_SIMPLE_DESC_RSP message = (ZDO_SIMPLE_DESC_RSP) packet;
-            
+
             final SimpleDescriptorResponse command = new SimpleDescriptorResponse();
             command.setSourceAddress(message.SrcAddress.get16BitValue());
             command.setStatus(message.Status);
@@ -256,11 +247,8 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_END_DEVICE_ANNCE_IND) {
             final ZDO_END_DEVICE_ANNCE_IND message = (ZDO_END_DEVICE_ANNCE_IND) packet;
 
-            final DeviceAnnounce command = new DeviceAnnounce(
-                    message.SrcAddr.get16BitValue(),
-                    message.IEEEAddr.getLong(),
-                    message.NwkAddr.get16BitValue(),
-                    message.Capabilities);
+            final DeviceAnnounce command = new DeviceAnnounce(message.SrcAddr.get16BitValue(),
+                    message.IEEEAddr.getLong(), message.NwkAddr.get16BitValue(), message.Capabilities);
 
             notifyCommandReceived(command);
 
@@ -270,38 +258,23 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_IEEE_ADDR_RSP) {
             final ZDO_IEEE_ADDR_RSP message = (ZDO_IEEE_ADDR_RSP) packet;
 
-            final IeeeAddressResponse command = new IeeeAddressResponse(
-                    message.Status,
-                    message.SrcAddrMode,
-                    new IeeeAddress(message.getIeeeAddress().getLong()),
-                    message.nwkAddr.get16BitValue(),
-                    message.getStartIndex(),
-                    message.getAssociatedNodeCount(),
-                    message.getAssociatedNodesList()
-            );
+            final IeeeAddressResponse command = new IeeeAddressResponse(message.Status, message.SrcAddrMode,
+                    new IeeeAddress(message.getIeeeAddress().getLong()), message.nwkAddr.get16BitValue(),
+                    message.getStartIndex(), message.getAssociatedNodeCount(), message.getAssociatedNodesList());
 
             notifyCommandReceived(command);
 
             return;
         }
-        
+
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_NODE_DESC_RSP) {
             final ZDO_NODE_DESC_RSP message = (ZDO_NODE_DESC_RSP) packet;
-
-            final NodeDescriptorResponse command = new NodeDescriptorResponse(
-                    message.Status,
-                    message.SrcAddress.get16BitValue(),
-                    message.nwkAddr.get16BitValue(),
-                    message.APSFlags,
-                    message.BufferSize,
-                    message.Capabilities,
-                    message.ComplexDescriptorAvailable,
-                    message.ManufacturerCode.get16BitValue(),
-                    message.NodeType,
-                    message.ServerMask,
-                    message.TransferSize.get16BitValue(),
-                    message.UserDescriptorAvailable,
-                    message.FreqBand);
+            final NodeDescriptor nodeDescriptor = new NodeDescriptor(message.APSFlags, message.BufferSize,
+                    message.Capabilities, message.ComplexDescriptorAvailable, message.ManufacturerCode.get16BitValue(),
+                    message.NodeType, message.ServerMask, message.TransferSize.get16BitValue(),
+                    message.UserDescriptorAvailable, message.FreqBand);
+            final NodeDescriptorResponse command = new NodeDescriptorResponse(message.Status,
+                    message.SrcAddress.get16BitValue(), message.nwkAddr.get16BitValue(), nodeDescriptor);
 
             notifyCommandReceived(command);
 
@@ -310,11 +283,11 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
 
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_POWER_DESC_RSP) {
             final ZDO_POWER_DESC_RSP message = (ZDO_POWER_DESC_RSP) packet;
+            final PowerDescriptor powerDescriptor = new PowerDescriptor(message.CurrentMode, message.AvailableSources,
+                    message.CurrentSource, message.CurrentLevel);
 
-            final PowerDescriptorResponse command = new PowerDescriptorResponse(
-                    message.Status,
-                    message.SrcAddress.get16BitValue(),
-                    new PowerDescriptor(message.CurrentMode, message.AvailableSources, message.CurrentSource, message.CurrentLevel));
+            final PowerDescriptorResponse command = new PowerDescriptorResponse(message.Status,
+                    message.SrcAddress.get16BitValue(), powerDescriptor);
 
             notifyCommandReceived(command);
 
@@ -324,8 +297,7 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_MGMT_PERMIT_JOIN_RSP) {
             final ZDO_MGMT_PERMIT_JOIN_RSP message = (ZDO_MGMT_PERMIT_JOIN_RSP) packet;
 
-            final ManagementPermitJoinResponse command = new ManagementPermitJoinResponse(
-                    message.Status,
+            final ManagementPermitJoinResponse command = new ManagementPermitJoinResponse(message.Status,
                     message.SrcAddress.get16BitValue());
 
             notifyCommandReceived(command);
@@ -336,9 +308,7 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_BIND_RSP) {
             final ZDO_BIND_RSP message = (ZDO_BIND_RSP) packet;
 
-            final BindResponse command = new BindResponse(
-                    message.Status,
-                    message.SrcAddress.get16BitValue());
+            final BindResponse command = new BindResponse(message.Status, message.SrcAddress.get16BitValue());
 
             notifyCommandReceived(command);
 
@@ -348,9 +318,7 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_UNBIND_RSP) {
             final ZDO_UNBIND_RSP message = (ZDO_UNBIND_RSP) packet;
 
-            final UnbindResponse command = new UnbindResponse(
-                    message.Status,
-                    message.SrcAddress.get16BitValue());
+            final UnbindResponse command = new UnbindResponse(message.Status, message.SrcAddress.get16BitValue());
 
             notifyCommandReceived(command);
 
@@ -365,12 +333,8 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
                 bytes[i] = (byte) message.Descriptor[i];
             }
             final String descriptor = new String(bytes, Charset.forName("ASCII"));
-            final UserDescriptorResponse command = new UserDescriptorResponse(
-                    message.SrcAddress.get16BitValue(),
-                    message.nwkAddr.get16BitValue(),
-                    message.Status,
-                    descriptor
-            );
+            final UserDescriptorResponse command = new UserDescriptorResponse(message.SrcAddress.get16BitValue(),
+                    message.nwkAddr.get16BitValue(), message.Status, descriptor);
             notifyCommandReceived(command);
             return;
         }
@@ -379,10 +343,7 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
             final ZDO_USER_DESC_CONF message = (ZDO_USER_DESC_CONF) packet;
 
             final UserDescriptorConfiguration command = new UserDescriptorConfiguration(
-                    message.SrcAddress.get16BitValue(),
-                    message.nwkAddr.get16BitValue(),
-                    message.Status
-            );
+                    message.SrcAddress.get16BitValue(), message.nwkAddr.get16BitValue(), message.Status);
             notifyCommandReceived(command);
             return;
         }
@@ -393,23 +354,16 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
             final ZDO_MGMT_LQI_RSP.NeighborLqiListItemClass[] neighborItems = message.getNeighborLqiList();
             final ManagementLqiResponse.Neighbor[] neighbors = new ManagementLqiResponse.Neighbor[neighborItems.length];
             for (int i = 0; i < neighbors.length; i++) {
-                neighbors[i] = new ManagementLqiResponse.Neighbor(
-                        neighborItems[i].Depth,
-                        neighborItems[i].ExtendedPanID,
-                        neighborItems[i].ExtendedAddress.getLong(),
+                neighbors[i] = new ManagementLqiResponse.Neighbor(neighborItems[i].Depth,
+                        neighborItems[i].ExtendedPanID, neighborItems[i].ExtendedAddress.getLong(),
                         neighborItems[i].NetworkAddress.get16BitValue(),
                         neighborItems[i].Reserved_Relationship_RxOnWhenIdle_DeviceType,
-                        neighborItems[i].Reserved_PermitJoining,
-                        neighborItems[i].RxLQI);
+                        neighborItems[i].Reserved_PermitJoining, neighborItems[i].RxLQI);
             }
 
-            final ManagementLqiResponse command = new ManagementLqiResponse(
-                    message.Status,
-                    message.SrcAddress.get16BitValue(),
-                    message.getStartIndex(),
-                    message.getNeighborLQICount(),
-                    neighbors
-            );
+            final ManagementLqiResponse command = new ManagementLqiResponse(message.Status,
+                    message.SrcAddress.get16BitValue(), message.getStartIndex(), message.getNeighborLQICount(),
+                    neighbors);
 
             notifyCommandReceived(command);
 
@@ -440,10 +394,11 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
         }
     }
 
-
     /**
      * Notifies ZDO command listeners that ZDO command was received.
-     * @param command the ZDO command
+     * 
+     * @param command
+     *            the ZDO command
      */
     private void notifyCommandReceived(final ZdoCommand command) {
         for (final CommandListener commandListener : commandListeners) {

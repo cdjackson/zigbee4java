@@ -39,17 +39,9 @@ public class ZigBeeDevice implements CommandListener {
      */
     private int profileId;
     /**
-     * The logical type of the device.
-     */
-    private int deviceType;
-    /**
      * The device ID.
      */
     private int deviceId;
-    /**
-     * The manufacturer code.
-     */
-    private int manufacturerCode;
     /**
      * The device version.
      */
@@ -312,44 +304,6 @@ public class ZigBeeDevice implements CommandListener {
     }
 
     /**
-     * Gets device logical type.
-     * 
-     * @return the device logical type.
-     */
-    public int getDeviceType() {
-        return deviceType;
-    }
-
-    /**
-     * Sets device logical type.
-     * 
-     * @param deviceType
-     *            the device logical type
-     */
-    public void setDeviceType(int deviceType) {
-        this.deviceType = deviceType;
-    }
-
-    /**
-     * Gets manufacturer code.
-     * 
-     * @return the manufacturer code.
-     */
-    public int getManufacturerCode() {
-        return manufacturerCode;
-    }
-
-    /**
-     * Sets manufacturer code.
-     * 
-     * @param manufacturerCode
-     *            the manufacturer code.
-     */
-    public void setManufacturerCode(int manufacturerCode) {
-        this.manufacturerCode = manufacturerCode;
-    }
-
-    /**
      * Gets label.
      * 
      * @return the label
@@ -373,11 +327,12 @@ public class ZigBeeDevice implements CommandListener {
         if (command instanceof ReportAttributesCommand
                 && ((ReportAttributesCommand) command).getSourceAddress().equals(networkAddress)) {
             ReportAttributesCommand attributeCommand = (ReportAttributesCommand) command;
-            
+
             // Get the cluster
             ZclCluster cluster = getCluster(attributeCommand.getClusterId());
-            if(cluster == null) {
-                LOGGER.debug("{}: Cluster {} not found for attribute report", networkAddress, attributeCommand.getClusterId());
+            if (cluster == null) {
+                LOGGER.debug("{}: Cluster {} not found for attribute report", networkAddress,
+                        attributeCommand.getClusterId());
                 return;
             }
 
@@ -387,11 +342,12 @@ public class ZigBeeDevice implements CommandListener {
         if (command instanceof ReadAttributesResponse
                 && ((ReadAttributesResponse) command).getSourceAddress().equals(networkAddress)) {
             ReadAttributesResponse attributeCommand = (ReadAttributesResponse) command;
-            
+
             // Get the cluster
             ZclCluster cluster = getCluster(attributeCommand.getClusterId());
-            if(cluster == null) {
-                LOGGER.debug("{}: Cluster {} not found for attribute report", networkAddress, attributeCommand.getClusterId());
+            if (cluster == null) {
+                LOGGER.debug("{}: Cluster {} not found for attribute report", networkAddress,
+                        attributeCommand.getClusterId());
                 return;
             }
 
@@ -403,9 +359,9 @@ public class ZigBeeDevice implements CommandListener {
 
     @Override
     public String toString() {
-        return "ZigBeeDevice " + "label=" + label + ", networkAddress=" + networkAddress.toString() + ", ieeeAddress="
-                + String.format("%08X", ieeeAddress) + ", profileId=" + profileId + ", deviceType=" + deviceType + ", deviceId=" + deviceId
-                + ", manufacturerCode=" + manufacturerCode + ", deviceVersion=" + deviceVersion + ", inputClusterIds="
-                + getInputClusterIds().toString() + ", outputClusterIds=" + getOutputClusterIds().toString();
+        return "label=" + label + ", networkAddress=" + networkAddress.toString() + ", ieeeAddress="
+                + ieeeAddress.toString() + ", profileId=" + profileId + ", deviceId=" + deviceId + ", deviceVersion="
+                + deviceVersion + ", inputClusterIds=" + getInputClusterIds().toString() + ", outputClusterIds="
+                + getOutputClusterIds().toString();
     }
 }
