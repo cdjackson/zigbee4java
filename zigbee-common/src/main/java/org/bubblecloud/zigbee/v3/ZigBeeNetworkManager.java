@@ -163,7 +163,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
         }
 
         for (final ZigBeeDevice device : devicesToRemove) {
-            networkState.removeDevice(device.getNetworkAddress(), device.getEndpoint());
+            networkState.removeDevice(device.getDeviceAddress());
         }
     }
 

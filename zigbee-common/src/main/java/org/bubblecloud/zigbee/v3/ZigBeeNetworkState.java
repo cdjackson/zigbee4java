@@ -53,7 +53,7 @@ public interface ZigBeeNetworkState {
      * Removes device by network address.
      * @param networkAddress the network address
      */
-    void removeDevice(int networkAddress, int endpoint);
+    void removeDevice(ZigBeeAddress networkAddress);
 
     /**
      * Gets device by network address.
@@ -80,4 +80,24 @@ public interface ZigBeeNetworkState {
      * @param networkListener the network listener
      */
     void removeNetworkListener(ZigBeeNetworkStateListener networkListener);
+
+    /**
+     * Adds a node to the network
+     * @param node the new {@link ZigBeeNode}
+     */
+    void addNode(ZigBeeNode node);
+
+    /**
+     * Gets a {@link ZigBeeNode}
+     * @param networkAddress
+     * @return
+     */
+    ZigBeeNode getNode(Integer networkAddress);
+
+    /**
+     * Removes a node from the network
+     * @param networkAddress
+     */
+    void removeNode(Integer networkAddress);
+    
 }

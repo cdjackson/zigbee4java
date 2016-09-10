@@ -1,3 +1,5 @@
+
+
 package org.bubblecloud.zigbee.v3;
 
 import org.junit.Ignore;
@@ -42,6 +44,24 @@ public class ZigBeeApiCc2531ImplTest {
             @Override
             public void deviceRemoved(ZigBeeDevice device) {
                 LOGGER.info("Device removed: " + device);
+            }
+
+            @Override
+            public void nodeAdded(ZigBeeNode node) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void nodeUpdated(ZigBeeNode node) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void nodeRemoved(ZigBeeNode node) {
+                // TODO Auto-generated method stub
+                
             }
         });
 

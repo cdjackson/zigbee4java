@@ -18,6 +18,11 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
     private final static Logger LOGGER = LoggerFactory
             .getLogger(ZigBeeNetworkStateImpl.class);
     /**
+     * The nodes in the ZigBee network
+     */
+    private Map<String, ZigBeeNode> nodes = new TreeMap<String, ZigBeeNode>();
+    
+    /**
      * The devices in the ZigBee network.
      */
     private Map<String, ZigBeeDevice> devices = new TreeMap<String, ZigBeeDevice>();
@@ -131,7 +136,7 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
     public void addDevice(final ZigBeeDevice device) {
         synchronized (devices) {
             devices.put(
-                    device.getNetworkAddress() + "/" + device.getEndpoint(),
+                    device.getDeviceAddress().toString(),
                     device);
         }
         synchronized (this) {
@@ -166,10 +171,10 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
     }
 
     @Override
-    public void removeDevice(final int networkAddress, int endpoint) {
+    public void removeDevice(final ZigBeeAddress networkAddress) {
         final ZigBeeDevice device;
         synchronized (devices) {
-            device = devices.remove(networkAddress + "/" + endpoint);
+            device = devices.remove(networkAddress.toString());
         }
         synchronized (this) {
             if (device != null) {
@@ -209,4 +214,38 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
         }
     }
 
+    @Override
+    public ZigBeeNode getNode(Integer networkAddress) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public void removeNode(Integer networkAddress) {
+        final ZigBeeNode node;
+        synchronized (nodes) {
+            node = nodes.remove(networkAddress.toString());
+        }
+        synchronized (this) {
+            if (node != null) {
+                for (final ZigBeeNetworkStateListener listener : listeners) {
+//                    listener.nodeRemoved(node);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void addNode(final ZigBeeNode node) {
+        synchronized (nodes) {
+            nodes.put(
+                    node.getNetworkAddress().toString(),
+                    node);
+        }
+        synchronized (this) {
+            for (final ZigBeeNetworkStateListener listener : listeners) {
+//                listener.deviceAdded(node);
+            }
+        }
+    }
 }

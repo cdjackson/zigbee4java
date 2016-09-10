@@ -25,6 +25,7 @@ import org.bubblecloud.zigbee.network.packet.zdo.*;
 import org.bubblecloud.zigbee.v3.IeeeAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeException;
 import org.bubblecloud.zigbee.v3.zdo.command.*;
+import org.bubblecloud.zigbee.v3.zdo.descriptors.PowerDescriptor;
 import org.bubblecloud.zigbee.v3.CommandListener;
 import org.bubblecloud.zigbee.util.DoubleByte;
 import org.bubblecloud.zigbee.util.Integers;
@@ -118,6 +119,11 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
                         getZToolAddress16(nodeDescriptorRequest.getDestinationAddress()),
                         getZToolAddress16(nodeDescriptorRequest.getNetworkAddressOfInterest())));
             }
+            if (command instanceof PowerDescriptorRequest) {
+                final PowerDescriptorRequest powerDescriptorRequest = (PowerDescriptorRequest) command;
+                networkManager.sendCommand(new ZDO_POWER_DESC_REQ(
+                        (short) powerDescriptorRequest.getDestinationAddress()));
+            }
             if (command instanceof ManagementPermitJoinRequest) {
                 final ManagementPermitJoinRequest managementPermitJoinRequest = (ManagementPermitJoinRequest) command;
                 networkManager.sendCommand(new ZDO_MGMT_PERMIT_JOIN_REQ(
@@ -200,15 +206,15 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
 
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_SIMPLE_DESC_RSP) {
             final ZDO_SIMPLE_DESC_RSP message = (ZDO_SIMPLE_DESC_RSP) packet;
-
+            
             final SimpleDescriptorResponse command = new SimpleDescriptorResponse();
             command.setSourceAddress(message.SrcAddress.get16BitValue());
             command.setStatus(message.Status);
             command.setProfileId(message.getProfileId() & 0xffff);
-            command.setDeviceId(message.getDeviceId());
-            command.setDeviceVersion(message.getDeviceVersion());
+            command.setDeviceId((int) message.getDeviceId());
+            command.setDeviceVersion((int) message.getDeviceVersion());
             command.setNetworkAddress(message.nwkAddr.get16BitValue());
-            command.setEndpoint(message.getEndPoint());
+            command.setEndpoint((int) message.getEndPoint());
             final short[] inputClusterShorts = message.getInputClustersList();
             final List<Integer> inputClusters = new ArrayList<Integer>(message.getInputClustersCount());
             for (int i = 0; i < message.getInputClustersCount(); i++) {
@@ -278,7 +284,7 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
 
             return;
         }
-
+        
         if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_NODE_DESC_RSP) {
             final ZDO_NODE_DESC_RSP message = (ZDO_NODE_DESC_RSP) packet;
 
@@ -296,6 +302,19 @@ public class ZdoCommandTransmitter implements AsynchronousCommandListener {
                     message.TransferSize.get16BitValue(),
                     message.UserDescriptorAvailable,
                     message.FreqBand);
+
+            notifyCommandReceived(command);
+
+            return;
+        }
+
+        if (packet.getCMD().get16BitValue() == ZToolCMD.ZDO_POWER_DESC_RSP) {
+            final ZDO_POWER_DESC_RSP message = (ZDO_POWER_DESC_RSP) packet;
+
+            final PowerDescriptorResponse command = new PowerDescriptorResponse(
+                    message.Status,
+                    message.SrcAddress.get16BitValue(),
+                    new PowerDescriptor(message.CurrentMode, message.AvailableSources, message.CurrentSource, message.CurrentLevel));
 
             notifyCommandReceived(command);
 

@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bubblecloud.zigbee.api.ZigBeeApiConstants;
 import org.bubblecloud.zigbee.api.cluster.Cluster;
 import org.bubblecloud.zigbee.api.cluster.impl.api.core.Attribute;
-import org.bubblecloud.zigbee.util.IEEEAddress;
 import org.bubblecloud.zigbee.v3.model.Status;
 import org.bubblecloud.zigbee.v3.model.ZigBeeType;
 import org.bubblecloud.zigbee.v3.model.ZToolAddress64;
@@ -133,6 +132,24 @@ public final class ZigBeeGateway {
             @Override
             public void deviceRemoved(ZigBeeDevice device) {
                 print("Device removed\n" + getDeviceSummary(device), System.out);
+            }
+
+            @Override
+            public void nodeAdded(ZigBeeNode node) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void nodeUpdated(ZigBeeNode node) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void nodeRemoved(ZigBeeNode node) {
+                // TODO Auto-generated method stub
+                
             }
         });
 
