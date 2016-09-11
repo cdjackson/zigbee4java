@@ -42,10 +42,18 @@ public class ZclThermostatCluster extends ZclCluster {
     /**
      * The Setpoint Raise/Lower Command
      *
+     * @param mode {@link Integer} Mode
+     * @param amount {@link Integer} Amount
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> setpointRaiseLowerCommand() {
-        return send(new SetpointRaiseLowerCommand());
+    public Future<CommandResult> setpointRaiseLowerCommand(Integer mode, Integer amount) {
+        SetpointRaiseLowerCommand command = new SetpointRaiseLowerCommand();
+
+        // Set the fields
+        command.setMode(mode);
+        command.setAmount(amount);
+
+        return send(command);
     }
 
 }

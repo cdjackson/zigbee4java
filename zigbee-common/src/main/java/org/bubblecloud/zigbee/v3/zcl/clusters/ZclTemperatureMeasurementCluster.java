@@ -22,10 +22,10 @@ public class ZclTemperatureMeasurementCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Temperature measurement";
 
     // Attribute constants
-    private final int ATTR_MEASUREDVALUE = 0x0000;
-    private final int ATTR_MINMEASUREDVALUE = 0x0001;
-    private final int ATTR_MAXMEASUREDVALUE = 0x0002;
-    private final int ATTR_TOLERANCE = 0x0003;
+    public static final int ATTR_MEASUREDVALUE = 0x0000;
+    public static final int ATTR_MINMEASUREDVALUE = 0x0001;
+    public static final int ATTR_MAXMEASUREDVALUE = 0x0002;
+    public static final int ATTR_TOLERANCE = 0x0003;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -69,8 +69,35 @@ public class ZclTemperatureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMeasuredValue() {
+    public Future<CommandResult> getMeasuredValueAsync() {
         return read(ATTR_MEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MeasuredValue</i> attribute
+     * <p>
+     * MeasuredValue represents the temperature in degrees Celsius as follows:-
+     * MeasuredValue = 100 x temperature in degrees Celsius.
+     * <br>
+     * Where -273.15°C <= temperature <= 327.67 ºC, corresponding to a
+     * <br>
+     * MeasuredValue in the range 0x954d to 0x7fff. The maximum resolution this
+     * format allows is 0.01 ºC.
+     * <br>
+     * A MeasuredValue of 0x8000 indicates that the temperature measurement is
+     * invalid.
+     * <br>
+     * MeasuredValue is updated continuously as new measurements are made.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMeasuredValue() {
+        return (Integer) readSync(ATTR_MEASUREDVALUE);
     }
 
 
@@ -116,8 +143,27 @@ public class ZclTemperatureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMinMeasuredValue() {
+    public Future<CommandResult> getMinMeasuredValueAsync() {
         return read(ATTR_MINMEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MinMeasuredValue</i> attribute
+     * <p>
+     * <br>
+     * The MinMeasuredValue attribute indicates the minimum value of MeasuredValue
+     * that is capable of being measured. A MinMeasuredValue of 0x8000 indicates that
+     * the minimum value is unknown.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMinMeasuredValue() {
+        return (Integer) readSync(ATTR_MINMEASUREDVALUE);
     }
 
 
@@ -139,8 +185,32 @@ public class ZclTemperatureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMaxMeasuredValue() {
+    public Future<CommandResult> getMaxMeasuredValueAsync() {
         return read(ATTR_MAXMEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MaxMeasuredValue</i> attribute
+     * <p>
+     * <br>
+     * The MaxMeasuredValue attribute indicates the maximum value of MeasuredValue
+     * that is capable of being measured.
+     * <br>
+     * MaxMeasuredValue shall be greater than MinMeasuredValue.
+     * <br>
+     * MinMeasuredValue and MaxMeasuredValue define the range of the sensor.
+     * <br>
+     * A MaxMeasuredValue of 0x8000 indicates that the maximum value is unknown.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMaxMeasuredValue() {
+        return (Integer) readSync(ATTR_MAXMEASUREDVALUE);
     }
 
 
@@ -157,8 +227,27 @@ public class ZclTemperatureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getTolerance() {
+    public Future<CommandResult> getToleranceAsync() {
         return read(ATTR_TOLERANCE);
+    }
+
+
+    /**
+     * Synchronously get the <i>Tolerance</i> attribute
+     * <p>
+     * <br>
+     * The Tolerance attribute indicates the magnitude of the possible error that is
+     * associated with MeasuredValue . The true value is located in the range
+     * (MeasuredValue – Tolerance) to (MeasuredValue + Tolerance).
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getTolerance() {
+        return (Integer) readSync(ATTR_TOLERANCE);
     }
 
 

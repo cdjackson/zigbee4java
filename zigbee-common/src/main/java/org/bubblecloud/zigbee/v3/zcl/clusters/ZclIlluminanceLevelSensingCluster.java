@@ -27,8 +27,8 @@ public class ZclIlluminanceLevelSensingCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Illuminance level sensing";
 
     // Attribute constants
-    private final int ATTR_LEVELSTATUS = 0x0000;
-    private final int ATTR_LIGHTSENSORTYPE = 0x0001;
+    public static final int ATTR_LEVELSTATUS = 0x0000;
+    public static final int ATTR_LIGHTSENSORTYPE = 0x0001;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -60,8 +60,25 @@ public class ZclIlluminanceLevelSensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getLevelStatus() {
+    public Future<CommandResult> getLevelStatusAsync() {
         return read(ATTR_LEVELSTATUS);
+    }
+
+
+    /**
+     * Synchronously get the <i>LevelStatus</i> attribute
+     * <p>
+     * The LevelStatus attribute indicates whether the measured illuminance is above,
+     * below, or within a band around IlluminanceTargetLevel .
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getLevelStatus() {
+        return (Integer) readSync(ATTR_LEVELSTATUS);
     }
 
 
@@ -95,8 +112,25 @@ public class ZclIlluminanceLevelSensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getLightSensorType() {
+    public Future<CommandResult> getLightSensorTypeAsync() {
         return read(ATTR_LIGHTSENSORTYPE);
+    }
+
+
+    /**
+     * Synchronously get the <i>LightSensorType</i> attribute
+     * <p>
+     * <br>
+     * The LightSensorType attribute specifies the electronic type of the light sensor.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getLightSensorType() {
+        return (Integer) readSync(ATTR_LIGHTSENSORTYPE);
     }
 
 

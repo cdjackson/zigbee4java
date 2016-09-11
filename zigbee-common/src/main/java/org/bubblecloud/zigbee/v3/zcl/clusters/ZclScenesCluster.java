@@ -46,12 +46,12 @@ public class ZclScenesCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Scenes";
 
     // Attribute constants
-    private final int ATTR_SCENECOUNT = 0x0000;
-    private final int ATTR_CURRENTSCENE = 0x0001;
-    private final int ATTR_CURRENTGROUP = 0x0002;
-    private final int ATTR_SCENEVALID = 0x0003;
-    private final int ATTR_NAMESUPPORT = 0x0004;
-    private final int ATTR_LASTCONFIGUREDBY = 0x0005;
+    public static final int ATTR_SCENECOUNT = 0x0000;
+    public static final int ATTR_CURRENTSCENE = 0x0001;
+    public static final int ATTR_CURRENTGROUP = 0x0002;
+    public static final int ATTR_SCENEVALID = 0x0003;
+    public static final int ATTR_NAMESUPPORT = 0x0004;
+    public static final int ATTR_LASTCONFIGUREDBY = 0x0005;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -87,8 +87,25 @@ public class ZclScenesCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getSceneCount() {
+    public Future<CommandResult> getSceneCountAsync() {
         return read(ATTR_SCENECOUNT);
+    }
+
+
+    /**
+     * Synchronously get the <i>SceneCount</i> attribute
+     * <p>
+     * The SceneCount attribute specifies the number of scenes currently in the device's
+     * scene table.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getSceneCount() {
+        return (Integer) readSync(ATTR_SCENECOUNT);
     }
 
 
@@ -103,8 +120,25 @@ public class ZclScenesCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getCurrentScene() {
+    public Future<CommandResult> getCurrentSceneAsync() {
         return read(ATTR_CURRENTSCENE);
+    }
+
+
+    /**
+     * Synchronously get the <i>CurrentScene</i> attribute
+     * <p>
+     * <br>
+     * The CurrentScene attribute holds the Scene ID of the scene last invoked.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getCurrentScene() {
+        return (Integer) readSync(ATTR_CURRENTSCENE);
     }
 
 
@@ -120,8 +154,26 @@ public class ZclScenesCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getCurrentGroup() {
+    public Future<CommandResult> getCurrentGroupAsync() {
         return read(ATTR_CURRENTGROUP);
+    }
+
+
+    /**
+     * Synchronously get the <i>CurrentGroup</i> attribute
+     * <p>
+     * <br>
+     * The CurrentGroup attribute holds the Group ID of the scene last invoked, or
+     * 0x0000 if the scene last invoked is not associated with a group.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getCurrentGroup() {
+        return (Integer) readSync(ATTR_CURRENTGROUP);
     }
 
 
@@ -143,8 +195,32 @@ public class ZclScenesCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getSceneValid() {
+    public Future<CommandResult> getSceneValidAsync() {
         return read(ATTR_SCENEVALID);
+    }
+
+
+    /**
+     * Synchronously get the <i>SceneValid</i> attribute
+     * <p>
+     * <br>
+     * The SceneValid attribute indicates whether the state of the device corresponds to
+     * that associated with the CurrentScene and CurrentGroup attributes. TRUE
+     * indicates that these attributes are valid, FALSE indicates that they are not valid.
+     * <br>
+     * Before a scene has been stored or recalled, this attribute is set to FALSE. After a
+     * successful Store Scene or Recall Scene command it is set to TRUE. If, after a
+     * scene is stored or recalled, the state of the device is modified, this attribute is set to
+     * FALSE.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Boolean}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Boolean} attribute value, or null on error
+     */
+    public Boolean getSceneValid() {
+        return (Boolean) readSync(ATTR_SCENEVALID);
     }
 
 
@@ -161,8 +237,27 @@ public class ZclScenesCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getNameSupport() {
+    public Future<CommandResult> getNameSupportAsync() {
         return read(ATTR_NAMESUPPORT);
+    }
+
+
+    /**
+     * Synchronously get the <i>NameSupport</i> attribute
+     * <p>
+     * <br>
+     * The most significant bit of the NameSupport attribute indicates whether or not
+     * scene names are supported. A value of 1 indicates that they are supported, and a
+     * value of 0 indicates that they are not supported.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getNameSupport() {
+        return (Integer) readSync(ATTR_NAMESUPPORT);
     }
 
 
@@ -181,8 +276,29 @@ public class ZclScenesCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getLastConfiguredBy() {
+    public Future<CommandResult> getLastConfiguredByAsync() {
         return read(ATTR_LASTCONFIGUREDBY);
+    }
+
+
+    /**
+     * Synchronously get the <i>LastConfiguredBy</i> attribute
+     * <p>
+     * <br>
+     * The LastConfiguredBy attribute is 64-bits in length and specifies the IEEE address
+     * of the device that last configured the scene table.
+     * <br>
+     * The value 0xffffffffffffffff indicates that the device has not been configured, or
+     * that the address of the device that last configured the scenes cluster is not known.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Long}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Long} attribute value, or null on error
+     */
+    public Long getLastConfiguredBy() {
+        return (Long) readSync(ATTR_LASTCONFIGUREDBY);
     }
 
 
@@ -192,10 +308,24 @@ public class ZclScenesCluster extends ZclCluster {
      * The Add Scene command shall be addressed to a single device (not a group).
      * </p>
      *
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
+     * @param transitionTime {@link Integer} Transition time
+     * @param sceneName {@link String} Scene Name
+     * @param extensionFieldSets {@link List<ExtensionFieldSet>} Extension field sets
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> addSceneCommand() {
-        return send(new AddSceneCommand());
+    public Future<CommandResult> addSceneCommand(Integer groupId, Integer sceneId, Integer transitionTime, String sceneName, List<ExtensionFieldSet> extensionFieldSets) {
+        AddSceneCommand command = new AddSceneCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+        command.setTransitionTime(transitionTime);
+        command.setSceneName(sceneName);
+        command.setExtensionFieldSets(extensionFieldSets);
+
+        return send(command);
     }
 
 
@@ -205,10 +335,18 @@ public class ZclScenesCluster extends ZclCluster {
      * The View Scene command shall be addressed to a single device (not a group).
      * </p>
      *
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> viewSceneCommand() {
-        return send(new ViewSceneCommand());
+    public Future<CommandResult> viewSceneCommand(Integer groupId, Integer sceneId) {
+        ViewSceneCommand command = new ViewSceneCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+
+        return send(command);
     }
 
 
@@ -218,10 +356,18 @@ public class ZclScenesCluster extends ZclCluster {
      * The Remove All Scenes may be addressed to a single device or to a group.
      * </p>
      *
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> removeSceneCommand() {
-        return send(new RemoveSceneCommand());
+    public Future<CommandResult> removeSceneCommand(Integer groupId, Integer sceneId) {
+        RemoveSceneCommand command = new RemoveSceneCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+
+        return send(command);
     }
 
 
@@ -231,10 +377,16 @@ public class ZclScenesCluster extends ZclCluster {
      * The Remove All Scenes may be addressed to a single device or to a group.
      * </p>
      *
+     * @param groupId {@link Integer} Group ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> removeAllScenesCommand() {
-        return send(new RemoveAllScenesCommand());
+    public Future<CommandResult> removeAllScenesCommand(Integer groupId) {
+        RemoveAllScenesCommand command = new RemoveAllScenesCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+
+        return send(command);
     }
 
 
@@ -244,10 +396,18 @@ public class ZclScenesCluster extends ZclCluster {
      * The Store Scene command may be addressed to a single device or to a group.
      * </p>
      *
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> storeSceneCommand() {
-        return send(new StoreSceneCommand());
+    public Future<CommandResult> storeSceneCommand(Integer groupId, Integer sceneId) {
+        StoreSceneCommand command = new StoreSceneCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+
+        return send(command);
     }
 
 
@@ -257,10 +417,18 @@ public class ZclScenesCluster extends ZclCluster {
      * The Recall Scene command may be addressed to a single device or to a group.
      * </p>
      *
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> recallSceneCommand() {
-        return send(new RecallSceneCommand());
+    public Future<CommandResult> recallSceneCommand(Integer groupId, Integer sceneId) {
+        RecallSceneCommand command = new RecallSceneCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+
+        return send(command);
     }
 
 
@@ -273,70 +441,144 @@ public class ZclScenesCluster extends ZclCluster {
      * devices in the group.
      * </p>
      *
+     * @param groupId {@link Integer} Group ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getSceneMembershipCommand() {
-        return send(new GetSceneMembershipCommand());
+    public Future<CommandResult> getSceneMembershipCommand(Integer groupId) {
+        GetSceneMembershipCommand command = new GetSceneMembershipCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+
+        return send(command);
     }
 
 
     /**
      * The  Add Scene Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> addSceneResponse() {
-        return send(new AddSceneResponse());
+    public Future<CommandResult> addSceneResponse(Integer status, Integer groupId, Integer sceneId) {
+        AddSceneResponse command = new AddSceneResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+
+        return send(command);
     }
 
 
     /**
      * The  View Scene Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
+     * @param transitionTime {@link Integer} Transition time
+     * @param sceneName {@link String} Scene Name
+     * @param extensionFieldSets {@link List<ExtensionFieldSet>} Extension field sets
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> viewSceneResponse() {
-        return send(new ViewSceneResponse());
+    public Future<CommandResult> viewSceneResponse(Integer status, Integer groupId, Integer sceneId, Integer transitionTime, String sceneName, List<ExtensionFieldSet> extensionFieldSets) {
+        ViewSceneResponse command = new ViewSceneResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+        command.setTransitionTime(transitionTime);
+        command.setSceneName(sceneName);
+        command.setExtensionFieldSets(extensionFieldSets);
+
+        return send(command);
     }
 
 
     /**
      * The  Remove Scene Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> removeSceneResponse() {
-        return send(new RemoveSceneResponse());
+    public Future<CommandResult> removeSceneResponse(Integer status, Integer groupId, Integer sceneId) {
+        RemoveSceneResponse command = new RemoveSceneResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+
+        return send(command);
     }
 
 
     /**
      * The  Remove All Scenes Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> removeAllScenesResponse() {
-        return send(new RemoveAllScenesResponse());
+    public Future<CommandResult> removeAllScenesResponse(Integer status, Integer groupId) {
+        RemoveAllScenesResponse command = new RemoveAllScenesResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+
+        return send(command);
     }
 
 
     /**
      * The  Store Scene Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
+     * @param sceneId {@link Integer} Scene ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> storeSceneResponse() {
-        return send(new StoreSceneResponse());
+    public Future<CommandResult> storeSceneResponse(Integer status, Integer groupId, Integer sceneId) {
+        StoreSceneResponse command = new StoreSceneResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+        command.setSceneId(sceneId);
+
+        return send(command);
     }
 
 
     /**
      * The  Get Scene Membership Response
      *
+     * @param status {@link Integer} Status
+     * @param capacity {@link Integer} Capacity
+     * @param groupId {@link Integer} Group ID
+     * @param sceneCount {@link Integer} Scene count
+     * @param sceneList {@link List<Unsigned8BitInteger>} Scene list
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getSceneMembershipResponse() {
-        return send(new GetSceneMembershipResponse());
+    public Future<CommandResult> getSceneMembershipResponse(Integer status, Integer capacity, Integer groupId, Integer sceneCount, List<Unsigned8BitInteger> sceneList) {
+        GetSceneMembershipResponse command = new GetSceneMembershipResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setCapacity(capacity);
+        command.setGroupId(groupId);
+        command.setSceneCount(sceneCount);
+        command.setSceneList(sceneList);
+
+        return send(command);
     }
 
 

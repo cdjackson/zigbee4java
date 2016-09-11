@@ -63,10 +63,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * identifier field shall contain the identifier of the attribute to be read.
      * </p>
      *
+     * @param identifiers {@link List<AttributeIdentifier>} Identifiers
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> readAttributesCommand() {
-        return send(new ReadAttributesCommand());
+    public Future<CommandResult> readAttributesCommand(List<AttributeIdentifier> identifiers) {
+        ReadAttributesCommand command = new ReadAttributesCommand();
+
+        // Set the fields
+        command.setIdentifiers(identifiers);
+
+        return send(command);
     }
 
 
@@ -81,10 +87,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * original read attributes or read attributes structured command.
      * </p>
      *
+     * @param records {@link List<ReadAttributeStatusRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> readAttributesResponse() {
-        return send(new ReadAttributesResponse());
+    public Future<CommandResult> readAttributesResponse(List<ReadAttributeStatusRecord> records) {
+        ReadAttributesResponse command = new ReadAttributesResponse();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -97,10 +109,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * written.
      * </p>
      *
+     * @param records {@link List<WriteAttributeRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> writeAttributesCommand() {
-        return send(new WriteAttributesCommand());
+    public Future<CommandResult> writeAttributesCommand(List<WriteAttributeRecord> records) {
+        WriteAttributesCommand command = new WriteAttributesCommand();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -119,10 +137,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * write attributes undivided command.
      * </p>
      *
+     * @param records {@link List<WriteAttributeRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> writeAttributesUndividedCommand() {
-        return send(new WriteAttributesUndividedCommand());
+    public Future<CommandResult> writeAttributesUndividedCommand(List<WriteAttributeRecord> records) {
+        WriteAttributesUndividedCommand command = new WriteAttributesUndividedCommand();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -133,10 +157,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * attributes command.
      * </p>
      *
+     * @param records {@link List<WriteAttributeStatusRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> writeAttributesResponse() {
-        return send(new WriteAttributesResponse());
+    public Future<CommandResult> writeAttributesResponse(List<WriteAttributeStatusRecord> records) {
+        WriteAttributesResponse command = new WriteAttributesResponse();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -149,10 +179,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * actual value of the attribute to be written.
      * </p>
      *
+     * @param records {@link List<WriteAttributeRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> writeAttributesNoResponse() {
-        return send(new WriteAttributesNoResponse());
+    public Future<CommandResult> writeAttributesNoResponse(List<WriteAttributeRecord> records) {
+        WriteAttributesNoResponse command = new WriteAttributesNoResponse();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -167,10 +203,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * additional attributes available.
      * </p>
      *
+     * @param records {@link List<AttributeReportingConfigurationRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> configureReportingCommand() {
-        return send(new ConfigureReportingCommand());
+    public Future<CommandResult> configureReportingCommand(List<AttributeReportingConfigurationRecord> records) {
+        ConfigureReportingCommand command = new ConfigureReportingCommand();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -181,10 +223,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * Configure Reporting command.
      * </p>
      *
+     * @param records {@link List<AttributeStatusRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> configureReportingResponse() {
-        return send(new ConfigureReportingResponse());
+    public Future<CommandResult> configureReportingResponse(List<AttributeStatusRecord> records) {
+        ConfigureReportingResponse command = new ConfigureReportingResponse();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -195,10 +243,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * details of the reporting mechanism for one or more of the attributes of a cluster.
      * </p>
      *
+     * @param records {@link List<AttributeRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> readReportingConfigurationCommand() {
-        return send(new ReadReportingConfigurationCommand());
+    public Future<CommandResult> readReportingConfigurationCommand(List<AttributeRecord> records) {
+        ReadReportingConfigurationCommand command = new ReadReportingConfigurationCommand();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -209,10 +263,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * Read Reporting Configuration command.
      * </p>
      *
+     * @param records {@link List<AttributeReportingConfigurationRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> readReportingConfigurationResponse() {
-        return send(new ReadReportingConfigurationResponse());
+    public Future<CommandResult> readReportingConfigurationResponse(List<AttributeReportingConfigurationRecord> records) {
+        ReadReportingConfigurationResponse command = new ReadReportingConfigurationResponse();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 
@@ -225,10 +285,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * interval.
      * </p>
      *
+     * @param reports {@link List<AttributeReport>} Reports
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> reportAttributesCommand() {
-        return send(new ReportAttributesCommand());
+    public Future<CommandResult> reportAttributesCommand(List<AttributeReport> reports) {
+        ReportAttributesCommand command = new ReportAttributesCommand();
+
+        // Set the fields
+        command.setReports(reports);
+
+        return send(command);
     }
 
 
@@ -241,10 +307,18 @@ public class ZclGeneralCluster extends ZclCluster {
      * is set to 0.
      * </p>
      *
+     * @param commandIdentifier {@link Integer} Command identifier
+     * @param statusCode {@link Integer} Status code
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> defaultResponse() {
-        return send(new DefaultResponse());
+    public Future<CommandResult> defaultResponse(Integer commandIdentifier, Integer statusCode) {
+        DefaultResponse command = new DefaultResponse();
+
+        // Set the fields
+        command.setCommandIdentifier(commandIdentifier);
+        command.setStatusCode(statusCode);
+
+        return send(command);
     }
 
 
@@ -256,10 +330,18 @@ public class ZclGeneralCluster extends ZclCluster {
      * within the cluster to which this command is directed.
      * </p>
      *
+     * @param startAttributeIdentifier {@link Integer} Start attribute identifier
+     * @param maximumAttributeIdentifiers {@link Integer} Maximum attribute identifiers
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> discoverAttributesCommand() {
-        return send(new DiscoverAttributesCommand());
+    public Future<CommandResult> discoverAttributesCommand(Integer startAttributeIdentifier, Integer maximumAttributeIdentifiers) {
+        DiscoverAttributesCommand command = new DiscoverAttributesCommand();
+
+        // Set the fields
+        command.setStartAttributeIdentifier(startAttributeIdentifier);
+        command.setMaximumAttributeIdentifiers(maximumAttributeIdentifiers);
+
+        return send(command);
     }
 
 
@@ -270,10 +352,18 @@ public class ZclGeneralCluster extends ZclCluster {
      * attributes command.
      * </p>
      *
+     * @param commandIdentifier {@link Boolean} Command identifier
+     * @param information {@link List<AttributeInformation>} Information
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> discoverAttributesResponse() {
-        return send(new DiscoverAttributesResponse());
+    public Future<CommandResult> discoverAttributesResponse(Boolean commandIdentifier, List<AttributeInformation> information) {
+        DiscoverAttributesResponse command = new DiscoverAttributesResponse();
+
+        // Set the fields
+        command.setCommandIdentifier(commandIdentifier);
+        command.setInformation(information);
+
+        return send(command);
     }
 
 
@@ -286,10 +376,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * be read.
      * </p>
      *
+     * @param attributeSelectors {@link Object} Attribute selectors
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> readAttributesStructuredCommand() {
-        return send(new ReadAttributesStructuredCommand());
+    public Future<CommandResult> readAttributesStructuredCommand(Object attributeSelectors) {
+        ReadAttributesStructuredCommand command = new ReadAttributesStructuredCommand();
+
+        // Set the fields
+        command.setAttributeSelectors(attributeSelectors);
+
+        return send(command);
     }
 
 
@@ -302,10 +398,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * element thereof, to be written.
      * </p>
      *
+     * @param attributeSelectors {@link Object} Attribute selectors
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> writeAttributesStructuredCommand() {
-        return send(new WriteAttributesStructuredCommand());
+    public Future<CommandResult> writeAttributesStructuredCommand(Object attributeSelectors) {
+        WriteAttributesStructuredCommand command = new WriteAttributesStructuredCommand();
+
+        // Set the fields
+        command.setAttributeSelectors(attributeSelectors);
+
+        return send(command);
     }
 
 
@@ -316,10 +418,16 @@ public class ZclGeneralCluster extends ZclCluster {
      * write attributes structured command.
      * </p>
      *
+     * @param records {@link List<WriteAttributeStatusRecord>} Records
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> writeAttributesStructuredResponse() {
-        return send(new WriteAttributesStructuredResponse());
+    public Future<CommandResult> writeAttributesStructuredResponse(List<WriteAttributeStatusRecord> records) {
+        WriteAttributesStructuredResponse command = new WriteAttributesStructuredResponse();
+
+        // Set the fields
+        command.setRecords(records);
+
+        return send(command);
     }
 
 }

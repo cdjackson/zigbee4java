@@ -45,40 +45,64 @@ public class ZclDoorLockCluster extends ZclCluster {
     /**
      * The Lock Door Command
      *
+     * @param pinCode {@link String} Pin code
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> lockDoorCommand() {
-        return send(new LockDoorCommand());
+    public Future<CommandResult> lockDoorCommand(String pinCode) {
+        LockDoorCommand command = new LockDoorCommand();
+
+        // Set the fields
+        command.setPinCode(pinCode);
+
+        return send(command);
     }
 
 
     /**
      * The Unlock Door Command
      *
+     * @param pinCode {@link String} Pin code
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> unlockDoorCommand() {
-        return send(new UnlockDoorCommand());
+    public Future<CommandResult> unlockDoorCommand(String pinCode) {
+        UnlockDoorCommand command = new UnlockDoorCommand();
+
+        // Set the fields
+        command.setPinCode(pinCode);
+
+        return send(command);
     }
 
 
     /**
      * The  Lock Door Response
      *
+     * @param status {@link Integer} Status
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> lockDoorResponse() {
-        return send(new LockDoorResponse());
+    public Future<CommandResult> lockDoorResponse(Integer status) {
+        LockDoorResponse command = new LockDoorResponse();
+
+        // Set the fields
+        command.setStatus(status);
+
+        return send(command);
     }
 
 
     /**
      * The  Unlock Door Response
      *
+     * @param status {@link Integer} Status
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> unlockDoorResponse() {
-        return send(new UnlockDoorResponse());
+    public Future<CommandResult> unlockDoorResponse(Integer status) {
+        UnlockDoorResponse command = new UnlockDoorResponse();
+
+        // Set the fields
+        command.setStatus(status);
+
+        return send(command);
     }
 
 }

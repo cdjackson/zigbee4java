@@ -30,10 +30,10 @@ public class ZclIasWdCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "IAS WD";
 
     // Attribute constants
-    private final int ATTR_MAXDURATION = 0x0000;
-    private final int ATTR_ZONETYPE = 0x0001;
-    private final int ATTR_ZONESTATUS = 0x0002;
-    private final int ATTR_IAS_CIE_ADDRESS = 0x0010;
+    public static final int ATTR_MAXDURATION = 0x0000;
+    public static final int ATTR_ZONETYPE = 0x0001;
+    public static final int ATTR_ZONESTATUS = 0x0002;
+    public static final int ATTR_IAS_CIE_ADDRESS = 0x0010;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -84,8 +84,25 @@ public class ZclIasWdCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMaxDuration() {
+    public Future<CommandResult> getMaxDurationAsync() {
         return read(ATTR_MAXDURATION);
+    }
+
+
+    /**
+     * Synchronously get the <i>MaxDuration</i> attribute
+     * <p>
+     * The MaxDuration attribute specifies the maximum time in seconds that the siren
+     * will sound continuously, regardless of start/stop commands.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMaxDuration() {
+        return (Integer) readSync(ATTR_MAXDURATION);
     }
 
 
@@ -97,8 +114,22 @@ public class ZclIasWdCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getZoneType() {
+    public Future<CommandResult> getZoneTypeAsync() {
         return read(ATTR_ZONETYPE);
+    }
+
+
+    /**
+     * Synchronously get the <i>ZoneType</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getZoneType() {
+        return (Integer) readSync(ATTR_ZONETYPE);
     }
 
 
@@ -110,8 +141,22 @@ public class ZclIasWdCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getZoneStatus() {
+    public Future<CommandResult> getZoneStatusAsync() {
         return read(ATTR_ZONESTATUS);
+    }
+
+
+    /**
+     * Synchronously get the <i>ZoneStatus</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getZoneStatus() {
+        return (Integer) readSync(ATTR_ZONESTATUS);
     }
 
 
@@ -137,8 +182,22 @@ public class ZclIasWdCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getIas_Cie_Address() {
+    public Future<CommandResult> getIas_Cie_AddressAsync() {
         return read(ATTR_IAS_CIE_ADDRESS);
+    }
+
+
+    /**
+     * Synchronously get the <i>IAS_CIE_Address</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Long}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Long} attribute value, or null on error
+     */
+    public Long getIas_Cie_Address() {
+        return (Long) readSync(ATTR_IAS_CIE_ADDRESS);
     }
 
 
@@ -152,20 +211,34 @@ public class ZclIasWdCluster extends ZclCluster {
      * command that is still current.
      * </p>
      *
+     * @param header {@link Integer} Header
+     * @param warningDuration {@link Integer} Warning duration
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> startWarningCommand() {
-        return send(new StartWarningCommand());
+    public Future<CommandResult> startWarningCommand(Integer header, Integer warningDuration) {
+        StartWarningCommand command = new StartWarningCommand();
+
+        // Set the fields
+        command.setHeader(header);
+        command.setWarningDuration(warningDuration);
+
+        return send(command);
     }
 
 
     /**
      * The Squawk Command
      *
+     * @param header {@link Integer} Header
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> squawkCommand() {
-        return send(new SquawkCommand());
+    public Future<CommandResult> squawkCommand(Integer header) {
+        SquawkCommand command = new SquawkCommand();
+
+        // Set the fields
+        command.setHeader(header);
+
+        return send(command);
     }
 
 

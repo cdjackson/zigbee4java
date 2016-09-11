@@ -217,6 +217,23 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
     }
 
     /**
+     * Gets a set of ZigBee devices associated with a node
+     * 
+     * @param ieeeAddress
+     *            {@link IeeeAddress} defining the address of the node
+     * @return a {@link Set} of {@link ZigBeeDevice}
+     */
+    public Set<ZigBeeDevice> getNodeDevices(IeeeAddress ieeeAddress) {
+        Set<ZigBeeDevice> devices = new HashSet<ZigBeeDevice>();
+        for (ZigBeeDevice device : networkState.getDevices()) {
+            if (device.getIeeeAddress().equals(ieeeAddress)) {
+                devices.add(device);
+            }
+        }
+        return devices;
+    }
+
+    /**
      * Sets group label.
      * 
      * @param groupId

@@ -70,40 +70,68 @@ public class ZclGroupsCluster extends ZclCluster {
     /**
      * The Add Group Command
      *
+     * @param groupId {@link Integer} Group ID
+     * @param groupName {@link String} Group Name
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> addGroupCommand() {
-        return send(new AddGroupCommand());
+    public Future<CommandResult> addGroupCommand(Integer groupId, String groupName) {
+        AddGroupCommand command = new AddGroupCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+        command.setGroupName(groupName);
+
+        return send(command);
     }
 
 
     /**
      * The View Group Command
      *
+     * @param groupId {@link Integer} Group ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> viewGroupCommand() {
-        return send(new ViewGroupCommand());
+    public Future<CommandResult> viewGroupCommand(Integer groupId) {
+        ViewGroupCommand command = new ViewGroupCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+
+        return send(command);
     }
 
 
     /**
      * The Get Group Membership Command
      *
+     * @param groupCount {@link Integer} Group count
+     * @param groupList {@link List<Unsigned16BitInteger>} Group list
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getGroupMembershipCommand() {
-        return send(new GetGroupMembershipCommand());
+    public Future<CommandResult> getGroupMembershipCommand(Integer groupCount, List<Unsigned16BitInteger> groupList) {
+        GetGroupMembershipCommand command = new GetGroupMembershipCommand();
+
+        // Set the fields
+        command.setGroupCount(groupCount);
+        command.setGroupList(groupList);
+
+        return send(command);
     }
 
 
     /**
      * The Remove Group Command
      *
+     * @param groupId {@link Integer} Group ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> removeGroupCommand() {
-        return send(new RemoveGroupCommand());
+    public Future<CommandResult> removeGroupCommand(Integer groupId) {
+        RemoveGroupCommand command = new RemoveGroupCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+
+        return send(command);
     }
 
 
@@ -113,57 +141,103 @@ public class ZclGroupsCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> removeAllGroupsCommand() {
-        return send(new RemoveAllGroupsCommand());
+        RemoveAllGroupsCommand command = new RemoveAllGroupsCommand();
+
+        return send(command);
     }
 
 
     /**
      * The Add Group If Identifying Command
      *
+     * @param groupId {@link Integer} Group ID
+     * @param groupName {@link String} Group Name
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> addGroupIfIdentifyingCommand() {
-        return send(new AddGroupIfIdentifyingCommand());
+    public Future<CommandResult> addGroupIfIdentifyingCommand(Integer groupId, String groupName) {
+        AddGroupIfIdentifyingCommand command = new AddGroupIfIdentifyingCommand();
+
+        // Set the fields
+        command.setGroupId(groupId);
+        command.setGroupName(groupName);
+
+        return send(command);
     }
 
 
     /**
      * The  Add Group Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> addGroupResponse() {
-        return send(new AddGroupResponse());
+    public Future<CommandResult> addGroupResponse(Integer status, Integer groupId) {
+        AddGroupResponse command = new AddGroupResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+
+        return send(command);
     }
 
 
     /**
      * The  View Group Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
+     * @param groupName {@link String} Group Name
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> viewGroupResponse() {
-        return send(new ViewGroupResponse());
+    public Future<CommandResult> viewGroupResponse(Integer status, Integer groupId, String groupName) {
+        ViewGroupResponse command = new ViewGroupResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+        command.setGroupName(groupName);
+
+        return send(command);
     }
 
 
     /**
      * The  Get Group Membership Response
      *
+     * @param capacity {@link Integer} Capacity
+     * @param groupCount {@link Integer} Group count
+     * @param groupList {@link List<Unsigned16BitInteger>} Group list
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getGroupMembershipResponse() {
-        return send(new GetGroupMembershipResponse());
+    public Future<CommandResult> getGroupMembershipResponse(Integer capacity, Integer groupCount, List<Unsigned16BitInteger> groupList) {
+        GetGroupMembershipResponse command = new GetGroupMembershipResponse();
+
+        // Set the fields
+        command.setCapacity(capacity);
+        command.setGroupCount(groupCount);
+        command.setGroupList(groupList);
+
+        return send(command);
     }
 
 
     /**
      * The  Remove Group Response
      *
+     * @param status {@link Integer} Status
+     * @param groupId {@link Integer} Group ID
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> removeGroupResponse() {
-        return send(new RemoveGroupResponse());
+    public Future<CommandResult> removeGroupResponse(Integer status, Integer groupId) {
+        RemoveGroupResponse command = new RemoveGroupResponse();
+
+        // Set the fields
+        command.setStatus(status);
+        command.setGroupId(groupId);
+
+        return send(command);
     }
 
 }

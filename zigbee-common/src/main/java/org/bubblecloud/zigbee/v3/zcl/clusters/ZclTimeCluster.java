@@ -1,5 +1,6 @@
 package org.bubblecloud.zigbee.v3.zcl.clusters;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -22,14 +23,14 @@ public class ZclTimeCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Time";
 
     // Attribute constants
-    private final int ATTR_TIME = 0x0000;
-    private final int ATTR_TIMESTATUS = 0x0001;
-    private final int ATTR_TIMEZONE = 0x0002;
-    private final int ATTR_DSTSTART = 0x0003;
-    private final int ATTR_DSTEND = 0x0004;
-    private final int ATTR_DSTSHIFT = 0x0005;
-    private final int ATTR_STANDARDTIME = 0x0006;
-    private final int ATTR_LOCALTIME = 0x0007;
+    public static final int ATTR_TIME = 0x0000;
+    public static final int ATTR_TIMESTATUS = 0x0001;
+    public static final int ATTR_TIMEZONE = 0x0002;
+    public static final int ATTR_DSTSTART = 0x0003;
+    public static final int ATTR_DSTEND = 0x0004;
+    public static final int ATTR_DSTSHIFT = 0x0005;
+    public static final int ATTR_STANDARDTIME = 0x0006;
+    public static final int ATTR_LOCALTIME = 0x0007;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -94,8 +95,30 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getTime() {
+    public Future<CommandResult> getTimeAsync() {
         return read(ATTR_TIME);
+    }
+
+
+    /**
+     * Synchronously get the <i>Time</i> attribute
+     * <p>
+     * The Time attribute is 32-bits in length and holds the time value of a real time
+     * clock. This attribute has data type UTCTime, but note that it may not actually be
+     * synchronised to UTC - see discussion of the TimeStatus attribute below.
+     * <br>
+     * If the Master bit of the TimeStatus attribute has a value of 0, writing to this
+     * attribute shall set the real time clock to the written value, otherwise it cannot be
+     * written. The value 0xffffffff indicates an invalid time.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Calendar}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Calendar} attribute value, or null on error
+     */
+    public Calendar getTime() {
+        return (Calendar) readSync(ATTR_TIME);
     }
 
 
@@ -127,8 +150,25 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getTimeStatus() {
+    public Future<CommandResult> getTimeStatusAsync() {
         return read(ATTR_TIMESTATUS);
+    }
+
+
+    /**
+     * Synchronously get the <i>TimeStatus</i> attribute
+     * <p>
+     * <br>
+     * The TimeStatus attribute holds a number of bit fields.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getTimeStatus() {
+        return (Integer) readSync(ATTR_TIMESTATUS);
     }
 
 
@@ -162,8 +202,26 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getTimeZone() {
+    public Future<CommandResult> getTimeZoneAsync() {
         return read(ATTR_TIMEZONE);
+    }
+
+
+    /**
+     * Synchronously get the <i>TimeZone</i> attribute
+     * <p>
+     * <br>
+     * The TimeZone attribute indicates the local time zone, as a signed offset in seconds
+     * from the Time attribute value. The value 0xffffffff indicates an invalid time zone.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getTimeZone() {
+        return (Integer) readSync(ATTR_TIMEZONE);
     }
 
 
@@ -197,8 +255,26 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getDstStart() {
+    public Future<CommandResult> getDstStartAsync() {
         return read(ATTR_DSTSTART);
+    }
+
+
+    /**
+     * Synchronously get the <i>DstStart</i> attribute
+     * <p>
+     * <br>
+     * The DstStart attribute indicates the DST start time in seconds. The value 0xffffffff
+     * indicates an invalid DST start time.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getDstStart() {
+        return (Integer) readSync(ATTR_DSTSTART);
     }
 
 
@@ -258,8 +334,39 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getDstEnd() {
+    public Future<CommandResult> getDstEndAsync() {
         return read(ATTR_DSTEND);
+    }
+
+
+    /**
+     * Synchronously get the <i>DstEnd</i> attribute
+     * <p>
+     * <br>
+     * The DstEnd attribute indicates the DST end time in seconds. The value 0xffffffff
+     * indicates an invalid DST end time.
+     * <br>
+     * Note that the three attributes DstStart, DstEnd and DstShift are optional, but if any
+     * one of them is implemented the other two must also be implemented.
+     * Note that this attribute should be set to a new value once every year.
+     * <br>
+     * Note that this attribute should be set to a new value once every year, and should be
+     * written synchronously with the DstStart attribute.
+     * <br>
+     * The DstEnd attribute indicates the DST end time in seconds. The value 0xffffffff
+     * indicates an invalid DST end time.
+     * <br>
+     * Note that this attribute should be set to a new value once every year, and should be
+     * written synchronously with the DstStart attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getDstEnd() {
+        return (Integer) readSync(ATTR_DSTEND);
     }
 
 
@@ -303,8 +410,31 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getDstShift() {
+    public Future<CommandResult> getDstShiftAsync() {
         return read(ATTR_DSTSHIFT);
+    }
+
+
+    /**
+     * Synchronously get the <i>DstShift</i> attribute
+     * <p>
+     * <br>
+     * The DstShift attribute represents a signed offset in seconds from the standard time,
+     * to be applied between the times DstStart and DstEnd to calculate the Local Time.
+     * The value 0xffffffff indicates an invalid DST shift.
+     * <br>
+     * The range of this attribute is +/- one day. Note that the actual range of DST values
+     * employed by countries is much smaller than this, so the manufacturer has the
+     * option to impose a smaller range.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getDstShift() {
+        return (Integer) readSync(ATTR_DSTSHIFT);
     }
 
 
@@ -322,8 +452,28 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getStandardTime() {
+    public Future<CommandResult> getStandardTimeAsync() {
         return read(ATTR_STANDARDTIME);
+    }
+
+
+    /**
+     * Synchronously get the <i>StandardTime</i> attribute
+     * <p>
+     * <br>
+     * A device may derive the time by reading the Time and TimeZone attributes
+     * and adding them together. If implemented however, the optional StandardTime
+     * attribute indicates this time directly. The value 0xffffffff indicates an invalid
+     * Standard Time.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getStandardTime() {
+        return (Integer) readSync(ATTR_STANDARDTIME);
     }
 
 
@@ -341,8 +491,28 @@ public class ZclTimeCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getLocalTime() {
+    public Future<CommandResult> getLocalTimeAsync() {
         return read(ATTR_LOCALTIME);
+    }
+
+
+    /**
+     * Synchronously get the <i>LocalTime</i> attribute
+     * <p>
+     * <br>
+     * A device may derive the time by reading the Time, TimeZone, DstStart, DstEnd
+     * and DstShift attributes and performing the calculation. If implemented however,
+     * the optional LocalTime attribute indicates this time directly. The value 0xffffffff
+     * indicates an invalid Local Time.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getLocalTime() {
+        return (Integer) readSync(ATTR_LOCALTIME);
     }
 
 

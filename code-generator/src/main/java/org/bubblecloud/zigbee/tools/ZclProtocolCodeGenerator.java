@@ -93,7 +93,7 @@ public class ZclProtocolCodeGenerator {
             final Context contextZdp = new Context();
             try {
                 contextZdp.lines = new ArrayList<String>(FileUtils.readLines(definitionFileZdp, "UTF-8"));
-                generateZdpCode(contextZdp, sourceRootFile, packageRoot);
+//                generateZdpCode(contextZdp, sourceRootFile, packageRoot);
             } catch (final IOException e) {
                 System.out.println("Reading lines from Zdp definition file failed: "
                         + definitionFileZdp.getAbsolutePath());
@@ -762,6 +762,10 @@ public class ZclProtocolCodeGenerator {
                     if (attribute.attributeAccess.toLowerCase().contains("read")) {
                         readAttributes = true;
                     }
+                    
+                    if("Calendar".equals(attribute.dataTypeClass)) {
+                        imports.add("java.util.Calendar");
+                    }
                 }
 
                 if (addAttributeTypes) {
@@ -821,7 +825,7 @@ public class ZclProtocolCodeGenerator {
                 if (cluster.attributes.size() != 0) {
                     out.println("    // Attribute constants");
                     for (final Attribute attribute : cluster.attributes.values()) {
-                        out.println("    private final int " + attribute.enumName + " = "
+                        out.println("    public static final int " + attribute.enumName + " = "
                                 + String.format("0x%04X", attribute.attributeId) + ";");
                     }
                     out.println();
@@ -871,8 +875,13 @@ public class ZclProtocolCodeGenerator {
 
                     if (attribute.attributeAccess.toLowerCase().contains("read")) {
                         outputAttributeJavaDoc(out, "Get", attribute);
-                        out.println("    public Future<CommandResult> get" + attribute.nameUpperCamelCase + "() {");
+                        out.println("    public Future<CommandResult> get" + attribute.nameUpperCamelCase + "Async() {");
                         out.println("        return read(" + attribute.enumName + ");");
+                        out.println("    }");
+                        out.println();
+                        outputAttributeJavaDoc(out, "Synchronously get", attribute);
+                        out.println("    public " + attribute.dataTypeClass + " get" + attribute.nameUpperCamelCase + "() {");
+                        out.println("        return (" + attribute.dataTypeClass + ") readSync(" + attribute.enumName + ");");
                         out.println("    }");
                         out.println();
                     }
@@ -902,10 +911,36 @@ public class ZclProtocolCodeGenerator {
                         out.println("     * </p>");
                     }
                     out.println("     *");
+
+                    final LinkedList<Field> fields = new LinkedList<Field>(command.fields.values());
+                    for (final Field field : fields) {
+                        out.println("     * @param " + field.nameLowerCamelCase + " {@link " + field.dataTypeClass + "} " + field.fieldLabel);
+                    }
+
                     out.println("     * @return the {@link Future<CommandResult>} command result future");
                     out.println("     */");
-                    out.println("    public Future<CommandResult> " + command.nameLowerCamelCase + "() {");
-                    out.println("        return send(new " + command.nameUpperCamelCase + "());");
+                    out.print("    public Future<CommandResult> " + command.nameLowerCamelCase + "(");
+
+                    boolean first = true;
+                    for (final Field field : fields) {
+                        if(first == false) {
+                            out.print(", ");
+                        }
+                        out.print(field.dataTypeClass + " " + field.nameLowerCamelCase);
+                        first = false;
+                    }
+                    
+                    out.println(") {");
+                    out.println("        " + command.nameUpperCamelCase + " command = new " + command.nameUpperCamelCase + "();");
+                    if(fields.size() != 0) {
+                        out.println();
+                        out.println("        // Set the fields");
+                    }
+                    for (final Field field : fields) {
+                        out.println("        command.set" + field.nameUpperCamelCase + "(" + field.nameLowerCamelCase + ");");
+                    }
+                    out.println();
+                    out.println("        return send(command);");
                     out.println("    }");
                     out.println();
                 }
@@ -942,6 +977,9 @@ public class ZclProtocolCodeGenerator {
             }
         }
         out.println("     * </p>");
+        if("Synchronously get".equals(type)) {
+            out.println("     * This method will block until the response is received or a timeout occurs.<br>");
+        }
         out.println("     * The attribute is of type {@link " + attribute.dataTypeClass + "}<br>");
         out.println("     * The implementation of this attribute by a device is "
                 + attribute.attributeImplementation.toUpperCase());
@@ -955,7 +993,12 @@ public class ZclProtocolCodeGenerator {
             out.println("     * @param maxInterval {@link int} maximum reporting period");
             out.println("     * @param reportableChange {@link Object} delta required to trigger report");
         }
-        out.println("     * @return the {@link Future<CommandResult>} command result future");
+        if("Synchronously get".equals(type)) {
+            out.println("     * @return the {@link " + attribute.dataTypeClass + "} attribute value, or null on error");            
+        }
+        else {
+            out.println("     * @return the {@link Future<CommandResult>} command result future");
+        }
         out.println("     */");
     }
 

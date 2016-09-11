@@ -787,9 +787,9 @@ a door, or the power output of a heater.
 |Id     |Name                 |Type                       |Access     |Implement |Reporting |
 |-------|---------------------|---------------------------|-----------|----------|----------|
 |0x0000 |CurrentLevel         |Unsigned 8-bit integer     |Read Only  |Mandatory |Mandatory |
-|0x0000 |RemainingTime        |Unsigned 16-bit integer    |Read Only  |Optional  |          |
-|0x0000 |OnOffTransitionTime  |Unsigned 16-bit integer    |Read/Write |Optional  |          |
-|0x0000 |OnLevel              |Unsigned 8-bit integer     |Read/Write |Optional  |          |
+|0x0001 |RemainingTime        |Unsigned 16-bit integer    |Read Only  |Optional  |          |
+|0x0010 |OnOffTransitionTime  |Unsigned 16-bit integer    |Read/Write |Optional  |          |
+|0x0011 |OnLevel              |Unsigned 8-bit integer     |Read/Write |Optional  |          |
 
 #### CurrentLevel Attribute
 The CurrentLevel attribute represents the current level of this device. The

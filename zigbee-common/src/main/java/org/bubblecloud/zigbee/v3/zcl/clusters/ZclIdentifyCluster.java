@@ -33,7 +33,7 @@ public class ZclIdentifyCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Identify";
 
     // Attribute constants
-    private final int ATTR_IDENTIFYTIME = 0x0000;
+    public static final int ATTR_IDENTIFYTIME = 0x0000;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -99,8 +99,34 @@ public class ZclIdentifyCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getIdentifyTime() {
+    public Future<CommandResult> getIdentifyTimeAsync() {
         return read(ATTR_IDENTIFYTIME);
+    }
+
+
+    /**
+     * Synchronously get the <i>IdentifyTime</i> attribute
+     * <p>
+     * The IdentifyTime attribute specifies the remaining length of time, in seconds, that
+     * the device will continue to identify itself.
+     * <br>
+     * If this attribute is set to a value other than 0x0000 then the device shall enter its
+     * identification procedure, in order to indicate to an observer which of several
+     * devices it is. It is recommended that this procedure consists of flashing a light
+     * with a period of 0.5 seconds. The IdentifyTime attribute shall be decremented
+     * every second.
+     * <br>
+     * If this attribute reaches or is set to the value 0x0000 then the device shall
+     * terminate its identification procedure.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getIdentifyTime() {
+        return (Integer) readSync(ATTR_IDENTIFYTIME);
     }
 
 
@@ -110,10 +136,16 @@ public class ZclIdentifyCluster extends ZclCluster {
      * The identify command starts or stops the receiving device identifying itself.
      * </p>
      *
+     * @param identifyTime {@link Integer} Identify Time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> identifyCommand() {
-        return send(new IdentifyCommand());
+    public Future<CommandResult> identifyCommand(Integer identifyTime) {
+        IdentifyCommand command = new IdentifyCommand();
+
+        // Set the fields
+        command.setIdentifyTime(identifyTime);
+
+        return send(command);
     }
 
 
@@ -123,7 +155,9 @@ public class ZclIdentifyCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> identifyQueryCommand() {
-        return send(new IdentifyQueryCommand());
+        IdentifyQueryCommand command = new IdentifyQueryCommand();
+
+        return send(command);
     }
 
 
@@ -134,10 +168,16 @@ public class ZclIdentifyCluster extends ZclCluster {
      * Identify Query command in the case that the device is currently identifying itself.
      * </p>
      *
+     * @param identifyTime {@link Integer} Identify Time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> identifyQueryResponse() {
-        return send(new IdentifyQueryResponse());
+    public Future<CommandResult> identifyQueryResponse(Integer identifyTime) {
+        IdentifyQueryResponse command = new IdentifyQueryResponse();
+
+        // Set the fields
+        command.setIdentifyTime(identifyTime);
+
+        return send(command);
     }
 
 

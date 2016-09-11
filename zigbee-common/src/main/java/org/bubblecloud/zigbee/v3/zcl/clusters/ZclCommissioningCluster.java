@@ -49,80 +49,138 @@ public class ZclCommissioningCluster extends ZclCluster {
     /**
      * The Restart Device Command
      *
+     * @param option {@link Integer} Option
+     * @param delay {@link Integer} Delay
+     * @param jitter {@link Integer} Jitter
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> restartDeviceCommand() {
-        return send(new RestartDeviceCommand());
+    public Future<CommandResult> restartDeviceCommand(Integer option, Integer delay, Integer jitter) {
+        RestartDeviceCommand command = new RestartDeviceCommand();
+
+        // Set the fields
+        command.setOption(option);
+        command.setDelay(delay);
+        command.setJitter(jitter);
+
+        return send(command);
     }
 
 
     /**
      * The Save Startup Parameters Command
      *
+     * @param option {@link Integer} Option
+     * @param index {@link Integer} Index
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> saveStartupParametersCommand() {
-        return send(new SaveStartupParametersCommand());
+    public Future<CommandResult> saveStartupParametersCommand(Integer option, Integer index) {
+        SaveStartupParametersCommand command = new SaveStartupParametersCommand();
+
+        // Set the fields
+        command.setOption(option);
+        command.setIndex(index);
+
+        return send(command);
     }
 
 
     /**
      * The Restore Startup Parameters Command
      *
+     * @param option {@link Integer} Option
+     * @param index {@link Integer} Index
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> restoreStartupParametersCommand() {
-        return send(new RestoreStartupParametersCommand());
+    public Future<CommandResult> restoreStartupParametersCommand(Integer option, Integer index) {
+        RestoreStartupParametersCommand command = new RestoreStartupParametersCommand();
+
+        // Set the fields
+        command.setOption(option);
+        command.setIndex(index);
+
+        return send(command);
     }
 
 
     /**
      * The Reset Startup Parameters Command
      *
+     * @param option {@link Integer} Option
+     * @param index {@link Integer} Index
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> resetStartupParametersCommand() {
-        return send(new ResetStartupParametersCommand());
+    public Future<CommandResult> resetStartupParametersCommand(Integer option, Integer index) {
+        ResetStartupParametersCommand command = new ResetStartupParametersCommand();
+
+        // Set the fields
+        command.setOption(option);
+        command.setIndex(index);
+
+        return send(command);
     }
 
 
     /**
      * The  Restart Device Response Response
      *
+     * @param status {@link Integer} Status
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> restartDeviceResponseResponse() {
-        return send(new RestartDeviceResponseResponse());
+    public Future<CommandResult> restartDeviceResponseResponse(Integer status) {
+        RestartDeviceResponseResponse command = new RestartDeviceResponseResponse();
+
+        // Set the fields
+        command.setStatus(status);
+
+        return send(command);
     }
 
 
     /**
      * The  Save Startup Parameters Response
      *
+     * @param status {@link Integer} Status
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> saveStartupParametersResponse() {
-        return send(new SaveStartupParametersResponse());
+    public Future<CommandResult> saveStartupParametersResponse(Integer status) {
+        SaveStartupParametersResponse command = new SaveStartupParametersResponse();
+
+        // Set the fields
+        command.setStatus(status);
+
+        return send(command);
     }
 
 
     /**
      * The  Restore Startup Parameters Response
      *
+     * @param status {@link Integer} Status
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> restoreStartupParametersResponse() {
-        return send(new RestoreStartupParametersResponse());
+    public Future<CommandResult> restoreStartupParametersResponse(Integer status) {
+        RestoreStartupParametersResponse command = new RestoreStartupParametersResponse();
+
+        // Set the fields
+        command.setStatus(status);
+
+        return send(command);
     }
 
 
     /**
      * The  Reset Startup Parameters Response
      *
+     * @param status {@link Integer} Status
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> resetStartupParametersResponse() {
-        return send(new ResetStartupParametersResponse());
+    public Future<CommandResult> resetStartupParametersResponse(Integer status) {
+        ResetStartupParametersResponse command = new ResetStartupParametersResponse();
+
+        // Set the fields
+        command.setStatus(status);
+
+        return send(command);
     }
 
 }

@@ -26,15 +26,15 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Pressure measurement";
 
     // Attribute constants
-    private final int ATTR_MEASUREDVALUE = 0x0000;
-    private final int ATTR_MINMEASUREDVALUE = 0x0001;
-    private final int ATTR_MAXMEASUREDVALUE = 0x0002;
-    private final int ATTR_TOLERANCE = 0x0003;
-    private final int ATTR_SCALEDVALUE = 0x0010;
-    private final int ATTR_MINSCALEDVALUE = 0x0011;
-    private final int ATTR_MAXSCALEDVALUE = 0x0012;
-    private final int ATTR_SCALEDTOLERANCE = 0x0013;
-    private final int ATTR_SCALE = 0x0014;
+    public static final int ATTR_MEASUREDVALUE = 0x0000;
+    public static final int ATTR_MINMEASUREDVALUE = 0x0001;
+    public static final int ATTR_MAXMEASUREDVALUE = 0x0002;
+    public static final int ATTR_TOLERANCE = 0x0003;
+    public static final int ATTR_SCALEDVALUE = 0x0010;
+    public static final int ATTR_MINSCALEDVALUE = 0x0011;
+    public static final int ATTR_MAXSCALEDVALUE = 0x0012;
+    public static final int ATTR_SCALEDTOLERANCE = 0x0013;
+    public static final int ATTR_SCALE = 0x0014;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -82,8 +82,34 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMeasuredValue() {
+    public Future<CommandResult> getMeasuredValueAsync() {
         return read(ATTR_MEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MeasuredValue</i> attribute
+     * <p>
+     * MeasuredValue represents the pressure in kPa as follows:-
+     * <br>
+     * MeasuredValue = 10 x Pressure
+     * <br>
+     * Where -3276.7 kPa <= Pressure <= 3276.7 kPa, corresponding to a
+     * MeasuredValue in the range 0x8001 to 0x7fff.
+     * <br>
+     * Note:- The maximum resolution this format allows is 0.1 kPa.
+     * <br>
+     * A MeasuredValue of 0x8000 indicates that the pressure measurement is invalid.
+     * MeasuredValue is updated continuously as new measurements are made.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMeasuredValue() {
+        return (Integer) readSync(ATTR_MEASUREDVALUE);
     }
 
 
@@ -127,8 +153,26 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMinMeasuredValue() {
+    public Future<CommandResult> getMinMeasuredValueAsync() {
         return read(ATTR_MINMEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MinMeasuredValue</i> attribute
+     * <p>
+     * <br>
+     * The MinMeasuredValue attribute indicates the minimum value of MeasuredValue
+     * that can be measured. A value of 0x8000 means this attribute is not defined.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMinMeasuredValue() {
+        return (Integer) readSync(ATTR_MINMEASUREDVALUE);
     }
 
 
@@ -148,8 +192,30 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMaxMeasuredValue() {
+    public Future<CommandResult> getMaxMeasuredValueAsync() {
         return read(ATTR_MAXMEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MaxMeasuredValue</i> attribute
+     * <p>
+     * <br>
+     * The MaxMeasuredValue attribute indicates the maximum value of MeasuredValue
+     * that can be measured. A value of 0x8000 means this attribute is not defined.
+     * <br>
+     * MaxMeasuredValue shall be greater than MinMeasuredValue.
+     * <br>
+     * MinMeasuredValue and MaxMeasuredValue define the range of the sensor.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMaxMeasuredValue() {
+        return (Integer) readSync(ATTR_MAXMEASUREDVALUE);
     }
 
 
@@ -190,8 +256,27 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getTolerance() {
+    public Future<CommandResult> getToleranceAsync() {
         return read(ATTR_TOLERANCE);
+    }
+
+
+    /**
+     * Synchronously get the <i>Tolerance</i> attribute
+     * <p>
+     * <br>
+     * The Tolerance attribute indicates the magnitude of the possible error that is
+     * associated with MeasuredValue . The true value is located in the range
+     * (MeasuredValue – Tolerance) to (MeasuredValue + Tolerance).
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getTolerance() {
+        return (Integer) readSync(ATTR_TOLERANCE);
     }
 
 
@@ -203,8 +288,22 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getScaledValue() {
+    public Future<CommandResult> getScaledValueAsync() {
         return read(ATTR_SCALEDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>ScaledValue</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getScaledValue() {
+        return (Integer) readSync(ATTR_SCALEDVALUE);
     }
 
 
@@ -232,8 +331,22 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMinScaledValue() {
+    public Future<CommandResult> getMinScaledValueAsync() {
         return read(ATTR_MINSCALEDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MinScaledValue</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMinScaledValue() {
+        return (Integer) readSync(ATTR_MINSCALEDVALUE);
     }
 
 
@@ -245,8 +358,22 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMaxScaledValue() {
+    public Future<CommandResult> getMaxScaledValueAsync() {
         return read(ATTR_MAXSCALEDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MaxScaledValue</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMaxScaledValue() {
+        return (Integer) readSync(ATTR_MAXSCALEDVALUE);
     }
 
 
@@ -258,8 +385,22 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getScaledTolerance() {
+    public Future<CommandResult> getScaledToleranceAsync() {
         return read(ATTR_SCALEDTOLERANCE);
+    }
+
+
+    /**
+     * Synchronously get the <i>ScaledTolerance</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getScaledTolerance() {
+        return (Integer) readSync(ATTR_SCALEDTOLERANCE);
     }
 
 
@@ -287,8 +428,22 @@ public class ZclPressureMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getScale() {
+    public Future<CommandResult> getScaleAsync() {
         return read(ATTR_SCALE);
+    }
+
+
+    /**
+     * Synchronously get the <i>Scale</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getScale() {
+        return (Integer) readSync(ATTR_SCALE);
     }
 
 

@@ -24,12 +24,11 @@ public class ZigBeeDeviceAddress extends ZigBeeAddress {
 
     public ZigBeeDeviceAddress(String address) {
         String[] splits = address.split("/");
-        if (splits.length == 2) {
-            this.address = Integer.parseInt(splits[0]);
-            this.endpoint = Integer.parseInt(splits[1]);
+        if (splits.length != 2) {
+            throw new IllegalArgumentException();
         }
-
-        throw new IllegalArgumentException();
+        this.address = Integer.parseInt(splits[0]);
+        this.endpoint = Integer.parseInt(splits[1]);
     }
 
     @Override

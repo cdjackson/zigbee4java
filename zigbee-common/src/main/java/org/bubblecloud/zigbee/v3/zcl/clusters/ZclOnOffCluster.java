@@ -28,7 +28,7 @@ public class ZclOnOffCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "On/Off";
 
     // Attribute constants
-    private final int ATTR_ONOFF = 0x0000;
+    public static final int ATTR_ONOFF = 0x0000;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -58,8 +58,24 @@ public class ZclOnOffCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getOnOff() {
+    public Future<CommandResult> getOnOffAsync() {
         return read(ATTR_ONOFF);
+    }
+
+
+    /**
+     * Synchronously get the <i>OnOff</i> attribute
+     * <p>
+     * The OnOff attribute has the following values: 0 = Off, 1 = On
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Boolean}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Boolean} attribute value, or null on error
+     */
+    public Boolean getOnOff() {
+        return (Boolean) readSync(ATTR_ONOFF);
     }
 
 
@@ -87,7 +103,9 @@ public class ZclOnOffCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> offCommand() {
-        return send(new OffCommand());
+        OffCommand command = new OffCommand();
+
+        return send(command);
     }
 
 
@@ -97,7 +115,9 @@ public class ZclOnOffCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> onCommand() {
-        return send(new OnCommand());
+        OnCommand command = new OnCommand();
+
+        return send(command);
     }
 
 
@@ -107,7 +127,9 @@ public class ZclOnOffCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> toggleCommand() {
-        return send(new ToggleCommand());
+        ToggleCommand command = new ToggleCommand();
+
+        return send(command);
     }
 
 

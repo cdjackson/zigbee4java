@@ -39,15 +39,15 @@ public class ZclColorControlCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Color control";
 
     // Attribute constants
-    private final int ATTR_CURRENTHUE = 0x0000;
-    private final int ATTR_CURRENTSATURATION = 0x0001;
-    private final int ATTR_REMAININGTIME = 0x0002;
-    private final int ATTR_CURRENTX = 0x0003;
-    private final int ATTR_CURRENTY = 0x0004;
-    private final int ATTR_DRIFTCOMPENSATION = 0x0005;
-    private final int ATTR_COMPENSATIONTEXT = 0x0006;
-    private final int ATTR_COLORTEMPERATURE = 0x0007;
-    private final int ATTR_COLORMODE = 0x0008;
+    public static final int ATTR_CURRENTHUE = 0x0000;
+    public static final int ATTR_CURRENTSATURATION = 0x0001;
+    public static final int ATTR_REMAININGTIME = 0x0002;
+    public static final int ATTR_CURRENTX = 0x0003;
+    public static final int ATTR_CURRENTY = 0x0004;
+    public static final int ATTR_DRIFTCOMPENSATION = 0x0005;
+    public static final int ATTR_COMPENSATIONTEXT = 0x0006;
+    public static final int ATTR_COLORTEMPERATURE = 0x0007;
+    public static final int ATTR_COLORMODE = 0x0008;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -92,8 +92,31 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getCurrentHue() {
+    public Future<CommandResult> getCurrentHueAsync() {
         return read(ATTR_CURRENTHUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>CurrentHue</i> attribute
+     * <p>
+     * The CurrentHue attribute contains the current hue value of the light. It is updated
+     * as fast as practical during commands that change the hue.
+     * <br>
+     * The hue in degrees shall be related to the CurrentHue attribute by the relationship
+     * Hue = CurrentHue x 360 / 254 (CurrentHue in the range 0 - 254 inclusive)
+     * <br>
+     * If this attribute is implemented then the CurrentSaturation and ColorMode
+     * attributes shall also be implemented.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getCurrentHue() {
+        return (Integer) readSync(ATTR_CURRENTHUE);
     }
 
 
@@ -139,8 +162,31 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getCurrentSaturation() {
+    public Future<CommandResult> getCurrentSaturationAsync() {
         return read(ATTR_CURRENTSATURATION);
+    }
+
+
+    /**
+     * Synchronously get the <i>CurrentSaturation</i> attribute
+     * <p>
+     * <br>
+     * The CurrentSaturation attribute holds the current saturation value of the light. It is
+     * updated as fast as practical during commands that change the saturation.
+     * The saturation shall be related to the CurrentSaturation attribute by the
+     * relationship
+     * Saturation = CurrentSaturation/254 (CurrentSaturation in the range 0 - 254 inclusive)
+     * If this attribute is implemented then the CurrentHue and ColorMode attributes
+     * shall also be implemented.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getCurrentSaturation() {
+        return (Integer) readSync(ATTR_CURRENTSATURATION);
     }
 
 
@@ -181,8 +227,26 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getRemainingTime() {
+    public Future<CommandResult> getRemainingTimeAsync() {
         return read(ATTR_REMAININGTIME);
+    }
+
+
+    /**
+     * Synchronously get the <i>RemainingTime</i> attribute
+     * <p>
+     * <br>
+     * The RemainingTime attribute holds the time remaining, in 1/10ths of a second,
+     * until the currently active command will be complete.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getRemainingTime() {
+        return (Integer) readSync(ATTR_REMAININGTIME);
     }
 
 
@@ -203,8 +267,31 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getCurrentX() {
+    public Future<CommandResult> getCurrentXAsync() {
         return read(ATTR_CURRENTX);
+    }
+
+
+    /**
+     * Synchronously get the <i>CurrentX</i> attribute
+     * <p>
+     * <br>
+     * The CurrentX attribute contains the current value of the normalized chromaticity
+     * value x, as defined in the CIE xyY Color Space. It is updated as fast as practical
+     * during commands that change the color.
+     * <br>
+     * The value of x shall be related to the CurrentX attribute by the relationship
+     * <br>
+     * x = CurrentX / 65535 (CurrentX in the range 0 to 65279 inclusive)
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getCurrentX() {
+        return (Integer) readSync(ATTR_CURRENTX);
     }
 
 
@@ -250,8 +337,31 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getCurrentY() {
+    public Future<CommandResult> getCurrentYAsync() {
         return read(ATTR_CURRENTY);
+    }
+
+
+    /**
+     * Synchronously get the <i>CurrentY</i> attribute
+     * <p>
+     * <br>
+     * The CurrentY attribute contains the current value of the normalized chromaticity
+     * value y, as defined in the CIE xyY Color Space. It is updated as fast as practical
+     * during commands that change the color.
+     * <br>
+     * The value of y shall be related to the CurrentY attribute by the relationship
+     * <br>
+     * y = CurrentY / 65535 (CurrentY in the range 0 to 65279 inclusive)
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getCurrentY() {
+        return (Integer) readSync(ATTR_CURRENTY);
     }
 
 
@@ -292,8 +402,26 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getDriftCompensation() {
+    public Future<CommandResult> getDriftCompensationAsync() {
         return read(ATTR_DRIFTCOMPENSATION);
+    }
+
+
+    /**
+     * Synchronously get the <i>DriftCompensation</i> attribute
+     * <p>
+     * <br>
+     * The DriftCompensation attribute indicates what mechanism, if any, is in use for
+     * compensation for color/intensity drift over time.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getDriftCompensation() {
+        return (Integer) readSync(ATTR_DRIFTCOMPENSATION);
     }
 
 
@@ -309,8 +437,26 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getCompensationText() {
+    public Future<CommandResult> getCompensationTextAsync() {
         return read(ATTR_COMPENSATIONTEXT);
+    }
+
+
+    /**
+     * Synchronously get the <i>CompensationText</i> attribute
+     * <p>
+     * <br>
+     * The CompensationText attribute holds a textual indication of what mechanism, if
+     * any, is in use to compensate for color/intensity drift over time.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link String}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link String} attribute value, or null on error
+     */
+    public String getCompensationText() {
+        return (String) readSync(ATTR_COMPENSATIONTEXT);
     }
 
 
@@ -337,8 +483,37 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getColorTemperature() {
+    public Future<CommandResult> getColorTemperatureAsync() {
         return read(ATTR_COLORTEMPERATURE);
+    }
+
+
+    /**
+     * Synchronously get the <i>ColorTemperature</i> attribute
+     * <p>
+     * <br>
+     * The ColorTemperature attribute contains a scaled inverse of the current value of
+     * the color temperature. It is updated as fast as practical during commands that
+     * change the color.
+     * <br>
+     * The color temperature value in Kelvins shall be related to the ColorTemperature
+     * attribute by the relationship
+     * <br>
+     * Color temperature = 1,000,000 / ColorTemperature (ColorTemperature in the
+     * range 1 to 65279 inclusive, giving a color temperature range from 1,000,000
+     * Kelvins to 15.32 Kelvins).
+     * <br>
+     * The value ColorTemperature = 0 indicates an undefined value. The value
+     * ColorTemperature = 65535 indicates an invalid value.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getColorTemperature() {
+        return (Integer) readSync(ATTR_COLORTEMPERATURE);
     }
 
 
@@ -385,118 +560,236 @@ public class ZclColorControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getColorMode() {
+    public Future<CommandResult> getColorModeAsync() {
         return read(ATTR_COLORMODE);
+    }
+
+
+    /**
+     * Synchronously get the <i>ColorMode</i> attribute
+     * <p>
+     * <br>
+     * The ColorMode attribute indicates which attributes are currently determining the
+     * color of the device
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getColorMode() {
+        return (Integer) readSync(ATTR_COLORMODE);
     }
 
 
     /**
      * The Move to Hue Command
      *
+     * @param hue {@link Integer} Hue
+     * @param direction {@link Integer} Direction
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveToHueCommand() {
-        return send(new MoveToHueCommand());
+    public Future<CommandResult> moveToHueCommand(Integer hue, Integer direction, Integer transitionTime) {
+        MoveToHueCommand command = new MoveToHueCommand();
+
+        // Set the fields
+        command.setHue(hue);
+        command.setDirection(direction);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move Hue Command
      *
+     * @param moveMode {@link Integer} Move mode
+     * @param rate {@link Integer} Rate
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveHueCommand() {
-        return send(new MoveHueCommand());
+    public Future<CommandResult> moveHueCommand(Integer moveMode, Integer rate) {
+        MoveHueCommand command = new MoveHueCommand();
+
+        // Set the fields
+        command.setMoveMode(moveMode);
+        command.setRate(rate);
+
+        return send(command);
     }
 
 
     /**
      * The Step Hue Command
      *
+     * @param stepMode {@link Integer} Step mode
+     * @param stepSize {@link Integer} Step size
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> stepHueCommand() {
-        return send(new StepHueCommand());
+    public Future<CommandResult> stepHueCommand(Integer stepMode, Integer stepSize, Integer transitionTime) {
+        StepHueCommand command = new StepHueCommand();
+
+        // Set the fields
+        command.setStepMode(stepMode);
+        command.setStepSize(stepSize);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move to Saturation Command
      *
+     * @param saturation {@link Integer} Saturation
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveToSaturationCommand() {
-        return send(new MoveToSaturationCommand());
+    public Future<CommandResult> moveToSaturationCommand(Integer saturation, Integer transitionTime) {
+        MoveToSaturationCommand command = new MoveToSaturationCommand();
+
+        // Set the fields
+        command.setSaturation(saturation);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move Saturation Command
      *
+     * @param moveMode {@link Integer} Move mode
+     * @param rate {@link Integer} Rate
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveSaturationCommand() {
-        return send(new MoveSaturationCommand());
+    public Future<CommandResult> moveSaturationCommand(Integer moveMode, Integer rate) {
+        MoveSaturationCommand command = new MoveSaturationCommand();
+
+        // Set the fields
+        command.setMoveMode(moveMode);
+        command.setRate(rate);
+
+        return send(command);
     }
 
 
     /**
      * The Step Saturation Command
      *
+     * @param stepMode {@link Integer} Step mode
+     * @param stepSize {@link Integer} Step size
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> stepSaturationCommand() {
-        return send(new StepSaturationCommand());
+    public Future<CommandResult> stepSaturationCommand(Integer stepMode, Integer stepSize, Integer transitionTime) {
+        StepSaturationCommand command = new StepSaturationCommand();
+
+        // Set the fields
+        command.setStepMode(stepMode);
+        command.setStepSize(stepSize);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move to Hue and Saturation Command
      *
+     * @param hue {@link Integer} Hue
+     * @param saturation {@link Integer} Saturation
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveToHueAndSaturationCommand() {
-        return send(new MoveToHueAndSaturationCommand());
+    public Future<CommandResult> moveToHueAndSaturationCommand(Integer hue, Integer saturation, Integer transitionTime) {
+        MoveToHueAndSaturationCommand command = new MoveToHueAndSaturationCommand();
+
+        // Set the fields
+        command.setHue(hue);
+        command.setSaturation(saturation);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move to Color Command
      *
+     * @param colorX {@link Integer} ColorX
+     * @param colorY {@link Integer} ColorY
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveToColorCommand() {
-        return send(new MoveToColorCommand());
+    public Future<CommandResult> moveToColorCommand(Integer colorX, Integer colorY, Integer transitionTime) {
+        MoveToColorCommand command = new MoveToColorCommand();
+
+        // Set the fields
+        command.setColorX(colorX);
+        command.setColorY(colorY);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move Color Command
      *
+     * @param rateX {@link Integer} RateX
+     * @param rateY {@link Integer} RateY
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveColorCommand() {
-        return send(new MoveColorCommand());
+    public Future<CommandResult> moveColorCommand(Integer rateX, Integer rateY) {
+        MoveColorCommand command = new MoveColorCommand();
+
+        // Set the fields
+        command.setRateX(rateX);
+        command.setRateY(rateY);
+
+        return send(command);
     }
 
 
     /**
      * The Step Color Command
      *
+     * @param stepX {@link Integer} StepX
+     * @param stepY {@link Integer} StepY
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> stepColorCommand() {
-        return send(new StepColorCommand());
+    public Future<CommandResult> stepColorCommand(Integer stepX, Integer stepY, Integer transitionTime) {
+        StepColorCommand command = new StepColorCommand();
+
+        // Set the fields
+        command.setStepX(stepX);
+        command.setStepY(stepY);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move to Color Temperature Command
      *
+     * @param colorTemperature {@link Integer} Color Temperature
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveToColorTemperatureCommand() {
-        return send(new MoveToColorTemperatureCommand());
+    public Future<CommandResult> moveToColorTemperatureCommand(Integer colorTemperature, Integer transitionTime) {
+        MoveToColorTemperatureCommand command = new MoveToColorTemperatureCommand();
+
+        // Set the fields
+        command.setColorTemperature(colorTemperature);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 

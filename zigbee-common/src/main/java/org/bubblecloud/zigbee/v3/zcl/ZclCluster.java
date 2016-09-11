@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.bubblecloud.zigbee.v3.CommandResult;
 import org.bubblecloud.zigbee.v3.ZigBeeDeviceAddress;
 import org.bubblecloud.zigbee.v3.ZigBeeNetworkManager;
+import org.bubblecloud.zigbee.v3.zcl.clusters.general.ReadAttributesResponse;
 import org.bubblecloud.zigbee.v3.zcl.field.AttributeReport;
 import org.bubblecloud.zigbee.v3.zcl.field.ReadAttributeStatusRecord;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
@@ -31,7 +33,7 @@ public abstract class ZclCluster {
     private boolean isServer = false;
 
     private final List<ZclAttributeListener> attributeListeners = new ArrayList<ZclAttributeListener>();
-    
+
     protected Map<Integer, ZclAttribute> attributes = initializeAttributes();
 
     protected abstract Map<Integer, ZclAttribute> initializeAttributes();
@@ -58,20 +60,38 @@ public abstract class ZclCluster {
      */
     protected Future<CommandResult> read(final int attributeId) {
         return zigbeeManager.read(zigbeeAddress, clusterId, attributeId);
-        /*
-         * final ReadAttributesCommand command = new ReadAttributesCommand();
-         * 
-         * command.setClusterId(clusterId); final AttributeIdentifier
-         * attributeIdentifier = new AttributeIdentifier();
-         * attributeIdentifier.setAttributeIdentifier(attributeId);
-         * command.setIdentifiers
-         * (Collections.singletonList(attributeIdentifier));
-         * 
-         * command.setDestinationAddress(device.getNetworkAddress());
-         * command.setDestinationEndpoint(device.getEndpoint());
-         * 
-         * return unicast(command);
-         */
+    }
+
+    /**
+     * Read an attribute
+     * 
+     * @param attributeId
+     * @return
+     */
+    protected Object readSync(final int attributeId) {
+        CommandResult result;
+        try {
+            result = zigbeeManager.read(zigbeeAddress, clusterId, attributeId).get();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        } catch (ExecutionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+
+        if (!result.isSuccess()) {
+            return null;
+        }
+
+        ReadAttributesResponse response = result.getResponse();
+        if (response.getRecords().get(0).getStatus() == 0) {
+            return response.getRecords().get(0).getAttributeValue();
+        }
+
+        return null;
     }
 
     /**
@@ -83,49 +103,11 @@ public abstract class ZclCluster {
      */
     protected Future<CommandResult> write(final int attributeId, ZclDataType dataType, final Object value) {
         return zigbeeManager.write(zigbeeAddress, clusterId, attributeId, value);
-        /*
-         * final WriteAttributesCommand command = new WriteAttributesCommand();
-         * command.setClusterId(clusterId);
-         * 
-         * final WriteAttributeRecord record = new WriteAttributeRecord();
-         * record.setAttributeIdentifier(attributeId);
-         * record.setAttributeDataType(ZclAttributeType.get(clusterId,
-         * attributeId).getZigBeeType().getId());
-         * record.setAttributeValue(value);
-         * command.setRecords(Collections.singletonList(record));
-         * 
-         * command.setDestinationAddress(zigbeeDevice.getNetworkAddress());
-         * command.setDestinationEndpoint(zigbeeDevice.getEndpoint());
-         * 
-         * return zigbeeApi.unicast(command);
-         */
     }
 
     public Future<CommandResult> report(final int attributeId, final int minInterval, final int maxInterval,
             final Object reportableChange) {
         return zigbeeManager.report(zigbeeAddress, clusterId, attributeId, minInterval, maxInterval, reportableChange);
-        /*
-         * final ConfigureReportingCommand command = new
-         * ConfigureReportingCommand();
-         * 
-         * command.setClusterId(clusterId);
-         * 
-         * final AttributeReportingConfigurationRecord record = new
-         * AttributeReportingConfigurationRecord(); record.setDirection(0);
-         * record.setAttributeIdentifier(attributeId);
-         * record.setAttributeDataType(ZclAttributeType .get(clusterId,
-         * attributeId).getZigBeeType().getId());
-         * record.setMinimumReportingInterval(minInterval);
-         * record.setMinimumReportingInterval(maxInterval);
-         * record.setReportableChange(reportableChange);
-         * record.setTimeoutPeriod(0);
-         * command.setRecords(Collections.singletonList(record));
-         * 
-         * command.setDestinationAddress(device.getNetworkAddress());
-         * command.setDestinationEndpoint(device.getEndpoint());
-         * 
-         * return unicast(command, new ZclCustomResponseMatcher());
-         */
     }
 
     /**
@@ -212,21 +194,21 @@ public abstract class ZclCluster {
     public boolean isClient() {
         return isClient;
     }
-    
+
     public void addAttributeListener(ZclAttributeListener listener) {
         // Don't add more than once.
-        if(attributeListeners.contains(listener)) {
+        if (attributeListeners.contains(listener)) {
             return;
         }
         attributeListeners.add(listener);
     }
-    
+
     public void removeAttributeListener(ZclAttributeListener listener) {
         attributeListeners.remove(listener);
     }
 
     private void notifyAttributeListener(ZclAttribute attribute) {
-        for(ZclAttributeListener listener : attributeListeners) {
+        for (ZclAttributeListener listener : attributeListeners) {
             listener.AttributeUpdated(attribute);
         }
     }
@@ -245,6 +227,12 @@ public abstract class ZclCluster {
         }
     }
 
+    /**
+     * Processes a list of attribute status reports for this cluster
+     * 
+     * @param reports
+     *            {@List} of {@link ReadAttributeStatusRecord}
+     */
     public void handleAttributeStatus(List<ReadAttributeStatusRecord> records) {
         for (ReadAttributeStatusRecord record : records) {
             ZclAttribute attribute = attributes.get(record.getAttributeIdentifier());

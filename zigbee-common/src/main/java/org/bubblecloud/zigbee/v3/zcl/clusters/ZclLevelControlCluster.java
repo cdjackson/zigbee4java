@@ -35,13 +35,19 @@ public class ZclLevelControlCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Level Control";
 
     // Attribute constants
-    private final int ATTR_ONLEVEL = 0x0000;
+    public static final int ATTR_CURRENTLEVEL = 0x0000;
+    public static final int ATTR_REMAININGTIME = 0x0001;
+    public static final int ATTR_ONOFFTRANSITIONTIME = 0x0010;
+    public static final int ATTR_ONLEVEL = 0x0011;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
-        Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(1);
+        Map<Integer, ZclAttribute> attributeMap = new HashMap<Integer, ZclAttribute>(4);
 
-        attributeMap.put(ATTR_ONLEVEL, new ZclAttribute(0, "OnLevel", ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_CURRENTLEVEL, new ZclAttribute(0, "CurrentLevel", ZclDataType.UNSIGNED_8_BIT_INTEGER, true, true, false, true));
+        attributeMap.put(ATTR_REMAININGTIME, new ZclAttribute(1, "RemainingTime", ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, false, false));
+        attributeMap.put(ATTR_ONOFFTRANSITIONTIME, new ZclAttribute(16, "OnOffTransitionTime", ZclDataType.UNSIGNED_16_BIT_INTEGER, false, true, true, false));
+        attributeMap.put(ATTR_ONLEVEL, new ZclAttribute(17, "OnLevel", ZclDataType.UNSIGNED_8_BIT_INTEGER, false, true, true, false));
 
         return attributeMap;
     }
@@ -56,8 +62,164 @@ public class ZclLevelControlCluster extends ZclCluster {
 
 
     /**
+     * Get the <i>CurrentLevel</i> attribute
+     * <p>
+     * The CurrentLevel attribute represents the current level of this device. The
+     * meaning of 'level' is device dependent.
+     * </p>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> getCurrentLevelAsync() {
+        return read(ATTR_CURRENTLEVEL);
+    }
+
+
+    /**
+     * Synchronously get the <i>CurrentLevel</i> attribute
+     * <p>
+     * The CurrentLevel attribute represents the current level of this device. The
+     * meaning of 'level' is device dependent.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getCurrentLevel() {
+        return (Integer) readSync(ATTR_CURRENTLEVEL);
+    }
+
+
+    /**
+     * Configure reporting for the <i>CurrentLevel</i> attribute
+     * <p>
+     * The CurrentLevel attribute represents the current level of this device. The
+     * meaning of 'level' is device dependent.
+     * </p>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @param minInterval {@link int} minimum reporting period
+     * @param maxInterval {@link int} maximum reporting period
+     * @param reportableChange {@link Object} delta required to trigger report
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> configCurrentLevelReporting(final int minInterval, final int maxInterval, final Object reportableChange) {
+        return report(ATTR_CURRENTLEVEL, minInterval, maxInterval, reportableChange);
+    }
+
+
+    /**
+     * Get the <i>RemainingTime</i> attribute
+     * <p>
+     * <br>
+     * The RemainingTime attribute represents the time remaining until the current
+     * command is complete - it is specified in 1/10ths of a second.
+     * </p>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> getRemainingTimeAsync() {
+        return read(ATTR_REMAININGTIME);
+    }
+
+
+    /**
+     * Synchronously get the <i>RemainingTime</i> attribute
+     * <p>
+     * <br>
+     * The RemainingTime attribute represents the time remaining until the current
+     * command is complete - it is specified in 1/10ths of a second.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getRemainingTime() {
+        return (Integer) readSync(ATTR_REMAININGTIME);
+    }
+
+
+    /**
+     * Set the <i>OnOffTransitionTime</i> attribute
+     * <p>
+     * <br>
+     * The OnOffTransitionTime attribute represents the time taken to move to or from
+     * the target level when On of Off commands are received by an On/Off cluster on
+     * the same endpoint. It is specified in 1/10ths of a second.
+     * <br>
+     * The actual time taken should be as close to OnOffTransitionTime as the device is
+     * able. N.B. If the device is not able to move at a variable rate, the
+     * OnOffTransitionTime attribute should not be implemented.
+     * </p>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @param onOffTransitionTime the {@link Integer} attribute value to be set
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> setOnOffTransitionTime(final Object value) {
+        return write(ATTR_ONOFFTRANSITIONTIME, ZclDataType.UNSIGNED_16_BIT_INTEGER, value);
+    }
+
+
+    /**
+     * Get the <i>OnOffTransitionTime</i> attribute
+     * <p>
+     * <br>
+     * The OnOffTransitionTime attribute represents the time taken to move to or from
+     * the target level when On of Off commands are received by an On/Off cluster on
+     * the same endpoint. It is specified in 1/10ths of a second.
+     * <br>
+     * The actual time taken should be as close to OnOffTransitionTime as the device is
+     * able. N.B. If the device is not able to move at a variable rate, the
+     * OnOffTransitionTime attribute should not be implemented.
+     * </p>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> getOnOffTransitionTimeAsync() {
+        return read(ATTR_ONOFFTRANSITIONTIME);
+    }
+
+
+    /**
+     * Synchronously get the <i>OnOffTransitionTime</i> attribute
+     * <p>
+     * <br>
+     * The OnOffTransitionTime attribute represents the time taken to move to or from
+     * the target level when On of Off commands are received by an On/Off cluster on
+     * the same endpoint. It is specified in 1/10ths of a second.
+     * <br>
+     * The actual time taken should be as close to OnOffTransitionTime as the device is
+     * able. N.B. If the device is not able to move at a variable rate, the
+     * OnOffTransitionTime attribute should not be implemented.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getOnOffTransitionTime() {
+        return (Integer) readSync(ATTR_ONOFFTRANSITIONTIME);
+    }
+
+
+    /**
      * Set the <i>OnLevel</i> attribute
      * <p>
+     * <br>
      * The OnLevel attribute determines the value that the CurrentLevel attribute is set to
      * when the OnOff attribute of an On/Off cluster on the same endpoint is set to On. If
      * the OnLevel attribute is not implemented, or is set to 0xff, it has no effect.
@@ -76,6 +238,7 @@ public class ZclLevelControlCluster extends ZclCluster {
     /**
      * Get the <i>OnLevel</i> attribute
      * <p>
+     * <br>
      * The OnLevel attribute determines the value that the CurrentLevel attribute is set to
      * when the OnOff attribute of an On/Off cluster on the same endpoint is set to On. If
      * the OnLevel attribute is not implemented, or is set to 0xff, it has no effect.
@@ -85,38 +248,83 @@ public class ZclLevelControlCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getOnLevel() {
+    public Future<CommandResult> getOnLevelAsync() {
         return read(ATTR_ONLEVEL);
+    }
+
+
+    /**
+     * Synchronously get the <i>OnLevel</i> attribute
+     * <p>
+     * <br>
+     * The OnLevel attribute determines the value that the CurrentLevel attribute is set to
+     * when the OnOff attribute of an On/Off cluster on the same endpoint is set to On. If
+     * the OnLevel attribute is not implemented, or is set to 0xff, it has no effect.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getOnLevel() {
+        return (Integer) readSync(ATTR_ONLEVEL);
     }
 
 
     /**
      * The Move to Level Command
      *
+     * @param level {@link Integer} Level
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveToLevelCommand() {
-        return send(new MoveToLevelCommand());
+    public Future<CommandResult> moveToLevelCommand(Integer level, Integer transitionTime) {
+        MoveToLevelCommand command = new MoveToLevelCommand();
+
+        // Set the fields
+        command.setLevel(level);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move Command
      *
+     * @param moveMode {@link Integer} Move mode
+     * @param rate {@link Integer} Rate
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveCommand() {
-        return send(new MoveCommand());
+    public Future<CommandResult> moveCommand(Integer moveMode, Integer rate) {
+        MoveCommand command = new MoveCommand();
+
+        // Set the fields
+        command.setMoveMode(moveMode);
+        command.setRate(rate);
+
+        return send(command);
     }
 
 
     /**
      * The Step Command
      *
+     * @param stepMode {@link Integer} Step mode
+     * @param stepSize {@link Integer} Step size
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> stepCommand() {
-        return send(new StepCommand());
+    public Future<CommandResult> stepCommand(Integer stepMode, Integer stepSize, Integer transitionTime) {
+        StepCommand command = new StepCommand();
+
+        // Set the fields
+        command.setStepMode(stepMode);
+        command.setStepSize(stepSize);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
@@ -126,37 +334,65 @@ public class ZclLevelControlCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> stopCommand() {
-        return send(new StopCommand());
+        StopCommand command = new StopCommand();
+
+        return send(command);
     }
 
 
     /**
      * The Move to Level (with On/Off) Command
      *
+     * @param level {@link Integer} Level
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveToLevelWithOnOffCommand() {
-        return send(new MoveToLevelWithOnOffCommand());
+    public Future<CommandResult> moveToLevelWithOnOffCommand(Integer level, Integer transitionTime) {
+        MoveToLevelWithOnOffCommand command = new MoveToLevelWithOnOffCommand();
+
+        // Set the fields
+        command.setLevel(level);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
     /**
      * The Move (with On/Off) Command
      *
+     * @param moveMode {@link Integer} Move mode
+     * @param rate {@link Integer} Rate
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> moveWithOnOffCommand() {
-        return send(new MoveWithOnOffCommand());
+    public Future<CommandResult> moveWithOnOffCommand(Integer moveMode, Integer rate) {
+        MoveWithOnOffCommand command = new MoveWithOnOffCommand();
+
+        // Set the fields
+        command.setMoveMode(moveMode);
+        command.setRate(rate);
+
+        return send(command);
     }
 
 
     /**
      * The Step (with On/Off) Command
      *
+     * @param stepMode {@link Integer} Step mode
+     * @param stepSize {@link Integer} Step size
+     * @param transitionTime {@link Integer} Transition time
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> stepWithOnOffCommand() {
-        return send(new StepWithOnOffCommand());
+    public Future<CommandResult> stepWithOnOffCommand(Integer stepMode, Integer stepSize, Integer transitionTime) {
+        StepWithOnOffCommand command = new StepWithOnOffCommand();
+
+        // Set the fields
+        command.setStepMode(stepMode);
+        command.setStepSize(stepSize);
+        command.setTransitionTime(transitionTime);
+
+        return send(command);
     }
 
 
@@ -166,7 +402,9 @@ public class ZclLevelControlCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> stop2Command() {
-        return send(new Stop2Command());
+        Stop2Command command = new Stop2Command();
+
+        return send(command);
     }
 
 

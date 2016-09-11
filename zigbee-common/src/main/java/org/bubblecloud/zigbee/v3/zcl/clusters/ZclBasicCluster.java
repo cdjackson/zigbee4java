@@ -23,19 +23,19 @@ public class ZclBasicCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Basic";
 
     // Attribute constants
-    private final int ATTR_ZCLVERSION = 0x0000;
-    private final int ATTR_APPLICATIONVERSION = 0x0001;
-    private final int ATTR_STACKVERSION = 0x0002;
-    private final int ATTR_HWVERSION = 0x0003;
-    private final int ATTR_MANUFACTURERNAME = 0x0004;
-    private final int ATTR_MODELIDENTIFIER = 0x0005;
-    private final int ATTR_DATECODE = 0x0006;
-    private final int ATTR_POWERSOURCE = 0x0007;
-    private final int ATTR_LOCATIONDESCRIPTION = 0x0010;
-    private final int ATTR_PHYSICALENVIRONMENT = 0x0011;
-    private final int ATTR_DEVICEENABLED = 0x0012;
-    private final int ATTR_ALARMMASK = 0x0013;
-    private final int ATTR_DISABLELOCALCONFIG = 0x0014;
+    public static final int ATTR_ZCLVERSION = 0x0000;
+    public static final int ATTR_APPLICATIONVERSION = 0x0001;
+    public static final int ATTR_STACKVERSION = 0x0002;
+    public static final int ATTR_HWVERSION = 0x0003;
+    public static final int ATTR_MANUFACTURERNAME = 0x0004;
+    public static final int ATTR_MODELIDENTIFIER = 0x0005;
+    public static final int ATTR_DATECODE = 0x0006;
+    public static final int ATTR_POWERSOURCE = 0x0007;
+    public static final int ATTR_LOCATIONDESCRIPTION = 0x0010;
+    public static final int ATTR_PHYSICALENVIRONMENT = 0x0011;
+    public static final int ATTR_DEVICEENABLED = 0x0012;
+    public static final int ATTR_ALARMMASK = 0x0013;
+    public static final int ATTR_DISABLELOCALCONFIG = 0x0014;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -78,8 +78,25 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getZclVersion() {
+    public Future<CommandResult> getZclVersionAsync() {
         return read(ATTR_ZCLVERSION);
+    }
+
+
+    /**
+     * Synchronously get the <i>ZCLVersion</i> attribute
+     * <p>
+     * The ZCLVersion attribute is 8 bits in length and specifies the version number of
+     * the ZigBee Cluster Library that all clusters on this endpoint conform to.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getZclVersion() {
+        return (Integer) readSync(ATTR_ZCLVERSION);
     }
 
 
@@ -96,8 +113,27 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getApplicationVersion() {
+    public Future<CommandResult> getApplicationVersionAsync() {
         return read(ATTR_APPLICATIONVERSION);
+    }
+
+
+    /**
+     * Synchronously get the <i>ApplicationVersion</i> attribute
+     * <p>
+     * <br>
+     * The ApplicationVersion attribute is 8 bits in length and specifies the version
+     * number of the application software contained in the device. The usage of this
+     * attribute is manufacturer dependent.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getApplicationVersion() {
+        return (Integer) readSync(ATTR_APPLICATIONVERSION);
     }
 
 
@@ -114,8 +150,27 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getStackVersion() {
+    public Future<CommandResult> getStackVersionAsync() {
         return read(ATTR_STACKVERSION);
+    }
+
+
+    /**
+     * Synchronously get the <i>StackVersion</i> attribute
+     * <p>
+     * <br>
+     * The StackVersion attribute is 8 bits in length and specifies the version number
+     * of the implementation of the ZigBee stack contained in the device. The usage of
+     * this attribute is manufacturer dependent.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getStackVersion() {
+        return (Integer) readSync(ATTR_STACKVERSION);
     }
 
 
@@ -131,8 +186,26 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getHwVersion() {
+    public Future<CommandResult> getHwVersionAsync() {
         return read(ATTR_HWVERSION);
+    }
+
+
+    /**
+     * Synchronously get the <i>HWVersion</i> attribute
+     * <p>
+     * <br>
+     * The HWVersion attribute is 8 bits in length and specifies the version number of
+     * the hardware of the device. The usage of this attribute is manufacturer dependent.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getHwVersion() {
+        return (Integer) readSync(ATTR_HWVERSION);
     }
 
 
@@ -148,8 +221,26 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getManufacturerName() {
+    public Future<CommandResult> getManufacturerNameAsync() {
         return read(ATTR_MANUFACTURERNAME);
+    }
+
+
+    /**
+     * Synchronously get the <i>ManufacturerName</i> attribute
+     * <p>
+     * <br>
+     * The ManufacturerName attribute is a maximum of 32 bytes in length and specifies
+     * the name of the manufacturer as a ZigBee character string.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link String}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link String} attribute value, or null on error
+     */
+    public String getManufacturerName() {
+        return (String) readSync(ATTR_MANUFACTURERNAME);
     }
 
 
@@ -165,8 +256,26 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getModelIdentifier() {
+    public Future<CommandResult> getModelIdentifierAsync() {
         return read(ATTR_MODELIDENTIFIER);
+    }
+
+
+    /**
+     * Synchronously get the <i>ModelIdentifier</i> attribute
+     * <p>
+     * <br>
+     * The ModelIdentifier attribute is a maximum of 32 bytes in length and specifies the
+     * model number (or other identifier) assigned by the manufacturer as a ZigBee character string.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link String}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link String} attribute value, or null on error
+     */
+    public String getModelIdentifier() {
+        return (String) readSync(ATTR_MODELIDENTIFIER);
     }
 
 
@@ -184,8 +293,28 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getDateCode() {
+    public Future<CommandResult> getDateCodeAsync() {
         return read(ATTR_DATECODE);
+    }
+
+
+    /**
+     * Synchronously get the <i>DateCode</i> attribute
+     * <p>
+     * <br>
+     * The DateCode attribute is a ZigBee character string with a maximum length of 16 bytes.
+     * The first 8 characters specify the date of manufacturer of the device in international
+     * date notation according to ISO 8601, i.e. YYYYMMDD, e.g.
+     * 20060814.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link String}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link String} attribute value, or null on error
+     */
+    public String getDateCode() {
+        return (String) readSync(ATTR_DATECODE);
     }
 
 
@@ -203,8 +332,28 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getPowerSource() {
+    public Future<CommandResult> getPowerSourceAsync() {
         return read(ATTR_POWERSOURCE);
+    }
+
+
+    /**
+     * Synchronously get the <i>PowerSource</i> attribute
+     * <p>
+     * <br>
+     * The PowerSource attribute is 8 bits in length and specifies the source(s) of power
+     * available to the device. Bits b0–b6 of this attribute represent the primary power
+     * source of the device and bit b7 indicates whether the device has a secondary power
+     * source in the form of a battery backup.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getPowerSource() {
+        return (Integer) readSync(ATTR_POWERSOURCE);
     }
 
 
@@ -238,8 +387,26 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getLocationDescription() {
+    public Future<CommandResult> getLocationDescriptionAsync() {
         return read(ATTR_LOCATIONDESCRIPTION);
+    }
+
+
+    /**
+     * Synchronously get the <i>LocationDescription</i> attribute
+     * <p>
+     * <br>
+     * The LocationDescription attribute is a maximum of 16 bytes in length and describes
+     * the physical location of the device as a ZigBee character string.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link String}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link String} attribute value, or null on error
+     */
+    public String getLocationDescription() {
+        return (String) readSync(ATTR_LOCATIONDESCRIPTION);
     }
 
 
@@ -273,8 +440,26 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getPhysicalEnvironment() {
+    public Future<CommandResult> getPhysicalEnvironmentAsync() {
         return read(ATTR_PHYSICALENVIRONMENT);
+    }
+
+
+    /**
+     * Synchronously get the <i>PhysicalEnvironment</i> attribute
+     * <p>
+     * <br>
+     * The PhysicalEnvironment attribute is 8 bits in length and specifies the type of
+     * physical environment in which the device will operate.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getPhysicalEnvironment() {
+        return (Integer) readSync(ATTR_PHYSICALENVIRONMENT);
     }
 
 
@@ -308,8 +493,26 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getDeviceEnabled() {
+    public Future<CommandResult> getDeviceEnabledAsync() {
         return read(ATTR_DEVICEENABLED);
+    }
+
+
+    /**
+     * Synchronously get the <i>DeviceEnabled</i> attribute
+     * <p>
+     * <br>
+     * The DeviceEnabled attribute is a boolean and specifies whether the device is enabled
+     * or disabled.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Boolean}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Boolean} attribute value, or null on error
+     */
+    public Boolean getDeviceEnabled() {
+        return (Boolean) readSync(ATTR_DEVICEENABLED);
     }
 
 
@@ -343,8 +546,26 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getAlarmMask() {
+    public Future<CommandResult> getAlarmMaskAsync() {
         return read(ATTR_ALARMMASK);
+    }
+
+
+    /**
+     * Synchronously get the <i>AlarmMask</i> attribute
+     * <p>
+     * <br>
+     * The AlarmMask attribute is 8 bits in length and specifies which of a number of general
+     * alarms may be generated.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getAlarmMask() {
+        return (Integer) readSync(ATTR_ALARMMASK);
     }
 
 
@@ -386,8 +607,30 @@ public class ZclBasicCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getDisableLocalConfig() {
+    public Future<CommandResult> getDisableLocalConfigAsync() {
         return read(ATTR_DISABLELOCALCONFIG);
+    }
+
+
+    /**
+     * Synchronously get the <i>DisableLocalConfig</i> attribute
+     * <p>
+     * <br>
+     * The DisableLocalConfig attribute allows a number of local device configuration
+     * functions to be disabled.
+     * <br>
+     * The intention of this attribute is to allow disabling of any local configuration
+     * user interface, for example to prevent reset or binding buttons being activated by
+     * unauthorised persons in a public building.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getDisableLocalConfig() {
+        return (Integer) readSync(ATTR_DISABLELOCALCONFIG);
     }
 
 
@@ -397,7 +640,9 @@ public class ZclBasicCluster extends ZclCluster {
      * @return the {@link Future<CommandResult>} command result future
      */
     public Future<CommandResult> resetToFactoryDefaultsCommand() {
-        return send(new ResetToFactoryDefaultsCommand());
+        ResetToFactoryDefaultsCommand command = new ResetToFactoryDefaultsCommand();
+
+        return send(command);
     }
 
 

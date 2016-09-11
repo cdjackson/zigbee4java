@@ -1,7 +1,9 @@
 package org.bubblecloud.zigbee.v3.zcl;
 
 import java.util.Calendar;
+import java.util.concurrent.Future;
 
+import org.bubblecloud.zigbee.v3.CommandResult;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
 
 public class ZclAttribute {
@@ -144,14 +146,26 @@ public class ZclAttribute {
         return implemented;
     }
 
+    /**
+     * Returns true if this attribute is readable
+     * @return true if the attribute is readable
+     */
     public boolean isReadable() {
         return readable;
     }
 
+    /**
+     * Returns true if this attribute is writable
+     * @return true if the attribute is writable
+     */
     public boolean isWritable() {
         return writeable;
     }
 
+    /**
+     * Returns true if this attribute is reportable
+     * @return true if the attribute is reportable
+     */
     public boolean isReportable() {
         return reportable;
     }

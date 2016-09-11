@@ -27,11 +27,11 @@ public class ZclIlluminanceMeasurementCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Illuminance measurement";
 
     // Attribute constants
-    private final int ATTR_MEASUREDVALUE = 0x0000;
-    private final int ATTR_MINMEASUREDVALUE = 0x0001;
-    private final int ATTR_MAXMEASUREDVALUE = 0x0002;
-    private final int ATTR_TOLERANCE = 0x0003;
-    private final int ATTR_LIGHTSENSORTYPE = 0x0004;
+    public static final int ATTR_MEASUREDVALUE = 0x0000;
+    public static final int ATTR_MINMEASUREDVALUE = 0x0001;
+    public static final int ATTR_MAXMEASUREDVALUE = 0x0002;
+    public static final int ATTR_TOLERANCE = 0x0003;
+    public static final int ATTR_LIGHTSENSORTYPE = 0x0004;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -74,8 +74,33 @@ public class ZclIlluminanceMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMeasuredValue() {
+    public Future<CommandResult> getMeasuredValueAsync() {
         return read(ATTR_MEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MeasuredValue</i> attribute
+     * <p>
+     * MeasuredValue represents the Illuminance in Lux (symbol lx) as follows:-
+     * <br>
+     * MeasuredValue = 10,000 x log10 Illuminance + 1
+     * <br>
+     * Where 1 lx <= Illuminance <=3.576 Mlx, corresponding to a MeasuredValue in
+     * the range 1 to 0xfffe.
+     * <br>
+     * The following special values of MeasuredValue apply.
+     * <li>0x0000 indicates a value of Illuminance that is too low to be measured.</li>
+     * <li>0xffff indicates that the Illuminance measurement is invalid.</li>
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMeasuredValue() {
+        return (Integer) readSync(ATTR_MEASUREDVALUE);
     }
 
 
@@ -118,8 +143,26 @@ public class ZclIlluminanceMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMinMeasuredValue() {
+    public Future<CommandResult> getMinMeasuredValueAsync() {
         return read(ATTR_MINMEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MinMeasuredValue</i> attribute
+     * <p>
+     * <br>
+     * The MinMeasuredValue attribute indicates the minimum value of MeasuredValue
+     * that can be measured. A value of 0xffff indicates that this attribute is not defined.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMinMeasuredValue() {
+        return (Integer) readSync(ATTR_MINMEASUREDVALUE);
     }
 
 
@@ -139,8 +182,30 @@ public class ZclIlluminanceMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getMaxMeasuredValue() {
+    public Future<CommandResult> getMaxMeasuredValueAsync() {
         return read(ATTR_MAXMEASUREDVALUE);
+    }
+
+
+    /**
+     * Synchronously get the <i>MaxMeasuredValue</i> attribute
+     * <p>
+     * <br>
+     * The MaxMeasuredValue attribute indicates the maximum value of MeasuredValue
+     * that can be measured. A value of 0xffff indicates that this attribute is not defined.
+     * <br>
+     * MaxMeasuredValue shall be greater than MinMeasuredValue.
+     * <br>
+     * MinMeasuredValue and MaxMeasuredValue define the range of the sensor.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getMaxMeasuredValue() {
+        return (Integer) readSync(ATTR_MAXMEASUREDVALUE);
     }
 
 
@@ -157,8 +222,27 @@ public class ZclIlluminanceMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getTolerance() {
+    public Future<CommandResult> getToleranceAsync() {
         return read(ATTR_TOLERANCE);
+    }
+
+
+    /**
+     * Synchronously get the <i>Tolerance</i> attribute
+     * <p>
+     * <br>
+     * The Tolerance attribute indicates the magnitude of the possible error that is
+     * associated with MeasuredValue . The true value is located in the range
+     * (MeasuredValue – Tolerance) to (MeasuredValue + Tolerance).
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getTolerance() {
+        return (Integer) readSync(ATTR_TOLERANCE);
     }
 
 
@@ -194,8 +278,25 @@ public class ZclIlluminanceMeasurementCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getLightSensorType() {
+    public Future<CommandResult> getLightSensorTypeAsync() {
         return read(ATTR_LIGHTSENSORTYPE);
+    }
+
+
+    /**
+     * Synchronously get the <i>LightSensorType</i> attribute
+     * <p>
+     * <br>
+     * The LightSensorType attribute specifies the electronic type of the light sensor.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getLightSensorType() {
+        return (Integer) readSync(ATTR_LIGHTSENSORTYPE);
     }
 
 

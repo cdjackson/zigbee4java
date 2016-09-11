@@ -21,9 +21,21 @@ public class IeeeAddress {
         return address;
     }
 
-    /**
-     * 
-     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!IeeeAddress.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        final IeeeAddress other = (IeeeAddress) obj;
+        if (other.getLong() == address) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return String.format("%08X", address);

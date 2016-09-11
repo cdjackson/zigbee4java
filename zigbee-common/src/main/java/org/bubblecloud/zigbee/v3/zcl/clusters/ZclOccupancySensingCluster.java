@@ -26,13 +26,13 @@ public class ZclOccupancySensingCluster extends ZclCluster {
     public static final String CLUSTER_NAME = "Occupancy sensing";
 
     // Attribute constants
-    private final int ATTR_OCCUPANCY = 0x0000;
-    private final int ATTR_OCCUPANCYSENSORTYPE = 0x0001;
-    private final int ATTR_PIROCCUPIEDTOUNOCCUPIEDDELAY = 0x0010;
-    private final int ATTR_PIRUNOCCUPIEDTOOCCUPIEDDELAY = 0x0011;
-    private final int ATTR_ULTRASONICOCCUPIEDTOUNOCCUPIEDDELAY = 0x0020;
-    private final int ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDDELAY = 0x0021;
-    private final int ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDTHRESHOLD = 0x0022;
+    public static final int ATTR_OCCUPANCY = 0x0000;
+    public static final int ATTR_OCCUPANCYSENSORTYPE = 0x0001;
+    public static final int ATTR_PIROCCUPIEDTOUNOCCUPIEDDELAY = 0x0010;
+    public static final int ATTR_PIRUNOCCUPIEDTOOCCUPIEDDELAY = 0x0011;
+    public static final int ATTR_ULTRASONICOCCUPIEDTOUNOCCUPIEDDELAY = 0x0020;
+    public static final int ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDDELAY = 0x0021;
+    public static final int ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDTHRESHOLD = 0x0022;
 
     // Attribute initialisation
     protected Map<Integer, ZclAttribute> initializeAttributes() {
@@ -71,8 +71,27 @@ public class ZclOccupancySensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getOccupancy() {
+    public Future<CommandResult> getOccupancyAsync() {
         return read(ATTR_OCCUPANCY);
+    }
+
+
+    /**
+     * Synchronously get the <i>Occupancy</i> attribute
+     * <p>
+     * The Occupancy attribute is a bitmap.
+     * <br>
+     * Bit 0 specifies the sensed occupancy as follows: 1 = occupied, 0 = unoccupied.
+     * All other bits are reserved.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getOccupancy() {
+        return (Integer) readSync(ATTR_OCCUPANCY);
     }
 
 
@@ -108,8 +127,25 @@ public class ZclOccupancySensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getOccupancySensorType() {
+    public Future<CommandResult> getOccupancySensorTypeAsync() {
         return read(ATTR_OCCUPANCYSENSORTYPE);
+    }
+
+
+    /**
+     * Synchronously get the <i>OccupancySensorType</i> attribute
+     * <p>
+     * <br>
+     * The OccupancySensorType attribute specifies the type of the occupancy sensor.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is MANDATORY
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getOccupancySensorType() {
+        return (Integer) readSync(ATTR_OCCUPANCYSENSORTYPE);
     }
 
 
@@ -135,8 +171,22 @@ public class ZclOccupancySensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getPirOccupiedToUnoccupiedDelay() {
+    public Future<CommandResult> getPirOccupiedToUnoccupiedDelayAsync() {
         return read(ATTR_PIROCCUPIEDTOUNOCCUPIEDDELAY);
+    }
+
+
+    /**
+     * Synchronously get the <i>PIROccupiedToUnoccupiedDelay</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getPirOccupiedToUnoccupiedDelay() {
+        return (Integer) readSync(ATTR_PIROCCUPIEDTOUNOCCUPIEDDELAY);
     }
 
 
@@ -162,8 +212,22 @@ public class ZclOccupancySensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getPirUnoccupiedToOccupiedDelay() {
+    public Future<CommandResult> getPirUnoccupiedToOccupiedDelayAsync() {
         return read(ATTR_PIRUNOCCUPIEDTOOCCUPIEDDELAY);
+    }
+
+
+    /**
+     * Synchronously get the <i>PIRUnoccupiedToOccupiedDelay</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getPirUnoccupiedToOccupiedDelay() {
+        return (Integer) readSync(ATTR_PIRUNOCCUPIEDTOOCCUPIEDDELAY);
     }
 
 
@@ -203,8 +267,29 @@ public class ZclOccupancySensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getUltraSonicOccupiedToUnoccupiedDelay() {
+    public Future<CommandResult> getUltraSonicOccupiedToUnoccupiedDelayAsync() {
         return read(ATTR_ULTRASONICOCCUPIEDTOUNOCCUPIEDDELAY);
+    }
+
+
+    /**
+     * Synchronously get the <i>UltraSonicOccupiedToUnoccupiedDelay</i> attribute
+     * <p>
+     * <br>
+     * The UltraSonicOccupiedToUnoccupiedTime attribute specifies the time delay, in
+     * seconds, before the ultrasonic sensor changes to its occupied state when the
+     * sensed area becomes unoccupied. This attribute, along with
+     * UltraSonicUnoccupiedToOccupiedTime, may be used to reduce sensor 'chatter'
+     * when used in an area where occupation changes frequently.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getUltraSonicOccupiedToUnoccupiedDelay() {
+        return (Integer) readSync(ATTR_ULTRASONICOCCUPIEDTOUNOCCUPIEDDELAY);
     }
 
 
@@ -240,8 +325,27 @@ public class ZclOccupancySensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getUltraSonicUnoccupiedToOccupiedDelay() {
+    public Future<CommandResult> getUltraSonicUnoccupiedToOccupiedDelayAsync() {
         return read(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDDELAY);
+    }
+
+
+    /**
+     * Synchronously get the <i>UltraSonicUnoccupiedToOccupiedDelay</i> attribute
+     * <p>
+     * <br>
+     * The UltraSonicUnoccupiedToOccupiedTime attribute specifies the time delay, in
+     * seconds, before the ultrasonic sensor changes to its unoccupied state when the
+     * sensed area becomes occupied.
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getUltraSonicUnoccupiedToOccupiedDelay() {
+        return (Integer) readSync(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDDELAY);
     }
 
 
@@ -267,8 +371,22 @@ public class ZclOccupancySensingCluster extends ZclCluster {
      *
      * @return the {@link Future<CommandResult>} command result future
      */
-    public Future<CommandResult> getUltrasonicUnoccupiedToOccupiedThreshold() {
+    public Future<CommandResult> getUltrasonicUnoccupiedToOccupiedThresholdAsync() {
         return read(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDTHRESHOLD);
+    }
+
+
+    /**
+     * Synchronously get the <i>UltrasonicUnoccupiedToOccupiedThreshold</i> attribute
+     * </p>
+     * This method will block until the response is received or a timeout occurs.<br>
+     * The attribute is of type {@link Integer}<br>
+     * The implementation of this attribute by a device is OPTIONAL
+     *
+     * @return the {@link Integer} attribute value, or null on error
+     */
+    public Integer getUltrasonicUnoccupiedToOccupiedThreshold() {
+        return (Integer) readSync(ATTR_ULTRASONICUNOCCUPIEDTOOCCUPIEDTHRESHOLD);
     }
 
 
