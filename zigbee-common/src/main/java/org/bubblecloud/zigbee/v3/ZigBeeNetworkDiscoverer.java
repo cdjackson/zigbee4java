@@ -63,8 +63,13 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
     /**
      * Map of endpoint descriptor request times.
      */
-    final Map<String, Long> endpointDescriptorRequestTimes = Collections.synchronizedMap(new HashMap<String, Long>());
+    final Map<ZigBeeDeviceAddress, Long> endpointDescriptorRequestTimes = Collections.synchronizedMap(new HashMap<ZigBeeDeviceAddress, Long>());
 
+    /**
+     * List of devices being discovered so we know when to notify of node updates
+     */
+    final List<ZigBeeDeviceAddress> discoveryProgress = new ArrayList<ZigBeeDeviceAddress>();
+    
     /**
      * Discovers ZigBee network state.
      * 
@@ -152,13 +157,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
             if (powerDescriptorResponse.getStatus() == 0) {
                 powerDescriptors.put(powerDescriptorResponse.getSourceAddress(), powerDescriptorResponse);
 
-                final int networkAddress = powerDescriptorResponse.getSourceAddress();
-                final IeeeAddressResponse ieeeAddressResponse = ieeeAddresses.get(networkAddress);
-                final NodeDescriptorResponse nodeDescriptorResponse = nodeDescriptors.get(networkAddress);
-
-                addOrUpdateNode(ieeeAddressResponse, nodeDescriptorResponse, powerDescriptorResponse);
-
-                requestNodeEndpoints(nodeDescriptorResponse.getNetworkAddress());
+                requestNodeEndpoints(powerDescriptorResponse.getSourceAddress());
             } else {
                 LOGGER.warn(powerDescriptorResponse.toString());
             }
@@ -169,8 +168,12 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
             final ActiveEndpointsResponse activeEndpointsResponse = (ActiveEndpointsResponse) command;
             if (activeEndpointsResponse.getStatus() == 0) {
                 for (final int endpoint : activeEndpointsResponse.getActiveEndpoints()) {
-                    int networkAddress = activeEndpointsResponse.getNetworkAddress();
-                    describeEndpoint(networkAddress, endpoint);
+                    ZigBeeDeviceAddress deviceAddress = new ZigBeeDeviceAddress(activeEndpointsResponse.getNetworkAddress(), endpoint);
+                    describeEndpoint(deviceAddress);
+                    
+                    if(!discoveryProgress.contains(deviceAddress)) {
+                        discoveryProgress.add(deviceAddress);
+                    }
                 }
             } else {
                 LOGGER.warn(activeEndpointsResponse.toString());
@@ -189,7 +192,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
                     return;
                 }
 
-                addOrUpdateDevice(ieeeAddressResponse, nodeDescriptorResponse, simpleDescriptorResponse);
+                addOrUpdateDevice(ieeeAddressResponse, simpleDescriptorResponse);
             } else {
                 LOGGER.warn(simpleDescriptorResponse.toString());
             }
@@ -295,17 +298,16 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
      * @param endpoint
      *            the endpoint
      */
-    private void describeEndpoint(final int networkAddress, final int endpoint) {
-        final String deviceIdentifier = networkAddress + "/" + endpoint;
-        if (endpointDescriptorRequestTimes.get(deviceIdentifier) != null
-                && System.currentTimeMillis() - endpointDescriptorRequestTimes.get(deviceIdentifier) < MINIMUM_REQUERY_TIME_MILLIS) {
+    private void describeEndpoint(final ZigBeeDeviceAddress deviceAddress) {
+        if (endpointDescriptorRequestTimes.get(deviceAddress) != null
+                && System.currentTimeMillis() - endpointDescriptorRequestTimes.get(deviceAddress) < MINIMUM_REQUERY_TIME_MILLIS) {
             return;
         }
-        endpointDescriptorRequestTimes.put(deviceIdentifier, System.currentTimeMillis());
+        endpointDescriptorRequestTimes.put(deviceAddress, System.currentTimeMillis());
         try {
             final SimpleDescriptorRequest request = new SimpleDescriptorRequest();
-            request.setDestinationAddress(networkAddress);
-            request.setEndpoint(endpoint);
+            request.setDestinationAddress(deviceAddress.getAddress());
+            request.setEndpoint(deviceAddress.getEndpoint());
             networkManager.sendCommand(request);
         } catch (ZigBeeException e) {
             LOGGER.error("Error sending discovery command.", e);
@@ -346,7 +348,7 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
      *            the simple descriptor response
      */
     private void addOrUpdateDevice(final IeeeAddressResponse ieeeAddressResponse,
-            final NodeDescriptorResponse nodeDescriptorResponse, final SimpleDescriptorResponse simpleDescriptorResponse) {
+            final SimpleDescriptorResponse simpleDescriptorResponse) {
         final ZigBeeDevice device;
         final boolean newDevice = networkState.getDevice(new ZigBeeDeviceAddress(ieeeAddressResponse
                 .getNetworkAddress(), simpleDescriptorResponse.getEndpoint())) == null;
@@ -358,14 +360,13 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
                     simpleDescriptorResponse.getEndpoint()));
         }
 
+        ZigBeeDeviceAddress networkAddress = new ZigBeeDeviceAddress(ieeeAddressResponse.getNetworkAddress(), simpleDescriptorResponse.getEndpoint());
+        
         device.setIeeeAddress(ieeeAddressResponse.getIeeeAddress());
-        device.setDeviceAddress(new ZigBeeDeviceAddress(ieeeAddressResponse.getNetworkAddress(),
-                simpleDescriptorResponse.getEndpoint()));
+        device.setDeviceAddress(networkAddress);
         device.setProfileId(simpleDescriptorResponse.getProfileId());
         device.setDeviceId(simpleDescriptorResponse.getDeviceId());
-//        device.setManufacturerCode(nodeDescriptorResponse.getNodeDescriptor().getManufacturerCode());
         device.setDeviceVersion(simpleDescriptorResponse.getDeviceVersion());
-//        device.setDeviceType(nodeDescriptorResponse.getNodeDescriptor().getLogicalType());
         device.setInputClusterIds(simpleDescriptorResponse.getInputClusters());
         device.setOutputClusterIds(simpleDescriptorResponse.getOutputClusters());
 
@@ -375,6 +376,28 @@ public class ZigBeeNetworkDiscoverer implements CommandListener {
             networkState.updateDevice(device);
         }
 
+        // Remove this device from the progress list
+        discoveryProgress.remove(networkAddress);
+        
+        // Check the progress list to see if there
+        boolean deviceOngoing = false;
+        for(ZigBeeDeviceAddress address : discoveryProgress) {
+            if(address.getAddress() == networkAddress.getAddress()) {
+                deviceOngoing = true;
+            }   
+        }
+        
+        // If there's no more devices being discovered at this address
+        // then notify the node update
+        if(deviceOngoing == false) {
+//            final int networkAddress = powerDescriptorResponse.getSourceAddress();
+//            final IeeeAddressResponse ieeeAddressResponse = ieeeAddresses.get(networkAddress);
+            final NodeDescriptorResponse nodeDescriptorResponse = nodeDescriptors.get(networkAddress.getAddress());
+            final PowerDescriptorResponse powerDescriptorResponse = powerDescriptors.get(networkAddress.getAddress());
+
+            addOrUpdateNode(ieeeAddressResponse, nodeDescriptorResponse, powerDescriptorResponse);
+        }
+        
         /*
          * final UserDescriptorRequest userDescriptorRequest = new
          * UserDescriptorRequest( device.getNetworkAddress(),

@@ -37,13 +37,13 @@ public class PowerDescriptor {
         this.currentPowerMode = currentMode;
 
         switch (currentPowerSource) {
-        case 0b0001:
+        case 0x01:
             this.currentPowerSource = PowerSourceType.Mains;
             break;
-        case 0b0010:
+        case 0x02:
             this.currentPowerSource = PowerSourceType.RechargableBattery;
             break;
-        case 0b0100:
+        case 0x04:
             this.currentPowerSource = PowerSourceType.DisposableBattery;
             break;
         default:
@@ -52,27 +52,27 @@ public class PowerDescriptor {
         }
 
         this.availablePowerSources = new HashSet<PowerSourceType>();
-        if ((availablePowerSources & 0b0001) != 0) {
+        if ((availablePowerSources & 0x01) != 0) {
             this.availablePowerSources.add(PowerSourceType.Mains);
         }
-        if ((availablePowerSources & 0b0010) != 0) {
+        if ((availablePowerSources & 0x02) != 0) {
             this.availablePowerSources.add(PowerSourceType.RechargableBattery);
         }
-        if ((availablePowerSources & 0b0100) != 0) {
+        if ((availablePowerSources & 0x04) != 0) {
             this.availablePowerSources.add(PowerSourceType.DisposableBattery);
         }
 
         switch (powerLevel) {
-        case 0b1100:
+        case 0xc0:
             this.powerLevel = PowerLevelType.Full;
             break;
-        case 0b1000:
+        case 0x80:
             this.powerLevel = PowerLevelType.Medium;
             break;
-        case 0b0100:
+        case 0x40:
             this.powerLevel = PowerLevelType.Low;
             break;
-        case 0b0000:
+        case 0x00:
             this.powerLevel = PowerLevelType.Critical;
             break;
         default:

@@ -7,7 +7,7 @@ package org.bubblecloud.zigbee.v3;
  */
 public class ZigBeeDeviceAddress extends ZigBeeAddress {
     final private int address;
-    private int endpoint;
+    final private int endpoint;
 
     /**
      * Constructor
@@ -24,11 +24,11 @@ public class ZigBeeDeviceAddress extends ZigBeeAddress {
 
     public ZigBeeDeviceAddress(String address) {
         String[] splits = address.split("/");
-        if(splits.length == 2) {
+        if (splits.length == 2) {
             this.address = Integer.parseInt(splits[0]);
             this.endpoint = Integer.parseInt(splits[1]);
         }
-        
+
         throw new IllegalArgumentException();
     }
 
@@ -43,9 +43,9 @@ public class ZigBeeDeviceAddress extends ZigBeeAddress {
      * @param endpoint
      *            number
      */
-//    public void setEndpoint(int endpoint) {
-  //      this.endpoint = endpoint;
-    //}
+    // public void setEndpoint(int endpoint) {
+    // this.endpoint = endpoint;
+    // }
 
     /**
      * Returns the endpoint number
@@ -71,10 +71,10 @@ public class ZigBeeDeviceAddress extends ZigBeeAddress {
      * @param address
      *            the network address
      */
-//    public void setAddress(int address) {
-  //      this.address = address;
-    //}
-    
+    // public void setAddress(int address) {
+    // this.address = address;
+    // }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -84,7 +84,7 @@ public class ZigBeeDeviceAddress extends ZigBeeAddress {
             return false;
         }
         final ZigBeeDeviceAddress other = (ZigBeeDeviceAddress) obj;
-        if(other.getAddress() == address && other.getEndpoint() == endpoint) {
+        if (other.getAddress() == address && other.getEndpoint() == endpoint) {
             return true;
         }
         return false;

@@ -67,55 +67,55 @@ public class NodeDescriptor {
         }
 
         this.macCapabilities = new HashSet<MacCapabilitiesType>();
-        if ((macCapabilities & 0b00000001) != 0) {
+        if ((macCapabilities & 0x01) != 0) {
             this.macCapabilities.add(MacCapabilitiesType.AlternativePAN);
         }
-        if ((macCapabilities & 0b00000010) != 0) {
+        if ((macCapabilities & 0x02) != 0) {
             this.macCapabilities.add(MacCapabilitiesType.FullFunctionDevice);
         } else {
             this.macCapabilities.add(MacCapabilitiesType.ReducedFunctionDevice);
         }
-        if ((macCapabilities & 0b00000100) != 0) {
+        if ((macCapabilities & 0x04) != 0) {
             this.macCapabilities.add(MacCapabilitiesType.MainsPower);
         }
-        if ((macCapabilities & 0b00001000) != 0) {
+        if ((macCapabilities & 0x08) != 0) {
             this.macCapabilities.add(MacCapabilitiesType.ReceiverOnWhenIdle);
         }
-        if ((macCapabilities & 0b01000000) != 0) {
+        if ((macCapabilities & 0x40) != 0) {
             this.macCapabilities.add(MacCapabilitiesType.SecurityCapable);
         }
 
         this.frequencyBands = new HashSet<FrequencyBandType>();
-        if ((frequencyBand & 0b0001) != 0) {
+        if ((frequencyBand & 0x01) != 0) {
             this.frequencyBands.add(FrequencyBandType.Freq868MHz);
         }
-        if ((frequencyBand & 0b0100) != 0) {
+        if ((frequencyBand & 0x04) != 0) {
             this.frequencyBands.add(FrequencyBandType.Freq902MHz);
         }
-        if ((frequencyBand & 0b1000) != 0) {
+        if ((frequencyBand & 0x08) != 0) {
             this.frequencyBands.add(FrequencyBandType.Freq2400MHz);
         }
 
         this.serverCapabilities = new HashSet<ServerCapabilitiesType>();
-        if ((serverMask & 0b0000001) != 0) {
+        if ((serverMask & 0x01) != 0) {
             this.serverCapabilities.add(ServerCapabilitiesType.PrimaryTrustCenter);
         }
-        if ((serverMask & 0b0000010) != 0) {
+        if ((serverMask & 0x02) != 0) {
             this.serverCapabilities.add(ServerCapabilitiesType.BackupTrustCenter);
         }
-        if ((serverMask & 0b0000100) != 0) {
+        if ((serverMask & 0x04) != 0) {
             this.serverCapabilities.add(ServerCapabilitiesType.PrimaryBindingTableCache);
         }
-        if ((serverMask & 0b0001000) != 0) {
+        if ((serverMask & 0x08) != 0) {
             this.serverCapabilities.add(ServerCapabilitiesType.BackupBindingTableCache);
         }
-        if ((serverMask & 0b0010000) != 0) {
+        if ((serverMask & 0x10) != 0) {
             this.serverCapabilities.add(ServerCapabilitiesType.PrimaryDiscoveryCache);
         }
-        if ((serverMask & 0b0100000) != 0) {
+        if ((serverMask & 0x20) != 0) {
             this.serverCapabilities.add(ServerCapabilitiesType.BackupDiscoveryCache);
         }
-        if ((serverMask & 0b1000000) != 0) {
+        if ((serverMask & 0x40) != 0) {
             this.serverCapabilities.add(ServerCapabilitiesType.NetworkManager);
         }
 
