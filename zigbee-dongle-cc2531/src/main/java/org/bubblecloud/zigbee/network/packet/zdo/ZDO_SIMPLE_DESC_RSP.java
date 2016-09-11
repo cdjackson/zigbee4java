@@ -176,9 +176,9 @@ public class ZDO_SIMPLE_DESC_RSP extends ZToolPacket /*implements IRESPONSE_CALL
         return getOutputClustersList().length;
     }
 
-    public byte getEndPoint() {
+    public int getEndPoint() {
         if (len >= MIN_DESC_LEN) {
-            return (byte) (super.packet[ZToolPacket.PAYLOAD_START_INDEX + 6]);
+            return (super.packet[ZToolPacket.PAYLOAD_START_INDEX + 6]);
         } else {
             return -1;
         }
