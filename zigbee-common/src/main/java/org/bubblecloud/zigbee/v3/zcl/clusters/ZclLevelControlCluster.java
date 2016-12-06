@@ -17,6 +17,7 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.levelcontrol.StepWithOnOffCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.levelcontrol.Stop2Command;
 import org.bubblecloud.zigbee.v3.zcl.clusters.levelcontrol.StopCommand;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Level Control</b> cluster implementation (<i>Cluster ID 0x0008</i>).

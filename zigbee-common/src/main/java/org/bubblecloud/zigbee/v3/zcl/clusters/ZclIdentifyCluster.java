@@ -12,6 +12,7 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.identify.IdentifyCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.identify.IdentifyQueryCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.identify.IdentifyQueryResponse;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Identify</b> cluster implementation (<i>Cluster ID 0x0003</i>).

@@ -1,6 +1,7 @@
 package org.bubblecloud.zigbee.v3.zcl.clusters;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
@@ -21,7 +22,9 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.scenes.StoreSceneCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.scenes.StoreSceneResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.scenes.ViewSceneCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.scenes.ViewSceneResponse;
+import org.bubblecloud.zigbee.v3.zcl.field.*;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Scenes</b> cluster implementation (<i>Cluster ID 0x0005</i>).

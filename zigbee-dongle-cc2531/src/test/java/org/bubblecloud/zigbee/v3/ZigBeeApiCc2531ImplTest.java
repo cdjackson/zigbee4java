@@ -30,7 +30,7 @@ public class ZigBeeApiCc2531ImplTest {
 //        final ZigBeeApiDongleImpl api = new ZigBeeApiDongleImpl(dongle, false);
         ZigBeeNetworkManager networkManager = new ZigBeeNetworkManager(dongle, false);
 
-        networkManager.getNetworkState().addNetworkListener(new ZigBeeNetworkStateListener() {
+        networkManager.getNetworkState().addNetworkDeviceListener(new ZigBeeNetworkDeviceListener() {
             @Override
             public void deviceAdded(ZigBeeDevice device) {
                 LOGGER.info("Device added: " + device);
@@ -44,24 +44,6 @@ public class ZigBeeApiCc2531ImplTest {
             @Override
             public void deviceRemoved(ZigBeeDevice device) {
                 LOGGER.info("Device removed: " + device);
-            }
-
-            @Override
-            public void nodeAdded(ZigBeeNode node) {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            public void nodeUpdated(ZigBeeNode node) {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            public void nodeRemoved(ZigBeeNode node) {
-                // TODO Auto-generated method stub
-                
             }
         });
 

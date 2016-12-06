@@ -753,6 +753,22 @@ public class ZclProtocolCodeGenerator {
 
                 Set<String> imports = new HashSet<String>();
 
+                for (final Command command : commands) {
+                    final LinkedList<Field> fields = new LinkedList<Field>(command.fields.values());
+                    for (final Field field : fields) {
+                        if (field.dataTypeClass.startsWith("List")) {
+                            imports.add("java.util.List");
+                            imports.add(packageRootPrefix + packageZclField + ".*");
+                            break;
+                        }
+                    }
+
+                    if (!fields.isEmpty()) {
+                        imports.add(packageRootPrefix + packageZclProtocol + ".ZclFieldType");
+                    }
+                }
+
+                
                 boolean addAttributeTypes = false;
                 boolean readAttributes = false;
                 for (final Attribute attribute : cluster.attributes.values()) {

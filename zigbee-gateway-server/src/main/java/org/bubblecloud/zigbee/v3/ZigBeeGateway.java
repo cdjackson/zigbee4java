@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bubblecloud.zigbee.api.ZigBeeApiConstants;
 import org.bubblecloud.zigbee.api.cluster.Cluster;
 import org.bubblecloud.zigbee.api.cluster.impl.api.core.Attribute;
+import org.bubblecloud.zigbee.v3.ZigBeeNetwork.TransportState;
 import org.bubblecloud.zigbee.v3.model.Status;
 import org.bubblecloud.zigbee.v3.model.ZigBeeType;
 import org.bubblecloud.zigbee.v3.model.ZToolAddress64;
@@ -113,6 +114,13 @@ public final class ZigBeeGateway {
         mainThread = Thread.currentThread();
         System.out.print("ZigBee API starting up...");
 
+        zigBeeApi.getNetwork().addNetworkStateListener(new ZigBeeNetworkStateListener() {
+            @Override
+            public void networkStateUpdated(TransportState state) {
+               print("ZigBee network state updated to " + state.toString(), System.out);
+            }
+        });
+        
         if (!networkManager.startup()) {
             print("ZigBee API starting up ... [FAIL]", System.out);
             return;
@@ -120,7 +128,7 @@ public final class ZigBeeGateway {
             print("ZigBee API starting up ... [OK]", System.out);
         }
 
-        zigBeeApi.getNetwork().getNetworkState().addNetworkListener(new ZigBeeNetworkStateListener() {
+        zigBeeApi.getNetwork().getNetworkState().addNetworkDeviceListener(new ZigBeeNetworkDeviceListener() {
             @Override
             public void deviceAdded(ZigBeeDevice device) {
                 print("Device added:\n" + getDeviceSummary(device), System.out);
@@ -135,7 +143,9 @@ public final class ZigBeeGateway {
             public void deviceRemoved(ZigBeeDevice device) {
                 print("Device removed\n" + getDeviceSummary(device), System.out);
             }
-
+        });
+        
+        zigBeeApi.getNetwork().getNetworkState().addNetworkNodeListener(new ZigBeeNetworkNodeListener() {
             @Override
             public void nodeAdded(ZigBeeNode node) {
                 print("Node Added " + node, System.out);
@@ -151,7 +161,7 @@ public final class ZigBeeGateway {
                 print("Node Removed " + node, System.out);
             }
         });
-
+        
         zigBeeApi.getNetwork().addCommandListener(new CommandListener() {
             @Override
             public void commandReceived(Command command) {

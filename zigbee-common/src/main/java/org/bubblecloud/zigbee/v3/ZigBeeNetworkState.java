@@ -71,15 +71,28 @@ public interface ZigBeeNetworkState {
     /**
      * Adds network listener.
      * The listener will be notified about device additions, removals and updates within the network.
-     * @param networkListener the network listener
+     * @param networkDeviceListener the network listener
      */
-    void addNetworkListener(ZigBeeNetworkStateListener networkListener);
+    void addNetworkDeviceListener(ZigBeeNetworkDeviceListener networkDeviceListener);
+
+    /**
+     * Removes network device listener
+     * @param networkDeviceListener the network listener
+     */
+    void removeNetworkDeviceListener(ZigBeeNetworkDeviceListener networkDeviceListener);
+
+    /**
+     * Adds network listener.
+     * The listener will be notified about device additions, removals and updates within the network.
+     * @param networkNodeListener the network listener
+     */
+    void addNetworkNodeListener(ZigBeeNetworkNodeListener networkNodeListener);
 
     /**
      * Removes network listener
-     * @param networkListener the network listener
+     * @param networkNodeListener the network listener
      */
-    void removeNetworkListener(ZigBeeNetworkStateListener networkListener);
+    void removeNetworkNodeListener(ZigBeeNetworkNodeListener networkNodeListener);
 
     /**
      * Adds a node to the network
@@ -105,5 +118,4 @@ public interface ZigBeeNetworkState {
      * @param networkAddress
      */
     void removeNode(Integer networkAddress);
-
 }

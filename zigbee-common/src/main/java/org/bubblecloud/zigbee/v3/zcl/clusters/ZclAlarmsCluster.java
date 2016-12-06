@@ -15,6 +15,7 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.alarms.ResetAlarmCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.alarms.ResetAlarmLogCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.alarms.ResetAllAlarmsCommand;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Alarms</b> cluster implementation (<i>Cluster ID 0x0009</i>).

@@ -12,6 +12,7 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.iaszone.ZoneEnrollRequestCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iaszone.ZoneEnrollResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iaszone.ZoneStatusChangeNotificationCommand;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>IAS Zone</b> cluster implementation (<i>Cluster ID 0x0500</i>).

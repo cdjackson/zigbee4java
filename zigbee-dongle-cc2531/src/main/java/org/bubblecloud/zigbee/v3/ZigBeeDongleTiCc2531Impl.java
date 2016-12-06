@@ -3,6 +3,7 @@ package org.bubblecloud.zigbee.v3;
 import org.bubblecloud.zigbee.network.impl.*;
 import org.bubblecloud.zigbee.network.model.DriverStatus;
 import org.bubblecloud.zigbee.network.model.NetworkMode;
+import org.bubblecloud.zigbee.v3.ZigBeeNetwork.TransportState;
 import org.bubblecloud.zigbee.v3.zcl.ZclCommand;
 import org.bubblecloud.zigbee.v3.zcl.ZclCommandTransmitter;
 import org.bubblecloud.zigbee.v3.zdo.ZdoCommand;
@@ -34,7 +35,10 @@ public class ZigBeeDongleTiCc2531Impl implements ZigBeeTransport, CommandListene
      * Flag to reset the network on startup
      */
     private boolean resetNetwork = false;
-    
+
+    /**
+     * The reference to the network
+     */
     private ZigBeeNetwork zigbeeNetwork;
 
     /**
@@ -63,6 +67,8 @@ public class ZigBeeDongleTiCc2531Impl implements ZigBeeTransport, CommandListene
 
     @Override
     public boolean startup() {
+        zigbeeNetwork.setNetworkState(TransportState.UNINITIALISED);
+
         if (!networkManager.startup()) {
             return false;
         }
@@ -70,7 +76,10 @@ public class ZigBeeDongleTiCc2531Impl implements ZigBeeTransport, CommandListene
         networkManager.addAFMessageListener(zclCommandTransmitter);
         networkManager.addAsynchronousCommandListener(zdoCommandTransmitter);
 
+        zigbeeNetwork.setNetworkState(TransportState.INITIALISING);
+
         if (!networkManager.initializeZigBeeNetwork(resetNetwork)) {
+            zigbeeNetwork.setNetworkState(TransportState.UNINITIALISED);
             return false;
         }
 
@@ -79,11 +88,13 @@ public class ZigBeeDongleTiCc2531Impl implements ZigBeeTransport, CommandListene
                 break;
             }
             if (networkManager.getDriverStatus() == DriverStatus.CLOSED) {
+                zigbeeNetwork.setNetworkState(TransportState.UNINITIALISED);
                 return false;
             }
             try {
                 Thread.sleep(10);
             } catch (final InterruptedException e) {
+                zigbeeNetwork.setNetworkState(TransportState.UNINITIALISED);
                 return false;
             }
         }
@@ -93,6 +104,8 @@ public class ZigBeeDongleTiCc2531Impl implements ZigBeeTransport, CommandListene
         zclCommandTransmitter.addCommandListener(this);
         zdoCommandTransmitter.addCommandListener(this);
 
+        zigbeeNetwork.setNetworkState(TransportState.ONLINE);
+        
         return true;
     }
 

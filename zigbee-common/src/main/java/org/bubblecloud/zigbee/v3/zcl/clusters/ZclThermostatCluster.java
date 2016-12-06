@@ -10,6 +10,7 @@ import org.bubblecloud.zigbee.v3.zcl.ZclAttribute;
 import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.thermostat.SetpointRaiseLowerCommand;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Thermostat</b> cluster implementation (<i>Cluster ID 0x0201</i>).

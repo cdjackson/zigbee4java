@@ -11,6 +11,7 @@ import org.bubblecloud.zigbee.v3.zcl.ZclCluster;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iaswd.SquawkCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iaswd.StartWarningCommand;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>IAS WD</b> cluster implementation (<i>Cluster ID 0x0502</i>).

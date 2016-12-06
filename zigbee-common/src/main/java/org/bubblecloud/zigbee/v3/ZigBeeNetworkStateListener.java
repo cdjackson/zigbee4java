@@ -1,56 +1,17 @@
 package org.bubblecloud.zigbee.v3;
 
+import org.bubblecloud.zigbee.v3.ZigBeeNetwork.TransportState;
+
 /**
- * ZigBee network listener. Provides notifications on devices and nodes - eg devices added
- * to the network, removed from the network, or updated.
+ * ZigBee network listener. Provides notifications on updates to the network state
  */
 public interface ZigBeeNetworkStateListener {
 
     /**
-     * Node was added
+     * Network state has been update.
      * 
-     * @param node
-     *            the new {@link ZigBeeNode}
+     * @param state
+     *            the updated {@link TransportState}
      */
-    void nodeAdded(final ZigBeeNode node);
-
-    /**
-     * Node was updated
-     * 
-     * @param node
-     *            the updated {@link ZigBeeNode}
-     */
-    void nodeUpdated(final ZigBeeNode node);
-
-    /**
-     * Node was removed
-     * 
-     * @param node
-     *            the removed {@link ZigBeeNode}
-     */
-    void nodeRemoved(final ZigBeeNode node);
-    
-    /**
-     * Device was added to network.
-     * 
-     * @param device
-     *            the {@link ZigBeeDevice}
-     */
-    void deviceAdded(final ZigBeeDevice device);
-
-    /**
-     * Device was updated.
-     * 
-     * @param device
-     *            the {@link ZigBeeDevice}
-     */
-    void deviceUpdated(final ZigBeeDevice device);
-
-    /**
-     * Device was removed from network.
-     * 
-     * @param device
-     *            the {@link ZigBeeDevice}
-     */
-    void deviceRemoved(final ZigBeeDevice device);
+    void networkStateUpdated(final TransportState state);
 }

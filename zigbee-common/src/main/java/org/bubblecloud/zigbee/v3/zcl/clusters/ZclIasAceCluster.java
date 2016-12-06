@@ -1,6 +1,7 @@
 package org.bubblecloud.zigbee.v3.zcl.clusters;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 import org.bubblecloud.zigbee.v3.CommandResult;
@@ -18,7 +19,9 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.iasace.GetZoneIdMapResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iasace.GetZoneInformationCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iasace.GetZoneInformationResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.iasace.PanicCommand;
+import org.bubblecloud.zigbee.v3.zcl.field.*;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>IAS ACE</b> cluster implementation (<i>Cluster ID 0x0501</i>).

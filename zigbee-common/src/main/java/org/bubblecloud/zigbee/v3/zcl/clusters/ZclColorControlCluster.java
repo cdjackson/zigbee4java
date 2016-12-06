@@ -20,6 +20,7 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.colorcontrol.StepColorCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.colorcontrol.StepHueCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.colorcontrol.StepSaturationCommand;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Color control</b> cluster implementation (<i>Cluster ID 0x0300</i>).

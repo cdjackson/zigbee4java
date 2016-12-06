@@ -31,10 +31,15 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
      */
     private Map<Integer, ZigBeeGroupAddress> groups = new TreeMap<Integer, ZigBeeGroupAddress>();
     /**
-     * The listeners of the ZigBee network.
+     * The node listeners of the ZigBee network.
      */
-    private List<ZigBeeNetworkStateListener> listeners = Collections
-            .unmodifiableList(new ArrayList<ZigBeeNetworkStateListener>());
+    private List<ZigBeeNetworkNodeListener> nodeListeners = Collections
+            .unmodifiableList(new ArrayList<ZigBeeNetworkNodeListener>());
+    /**
+     * The device listeners of the ZigBee network.
+     */
+    private List<ZigBeeNetworkDeviceListener> deviceListeners = Collections
+            .unmodifiableList(new ArrayList<ZigBeeNetworkDeviceListener>());
     /**
      * The network reset flag.
      */
@@ -119,9 +124,8 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
 
     @Override
     public void removeGroup(final int groupId) {
-        final ZigBeeGroupAddress group;
         synchronized (groups) {
-            group = groups.remove(groupId);
+            groups.remove(groupId);
         }
     }
 
@@ -140,7 +144,7 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
                     device);
         }
         synchronized (this) {
-            for (final ZigBeeNetworkStateListener listener : listeners) {
+            for (final ZigBeeNetworkDeviceListener listener : deviceListeners) {
                 listener.deviceAdded(device);
             }
         }
@@ -152,7 +156,7 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
             devices.put(device.getDeviceAddress().toString(), device);
         }
         synchronized (this) {
-            for (final ZigBeeNetworkStateListener listener : listeners) {
+            for (final ZigBeeNetworkDeviceListener listener : deviceListeners) {
                 listener.deviceUpdated(device);
             }
         }
@@ -178,7 +182,7 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
         }
         synchronized (this) {
             if (device != null) {
-                for (final ZigBeeNetworkStateListener listener : listeners) {
+                for (final ZigBeeNetworkDeviceListener listener : deviceListeners) {
                     listener.deviceRemoved(device);
                 }
             }
@@ -193,24 +197,46 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
     }
 
     @Override
-    public void addNetworkListener(
-            final ZigBeeNetworkStateListener networkListener) {
+    public void addNetworkNodeListener(
+            final ZigBeeNetworkNodeListener networkNodeListener) {
         synchronized (this) {
-            final List<ZigBeeNetworkStateListener> modifiedListeners = new ArrayList<ZigBeeNetworkStateListener>(
-                    listeners);
-            modifiedListeners.add(networkListener);
-            listeners = Collections.unmodifiableList(modifiedListeners);
+            final List<ZigBeeNetworkNodeListener> modifiedListeners = new ArrayList<ZigBeeNetworkNodeListener>(
+                    nodeListeners);
+            modifiedListeners.add(networkNodeListener);
+            nodeListeners = Collections.unmodifiableList(modifiedListeners);
         }
     }
 
     @Override
-    public void removeNetworkListener(
-            final ZigBeeNetworkStateListener networkListener) {
+    public void removeNetworkNodeListener(
+            final ZigBeeNetworkNodeListener networkNodeListener) {
         synchronized (this) {
-            final List<ZigBeeNetworkStateListener> modifiedListeners = new ArrayList<ZigBeeNetworkStateListener>(
-                    listeners);
-            modifiedListeners.remove(networkListener);
-            listeners = Collections.unmodifiableList(modifiedListeners);
+            final List<ZigBeeNetworkNodeListener> modifiedListeners = new ArrayList<ZigBeeNetworkNodeListener>(
+                    nodeListeners);
+            modifiedListeners.remove(networkNodeListener);
+            nodeListeners = Collections.unmodifiableList(modifiedListeners);
+        }
+    }
+
+    @Override
+    public void addNetworkDeviceListener(
+            final ZigBeeNetworkDeviceListener networkDeviceListener) {
+        synchronized (this) {
+            final List<ZigBeeNetworkDeviceListener> modifiedListeners = new ArrayList<ZigBeeNetworkDeviceListener>(
+                    deviceListeners);
+            modifiedListeners.add(networkDeviceListener);
+            deviceListeners = Collections.unmodifiableList(modifiedListeners);
+        }
+    }
+
+    @Override
+    public void removeNetworkDeviceListener(
+            final ZigBeeNetworkDeviceListener networkDeviceListener) {
+        synchronized (this) {
+            final List<ZigBeeNetworkDeviceListener> modifiedListeners = new ArrayList<ZigBeeNetworkDeviceListener>(
+                    deviceListeners);
+            modifiedListeners.remove(networkDeviceListener);
+            deviceListeners = Collections.unmodifiableList(modifiedListeners);
         }
     }
 
@@ -227,7 +253,7 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
         }
         synchronized (this) {
             if (node != null) {
-                for (final ZigBeeNetworkStateListener listener : listeners) {
+                for (final ZigBeeNetworkNodeListener listener : nodeListeners) {
                     listener.nodeRemoved(node);
                 }
             }
@@ -242,7 +268,7 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
                     node);
         }
         synchronized (this) {
-            for (final ZigBeeNetworkStateListener listener : listeners) {
+            for (final ZigBeeNetworkNodeListener listener : nodeListeners) {
                 listener.nodeAdded(node);
             }
         }
@@ -253,4 +279,5 @@ public class ZigBeeNetworkStateImpl implements ZigBeeNetworkState {
         // TODO Auto-generated method stub
         
     }
+
 }

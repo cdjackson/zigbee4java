@@ -31,9 +31,9 @@ import org.bubblecloud.zigbee.v3.zdo.command.UnbindRequest;
  */
 public class ZigBeeNetworkManager implements ZigBeeNetwork {
     /**
-     * The dongle implementation.
+     * The transport implementation.
      */
-    private final ZigBeeTransport dongle;
+    private final ZigBeeTransport transport;
 
     /**
      * The ZigBee network networkDiscoverer.
@@ -44,8 +44,6 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      * The network state.
      */
     private ZigBeeNetworkStateImpl networkState;
-
-    ZigBeeNetwork zigbeeNetwork;
 
     /**
      * The command listener creation times.
@@ -58,22 +56,25 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
     private List<CommandListener> commandListeners = new ArrayList<CommandListener>();
 
     /**
+     * The listeners of the ZigBee network.
+     */
+    private List<ZigBeeNetworkStateListener> stateListeners = Collections
+            .unmodifiableList(new ArrayList<ZigBeeNetworkStateListener>());
+
+    /**
      * Constructor which configures serial port and ZigBee network.
      * 
-     * @param dongle
+     * @param transport
      *            the dongle
      * @param resetNetwork
      *            whether network is to be reset
      */
-    public ZigBeeNetworkManager(final ZigBeeTransport dongle, final boolean resetNetwork) {
-        this.dongle = dongle;
+    public ZigBeeNetworkManager(final ZigBeeTransport transport, final boolean resetNetwork) {
+        this.transport = transport;
         this.networkState = new ZigBeeNetworkStateImpl(resetNetwork);
         this.networkDiscoverer = new ZigBeeNetworkDiscoverer(networkState, this);
 
-        // setNetwork(dongle);
-
-        dongle.setZigBeeNetwork(this);
-        // setNetworkState(networkState);
+        transport.setZigBeeNetwork(this);
     }
 
     /**
@@ -83,7 +84,7 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      */
     public boolean startup() {
         networkState.startup();
-        if (dongle.startup()) {
+        if (transport.startup()) {
             networkDiscoverer.startup();
             return true;
         } else {
@@ -96,13 +97,13 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
      */
     public void shutdown() {
         networkDiscoverer.shutdown();
-        dongle.shutdown();
+        transport.shutdown();
         networkState.shutdown();
     }
 
     @Override
     public int sendCommand(Command command) throws ZigBeeException {
-        return dongle.sendCommand(command);
+        return transport.sendCommand(command);
     }
 
     @Override
@@ -127,8 +128,17 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
     }
 
     @Override
-    public void setZigBeeNetwork(ZigBeeNetwork zigbeeNetwork) {
-        this.zigbeeNetwork = zigbeeNetwork;
+    public void addNetworkStateListener(ZigBeeNetworkStateListener stateListener) {
+        final List<ZigBeeNetworkStateListener> modifiedStateListeners = new ArrayList<ZigBeeNetworkStateListener>(stateListeners);
+        modifiedStateListeners.add(stateListener);
+        stateListeners = Collections.unmodifiableList(modifiedStateListeners);
+    }
+
+    @Override
+    public void setNetworkState(TransportState state) {
+        for (final ZigBeeNetworkStateListener stateListener : stateListeners) {
+            stateListener.networkStateUpdated(state);
+        }
     }
 
     /**
@@ -594,5 +604,4 @@ public class ZigBeeNetworkManager implements ZigBeeNetwork {
 
         return unicast(command, new ZclCustomResponseMatcher());
     }
-
 }

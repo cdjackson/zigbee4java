@@ -17,6 +17,7 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.commissioning.RestoreStartupParame
 import org.bubblecloud.zigbee.v3.zcl.clusters.commissioning.SaveStartupParametersCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.commissioning.SaveStartupParametersResponse;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Commissioning</b> cluster implementation (<i>Cluster ID 0x0015</i>).

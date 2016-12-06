@@ -13,6 +13,7 @@ import org.bubblecloud.zigbee.v3.zcl.clusters.doorlock.LockDoorResponse;
 import org.bubblecloud.zigbee.v3.zcl.clusters.doorlock.UnlockDoorCommand;
 import org.bubblecloud.zigbee.v3.zcl.clusters.doorlock.UnlockDoorResponse;
 import org.bubblecloud.zigbee.v3.zcl.protocol.ZclDataType;
+import org.bubblecloud.zigbee.v3.zcl.protocol.ZclFieldType;
 
 /**
  * <b>Door Lock</b> cluster implementation (<i>Cluster ID 0x0101</i>).
